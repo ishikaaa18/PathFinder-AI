@@ -1,0 +1,977 @@
+{
+	"info": {
+		"_postman_id": "pathfinder-ai-collection",
+		"name": "PathFinder AI - Complete API Collection",
+		"description": "Complete API collection for PathFinder AI career guidance platform with all endpoints",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"johndoe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"register"
+							]
+						},
+						"description": "Register a new user account"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"if (jsonData.token) {",
+									"    pm.environment.set(\"auth_token\", jsonData.token);",
+									"    pm.environment.set(\"user_id\", jsonData._id);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"john@example.com\",\n  \"password\": \"securePassword123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"login"
+							]
+						},
+						"description": "Login with email and password. Token will be automatically saved to environment."
+					},
+					"response": []
+				}
+			],
+			"description": "User authentication endpoints"
+		},
+		{
+			"name": "User Profile",
+			"item": [
+				{
+					"name": "Get User Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get user profile by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe Updated\",\n  \"username\": \"johndoe_updated\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Update user profile information"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User Account",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/users/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"{{user_id}}"
+							]
+						},
+						"description": "Delete user account (use with caution)"
+					},
+					"response": []
+				}
+			],
+			"description": "User profile management endpoints"
+		},
+		{
+			"name": "Skills",
+			"item": [
+				{
+					"name": "Create Skill",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"skillName\": \"JavaScript\",\n  \"proficiencyLevel\": \"Advanced\",\n  \"yearsExperience\": 5\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/skills",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills"
+							]
+						},
+						"description": "Add a new skill to your profile"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Skills",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/skills",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills"
+							]
+						},
+						"description": "Get all skills for authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Skills by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/skills/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills",
+								"user",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get all skills for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Skill by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/skills/:skillId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills",
+								":skillId"
+							],
+							"variable": [
+								{
+									"key": "skillId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get a specific skill by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Skill",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"skillName\": \"JavaScript\",\n  \"proficiencyLevel\": \"Expert\",\n  \"yearsExperience\": 6\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/skills/:skillId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills",
+								":skillId"
+							],
+							"variable": [
+								{
+									"key": "skillId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Update an existing skill"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Skill",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/skills/:skillId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"skills",
+								":skillId"
+							],
+							"variable": [
+								{
+									"key": "skillId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Delete a skill"
+					},
+					"response": []
+				}
+			],
+			"description": "Skills management endpoints"
+		},
+		{
+			"name": "Qualifications",
+			"item": [
+				{
+					"name": "Create Qualification",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"qualificationName\": \"Bachelor of Computer Science\",\n  \"institution\": \"MIT\",\n  \"dateObtained\": \"2020-05-15\",\n  \"certificateUrl\": \"https://example.com/certificate.pdf\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/qualifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications"
+							]
+						},
+						"description": "Add a new qualification"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Qualifications",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/qualifications",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications"
+							]
+						},
+						"description": "Get all qualifications for authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Qualifications by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/qualifications/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications",
+								"user",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get all qualifications for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Qualification by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/qualifications/:qualificationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications",
+								":qualificationId"
+							],
+							"variable": [
+								{
+									"key": "qualificationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get a specific qualification by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Qualification",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"qualificationName\": \"Master of Computer Science\",\n  \"institution\": \"Stanford University\",\n  \"dateObtained\": \"2022-06-20\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/qualifications/:qualificationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications",
+								":qualificationId"
+							],
+							"variable": [
+								{
+									"key": "qualificationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Update an existing qualification"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Qualification",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/qualifications/:qualificationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"qualifications",
+								":qualificationId"
+							],
+							"variable": [
+								{
+									"key": "qualificationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Delete a qualification"
+					},
+					"response": []
+				}
+			],
+			"description": "Qualifications management endpoints"
+		},
+		{
+			"name": "Interests",
+			"item": [
+				{
+					"name": "Create Interest",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"interestName\": \"Artificial Intelligence\",\n  \"description\": \"Passionate about machine learning and AI applications\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/interests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests"
+							]
+						},
+						"description": "Add a new career interest"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Interests",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/interests",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests"
+							]
+						},
+						"description": "Get all interests for authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interests by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/interests/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests",
+								"user",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get all interests for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interest by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/interests/:interestId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests",
+								":interestId"
+							],
+							"variable": [
+								{
+									"key": "interestId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get a specific interest by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Interest",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"interestName\": \"Deep Learning\",\n  \"description\": \"Focused on neural networks and deep learning frameworks\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/interests/:interestId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests",
+								":interestId"
+							],
+							"variable": [
+								{
+									"key": "interestId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Update an existing interest"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Interest",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/interests/:interestId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"interests",
+								":interestId"
+							],
+							"variable": [
+								{
+									"key": "interestId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Delete an interest"
+					},
+					"response": []
+				}
+			],
+			"description": "Career interests management endpoints"
+		},
+		{
+			"name": "Recommendations",
+			"item": [
+				{
+					"name": "Generate AI Recommendations",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recommendations/generate/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations",
+								"generate",
+								"{{user_id}}"
+							]
+						},
+						"description": "Generate AI-powered career recommendations based on user profile (skills, qualifications, interests)"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Manual Recommendation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"careerSuggestion\": \"Full Stack Developer\",\n  \"justification\": \"Your skills in JavaScript, React, and Node.js make you a great fit\",\n  \"courseLink\": \"https://example.com/fullstack-course\",\n  \"aiModelUsed\": \"Manual Entry\",\n  \"confidenceScore\": 0.9,\n  \"skillGaps\": [\"Docker\", \"Kubernetes\"]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recommendations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations"
+							]
+						},
+						"description": "Create a recommendation manually"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Recommendations",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recommendations",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations"
+							]
+						},
+						"description": "Get all recommendations for authenticated user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recommendations by User ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recommendations/user/{{user_id}}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations",
+								"user",
+								"{{user_id}}"
+							]
+						},
+						"description": "Get all recommendations for a specific user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Recommendation by ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recommendations/:recommendationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations",
+								":recommendationId"
+							],
+							"variable": [
+								{
+									"key": "recommendationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Get a specific recommendation by ID"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Recommendation",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"careerSuggestion\": \"Senior Full Stack Developer\",\n  \"confidenceScore\": 0.95\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/recommendations/:recommendationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations",
+								":recommendationId"
+							],
+							"variable": [
+								{
+									"key": "recommendationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Update an existing recommendation"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Recommendation",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{auth_token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/recommendations/:recommendationId",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"recommendations",
+								":recommendationId"
+							],
+							"variable": [
+								{
+									"key": "recommendationId",
+									"value": ""
+								}
+							]
+						},
+						"description": "Delete a recommendation"
+					},
+					"response": []
+				}
+			],
+			"description": "Career recommendations endpoints with AI-powered generation"
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_id",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
