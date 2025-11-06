@@ -7,30 +7,38 @@ const authMiddleware = async (req, res, next) => {
         // 1. Get the token from the request header (e.g., Authorization: Bearer <token>)
         const authHeader = req.headers.authorization;
         if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return res.status(401).json({ message: 'No token provided' }); // 401 Unauthorized
+            return res.status(401).json({ message: 'No token provided' });
         }
 
         const token = authHeader.split(' ')[1]; // Extract the token
 
         // 2. Verify the token
-        jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-            if (err) {
-                return res.status(401).json({ message: 'Invalid token' }); // 401 Unauthorized
+        let decoded;
+        try {
+            decoded = jwt.verify(token, process.env.JWT_SECRET);
+        } catch (jwtError) {
+            console.error('JWT verification error:', jwtError.message);
+            if (jwtError.name === 'TokenExpiredError') {
+                return res.status(401).json({ message: 'Token expired' });
             }
-
-            // 3. Attach the user object to the request
-            const user = await User.findById(decoded.userId).select('-password'); // Exclude the password
-            if (!user) {
-                return res.status(401).json({ message: 'Invalid token' }); // User not found
+            if (jwtError.name === 'JsonWebTokenError') {
+                return res.status(401).json({ message: 'Invalid token' });
             }
+            return res.status(401).json({ message: 'Authentication failed' });
+        }
 
-            req.user = user; // Attach the user object to the request
-            next(); // Call the next middleware or route handler
-        });
+        // 3. Attach the user object to the request
+        const user = await User.findById(decoded.id).select('-password');
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        req.user = user; // Attach the user object to the request
+        next(); // Call the next middleware or route handler
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error' }); // 500 Internal Server Error
+        console.error('Auth middleware error:', error);
+        res.status(500).json({ message: 'Server error' });
     }
 };
 

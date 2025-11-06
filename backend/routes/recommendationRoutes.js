@@ -1,12 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const recommendationController = require('../controllers/recommendationController'); // Import the recommendation controller
+const recommendationController = require('../controllers/recommendationController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Define routes for recommendation-related operations
-router.post('/', recommendationController.post);       // Create a new recommendation
-router.get('/', recommendationController.get);        // Get all recommendations
-router.get('/:id', recommendationController.get);     // Get a recommendation by ID
-router.put('/:id', recommendationController.put);     // Update a recommendation by ID
-router.delete('/:id', recommendationController.delete);  // Delete a recommendation by ID
+// Generate AI recommendations for a user
+router.post('/generate/:userId', authMiddleware, recommendationController.generateRecommendations);
+
+// Get recommendations by user ID
+router.get('/user/:userId', authMiddleware, recommendationController.getRecommendationsByUserId);
+
+// CRUD operations
+router.post('/', authMiddleware, recommendationController.createRecommendation);
+router.get('/', authMiddleware, recommendationController.getAllRecommendations);
+router.get('/:id', authMiddleware, recommendationController.getRecommendationById);
+router.put('/:id', authMiddleware, recommendationController.updateRecommendation);
+router.delete('/:id', authMiddleware, recommendationController.deleteRecommendation);
 
 module.exports = router;

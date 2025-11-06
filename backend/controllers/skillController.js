@@ -1,55 +1,132 @@
 const Skill = require('../models/skill');
 
-// Create a new skill
+// @desc    Create a new skill
+// @route   POST /api/skills
+// @access  Protected
 exports.createSkill = async (req, res) => {
     try {
-        const skill = new Skill(req.body);
+        const skillData = {
+            ...req.body,
+            userId: req.user._id
+        };
+        const skill = new Skill(skillData);
         const savedSkill = await skill.save();
         res.status(201).json(savedSkill);
     } catch (error) {
+        console.error('Error creating skill:', error);
         res.status(400).json({ message: error.message });
     }
 };
 
-// Get all skills
+// @desc    Get all skills
+// @route   GET /api/skills
+// @access  Protected
 exports.getAllSkills = async (req, res) => {
     try {
-        const skills = await Skill.find().populate('userId', 'username email');
+        const skills = await Skill.find({ userId: req.user._id })
+            .sort({ createdAt: -1 });
         res.json(skills);
     } catch (error) {
+        console.error('Error fetching skills:', error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// Get a skill by ID
+// @desc    Get skills by user ID
+// @route   GET /api/skills/user/:userId
+// @access  Protected
+exports.getSkillsByUserId = async (req, res) => {
+    try {
+        const { userId } = req.params;
+        
+        if (userId !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Access denied: Cannot view other users skills' });
+        }
+        
+        const skills = await Skill.find({ userId })
+            .sort({ yearsExperience: -1 });
+        
+        if (!skills || skills.length === 0) {
+            return res.status(404).json({ message: 'No skills found for this user' });
+        }
+        
+        res.json(skills);
+    } catch (error) {
+        console.error('Error fetching user skills:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Get a skill by ID
+// @route   GET /api/skills/:id
+// @access  Protected
 exports.getSkillById = async (req, res) => {
     try {
-        const skill = await Skill.findById(req.params.id).populate('userId', 'username email');
-        if (!skill) return res.status(404).json({ message: 'Skill not found' });
+        const skill = await Skill.findById(req.params.id);
+        
+        if (!skill) {
+            return res.status(404).json({ message: 'Skill not found' });
+        }
+        
+        if (skill.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Access denied: Cannot view other users skills' });
+        }
+        
         res.json(skill);
     } catch (error) {
+        console.error('Error fetching skill:', error);
         res.status(500).json({ message: error.message });
     }
 };
 
-// Update a skill
+// @desc    Update a skill
+// @route   PUT /api/skills/:id
+// @access  Protected
 exports.updateSkill = async (req, res) => {
     try {
-        const updatedSkill = await Skill.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        if (!updatedSkill) return res.status(404).json({ message: 'Skill not found' });
+        const skill = await Skill.findById(req.params.id);
+        
+        if (!skill) {
+            return res.status(404).json({ message: 'Skill not found' });
+        }
+        
+        if (skill.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Access denied: Cannot update other users skills' });
+        }
+        
+        const updatedSkill = await Skill.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true, runValidators: true }
+        );
+        
         res.json(updatedSkill);
     } catch (error) {
+        console.error('Error updating skill:', error);
         res.status(400).json({ message: error.message });
     }
 };
 
-// Delete a skill (optional – maybe later for admin)
+// @desc    Delete a skill
+// @route   DELETE /api/skills/:id
+// @access  Protected
 exports.deleteSkill = async (req, res) => {
     try {
-        const deletedSkill = await Skill.findByIdAndDelete(req.params.id);
-        if (!deletedSkill) return res.status(404).json({ message: 'Skill not found' });
-        res.json({ message: 'Skill deleted' });
+        const skill = await Skill.findById(req.params.id);
+        
+        if (!skill) {
+            return res.status(404).json({ message: 'Skill not found' });
+        }
+        
+        if (skill.userId.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Access denied: Cannot delete other users skills' });
+        }
+        
+        await Skill.findByIdAndDelete(req.params.id);
+        
+        res.json({ message: 'Skill deleted successfully' });
     } catch (error) {
+        console.error('Error deleting skill:', error);
         res.status(500).json({ message: error.message });
     }
 };

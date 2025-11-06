@@ -1,14 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const skillController = require('../controllers/skillController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Skill routes
-router.post('/', skillController.createSkill);
-router.get('/', skillController.getAllSkills);
-router.get('/:id', skillController.getSkillById);
-router.put('/:id', skillController.updateSkill);
+// Get skills by user ID
+router.get('/user/:userId', authMiddleware, skillController.getSkillsByUserId);
 
-// ❌ If you don’t want delete now, remove it from here
-// router.delete('/:id', skillController.deleteSkill);
+// CRUD operations
+router.post('/', authMiddleware, skillController.createSkill);
+router.get('/', authMiddleware, skillController.getAllSkills);
+router.get('/:id', authMiddleware, skillController.getSkillById);
+router.put('/:id', authMiddleware, skillController.updateSkill);
+router.delete('/:id', authMiddleware, skillController.deleteSkill);
 
 module.exports = router;

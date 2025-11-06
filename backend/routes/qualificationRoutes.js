@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const qualificationController = require('../controllers/qualificationController'); // Import the qualification controller
+const qualificationController = require('../controllers/qualificationController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Define the routes for the qualification resource
-router.post('/', qualificationController.post);       // Create a new qualification
-router.get('/', qualificationController.get);        // Get all qualifications
-router.get('/:id', qualificationController.get);     // Get a qualification by ID
-router.put('/:id', qualificationController.put);     // Update a qualification by ID
-router.delete('/:id', qualificationController.delete);  // Delete a qualification by ID
+// Get qualifications by user ID
+router.get('/user/:userId', authMiddleware, qualificationController.getQualificationsByUserId);
+
+// CRUD operations
+router.post('/', authMiddleware, qualificationController.createQualification);
+router.get('/', authMiddleware, qualificationController.getAllQualifications);
+router.get('/:id', authMiddleware, qualificationController.getQualificationById);
+router.put('/:id', authMiddleware, qualificationController.updateQualification);
+router.delete('/:id', authMiddleware, qualificationController.deleteQualification);
 
 module.exports = router;

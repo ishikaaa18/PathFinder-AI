@@ -6,10 +6,10 @@ const recommendationSchema = new Schema({
     careerSuggestion: { type: String, required: true },
     courseLink: { type: String },
     justification: { type: String },
-    aiModelUsed: { type: String },
-    createdAt: { type: Date, default: Date.now },
-    updatedAt: { type: Date, default: Date.now }
-});
+    aiModelUsed: { type: String, default: 'Gemini Pro' },
+    confidenceScore: { type: Number, min: 0, max: 1, default: 0.8 },
+    skillGaps: [{ type: String }]
+}, { timestamps: true });
 
 const Recommendation = mongoose.model('Recommendation', recommendationSchema);
 

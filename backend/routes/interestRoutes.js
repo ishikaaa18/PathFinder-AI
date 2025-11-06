@@ -1,12 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const interestController = require('../controllers/interestController'); // Import the interest controller
+const interestController = require('../controllers/interestController');
+const authMiddleware = require('../middleware/authMiddleware');
 
-// Define routes for interest-related operations
-router.post('/', interestController.post);       // Create a new interest
-router.get('/', interestController.get);        // Get all interests
-router.get('/:id', interestController.get);     // Get an interest by ID
-router.put('/:id', interestController.put);     // Update an interest by ID
-router.delete('/:id', interestController.delete);  // Delete an interest by ID
+// Get interests by user ID
+router.get('/user/:userId', authMiddleware, interestController.getInterestsByUserId);
+
+// CRUD operations
+router.post('/', authMiddleware, interestController.createInterest);
+router.get('/', authMiddleware, interestController.getAllInterests);
+router.get('/:id', authMiddleware, interestController.getInterestById);
+router.put('/:id', authMiddleware, interestController.updateInterest);
+router.delete('/:id', authMiddleware, interestController.deleteInterest);
 
 module.exports = router;
