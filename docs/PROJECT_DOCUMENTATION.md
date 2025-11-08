@@ -15,12 +15,12 @@
 ## Project Overview
 
 ### Purpose
-PathFinder AI is an AI-powered career guidance platform that helps users discover suitable career paths based on their skills, qualifications, and interests. The system uses Google's Gemini AI to provide personalized career recommendations and suggest relevant learning resources.
+PathFinder AI is an AI-powered career guidance platform that helps users discover suitable career paths based on their skills, qualifications, and interests. The system uses xAI's Grok AI to provide personalized career recommendations and suggest relevant learning resources.
 
 ### Key Features
 - ✅ User authentication with JWT
 - ✅ Profile management (skills, qualifications, interests)
-- ✅ AI-powered career recommendations using Google Gemini
+- ✅ AI-powered career recommendations using xAI Grok
 - ✅ Confidence scoring for recommendations
 - ✅ Skill gap analysis
 - ✅ Course suggestions for career development
@@ -50,7 +50,7 @@ PathFinder AI is an AI-powered career guidance platform that helps users discove
                                      ▼
                             ┌─────────────────┐
                             │                 │
-                            │  Google Gemini  │
+                            │   xAI Grok AI   │
                             │   AI Service    │
                             │                 │
                             └─────────────────┘
@@ -67,7 +67,7 @@ PathFinder AI is an AI-powered career guidance platform that helps users discove
 - CORS v2.8.5 - Cross-origin requests
 - Morgan v1.10.1 - HTTP request logging
 - dotenv v17.2.2 - Environment configuration
-- @google/generative-ai - Gemini AI SDK
+- openai - OpenAI SDK (for Grok API compatibility)
 
 **Frontend:**
 - React v19.1.1
@@ -81,7 +81,7 @@ PathFinder AI is an AI-powered career guidance platform that helps users discove
 - MongoDB Atlas - Cloud-hosted NoSQL database
 
 **AI/ML:**
-- Google Gemini Pro - Large Language Model for career recommendations
+- xAI Grok Beta - Large Language Model for career recommendations
 
 ---
 
@@ -130,7 +130,7 @@ Entry point for the backend server.
 - `PORT` - Server port (default: 3000)
 - `MONGO_URI` - MongoDB connection string
 - `JWT_SECRET` - Secret key for JWT signing
-- `GEMINI_API_KEY` - Google Gemini API key
+- `GROK_API_KEY` - xAI Grok API key
 
 ---
 
@@ -239,7 +239,7 @@ Stores AI-generated career recommendations.
   careerSuggestion: String (required),
   justification: String (optional),
   courseLink: String (optional, JSON-stringified array),
-  aiModelUsed: String (default: 'Gemini Pro'),
+  aiModelUsed: String (default: 'Grok Beta'),
   confidenceScore: Number (0-1, default: 0.8),
   skillGaps: Array of Strings,
   createdAt: Date,
@@ -352,7 +352,7 @@ The heart of the application - generates and manages AI-powered career recommend
    2. Fetch user's skills, qualifications, and interests
    3. Validate sufficient data exists
    4. Prepare user data object for AI
-   5. Call Gemini AI service
+   5. Call Grok AI service
    6. Parse AI response
    7. Save recommendations to database
    8. Return results with confidence scores
@@ -390,8 +390,8 @@ The heart of the application - generates and manages AI-powered career recommend
 
 ### Services
 
-#### **services/geminiAIService.js** - AI Integration Service
-Integrates with Google's Gemini AI for career recommendations.
+#### **services/grokAIService.js** - AI Integration Service
+Integrates with xAI's Grok AI for career recommendations using OpenAI-compatible API.
 
 **Function: `generateCareerRecommendations(userData)`**
 
@@ -414,7 +414,7 @@ Integrates with Google's Gemini AI for career recommendations.
    - Career interests
    - Request for structured JSON response
 
-2. **Calls Gemini Pro model** with prompt
+2. **Calls Grok Beta model** with prompt via OpenAI-compatible endpoint
 
 3. **Expected AI Response Format:**
 ```json
@@ -437,7 +437,7 @@ Integrates with Google's Gemini AI for career recommendations.
    - Provides detailed error messages
 
 **Environment Variables:**
-- `GEMINI_API_KEY` - Required for API authentication
+- `GROK_API_KEY` - Required for API authentication
 
 ---
 
@@ -669,9 +669,10 @@ User (1) ──┬──> (Many) Skills
 
 ## AI Integration
 
-### Google Gemini Pro Integration
+### xAI Grok Integration
 
-**Model Used:** `gemini-pro`
+**Model Used:** `grok-beta`
+**API Endpoint:** `https://api.x.ai/v1` (OpenAI-compatible)
 
 **Input:** User's complete profile (skills, qualifications, interests)
 

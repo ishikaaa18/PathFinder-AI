@@ -242,7 +242,7 @@ Authorization: Bearer <your_jwt_token>
 ### 5.1 Generate AI Career Recommendations ⭐
 **Endpoint:** `POST /recommendations/generate/:userId`
 
-**Description:** This is the main AI-powered endpoint that analyzes user data and generates personalized career recommendations using Google Gemini AI.
+**Description:** This is the main AI-powered endpoint that analyzes user data and generates personalized career recommendations using xAI Grok AI.
 
 **Prerequisites:** User must have at least one skill, qualification, or interest added.
 
@@ -260,7 +260,7 @@ Authorization: Bearer <your_jwt_token>
       "careerSuggestion": "Data Scientist",
       "justification": "Based on your advanced Python skills and AI interests, data science is an excellent fit...",
       "courseLink": "[{\"title\":\"Machine Learning A-Z\",\"link\":\"https://...\"}]",
-      "aiModelUsed": "Gemini Pro",
+      "aiModelUsed": "Grok Beta",
       "confidenceScore": 0.92,
       "skillGaps": ["Advanced Statistics", "Deep Learning Frameworks"],
       "createdAt": "2024-11-01T10:30:00.000Z"
@@ -390,7 +390,7 @@ Authorization: Bearer <your_jwt_token>
 PORT=3000
 MONGO_URI=<your_mongodb_connection_string>
 JWT_SECRET=<your_jwt_secret>
-GEMINI_API_KEY=<your_gemini_api_key>
+GROK_API_KEY=<your_grok_api_key>
 ```
 
 ---

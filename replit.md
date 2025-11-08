@@ -1,18 +1,32 @@
 # PathFinder AI - Career Guidance Platform
 
 ## Project Overview
-PathFinder AI is an intelligent career guidance platform that uses Google's Gemini AI to provide personalized career recommendations based on user skills, qualifications, and interests.
+PathFinder AI is an intelligent career guidance platform that uses xAI's Grok AI to provide personalized career recommendations based on user skills, qualifications, and interests.
 
 ## Current State
 ✅ **Fully Operational** - All core features are implemented and tested
 - Backend API running on port 3000
 - Frontend running on port 5000
 - MongoDB Atlas connection configured
-- Google Gemini AI integration active
+- xAI Grok AI integration active
 - All CRUD operations functional
 - AI recommendation generation working
 
-## Recent Changes (November 6, 2025)
+## Recent Changes
+
+### AI Migration (November 8, 2025)
+1. **Migrated from Google Gemini to xAI Grok**
+   - Replaced @google/generative-ai with OpenAI SDK
+   - Updated to use Grok Beta model via OpenAI-compatible API
+   - Changed base URL to https://api.x.ai/v1
+   - Improved JSON response handling with response_format
+
+2. **Security Enhancements**
+   - Added .env files to .gitignore
+   - Secured GROK_API_KEY in environment variables
+   - Removed old GEMINI_API_KEY references
+
+### Previous Updates (November 6, 2025)
 
 ### Backend Optimizations
 1. **Fixed MongoDB Connection**
@@ -67,7 +81,8 @@ PathFinder AI is an intelligent career guidance platform that uses Google's Gemi
 - Node.js with Express.js
 - MongoDB Atlas (cloud database)
 - JWT authentication
-- Google Gemini AI (gemini-pro model)
+- xAI Grok AI (grok-beta model)
+- OpenAI SDK for API compatibility
 - bcryptjs for password hashing
 
 ### Frontend
@@ -103,11 +118,11 @@ pathfinder-ai/
 PORT=3000
 MONGO_URI=<MongoDB Atlas connection string>
 JWT_SECRET=<your JWT secret>
-GEMINI_API_KEY=<your Gemini API key>
+GROK_API_KEY=<your Grok API key>
 ```
 
 ### Replit Secrets (Configured)
-- `GEMINI_API_KEY` - Active and working
+- `GROK_API_KEY` - Active and working
 
 ## API Endpoints
 
@@ -154,7 +169,7 @@ GEMINI_API_KEY=<your Gemini API key>
    - Record career interests
 
 3. **AI Career Recommendations**
-   - Powered by Google Gemini AI
+   - Powered by xAI Grok AI
    - Analyzes skills, qualifications, and interests
    - Provides 3 career suggestions per request
    - Includes confidence scores
@@ -178,7 +193,7 @@ GEMINI_API_KEY=<your Gemini API key>
 ### Current Implementation
 - ✅ User input collection via REST API
 - ✅ Data validation via Mongoose schemas
-- ✅ Google Gemini AI integration
+- ✅ xAI Grok AI integration
 - ✅ MongoDB Atlas storage
 - ✅ Confidence scoring
 - ✅ Skill gap analysis
@@ -308,5 +323,5 @@ For issues, questions, or contributions:
 ---
 
 **Project Status:** ✅ Production Ready
-**Last Updated:** November 6, 2025
+**Last Updated:** November 8, 2025
 **Version:** 1.0.0
