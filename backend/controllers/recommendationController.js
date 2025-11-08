@@ -3,7 +3,7 @@ const User = require('../models/user');
 const Skill = require('../models/skill');
 const Qualification = require('../models/qualification');
 const Interest = require('../models/interest');
-const { generateCareerRecommendations } = require('../services/geminiAIService');
+const { generateCareerRecommendations } = require('../services/grokAIService');
 
 // @desc    Create a new recommendation manually
 // @route   POST /api/recommendations
@@ -65,7 +65,7 @@ exports.generateRecommendations = async (req, res) => {
             }
         };
 
-        // Generate recommendations using Gemini AI
+        // Generate recommendations using Grok AI
         const aiResponse = await generateCareerRecommendations(userData);
 
         // Save recommendations to database
@@ -77,7 +77,7 @@ exports.generateRecommendations = async (req, res) => {
                     careerSuggestion: rec.career,
                     justification: rec.explanation,
                     courseLink: rec.courses ? JSON.stringify(rec.courses) : null,
-                    aiModelUsed: 'Gemini Pro',
+                    aiModelUsed: 'Grok Beta',
                     confidenceScore: rec.confidence || 0.85,
                     skillGaps: rec.skillGaps || []
                 });
