@@ -16,8 +16,8 @@ Before you begin, ensure you have the following installed on your system:
    - Sign up at: https://www.mongodb.com/cloud/atlas
    - Or install MongoDB locally: https://www.mongodb.com/try/download/community
 
-3. **Google Gemini API Key** (for AI recommendations)
-   - Get your API key from: https://makersuite.google.com/app/apikey
+3. **xAI Grok API Key** (for AI recommendations)
+   - Get your API key from: https://console.x.ai
 
 4. **VS Code** (recommended IDE)
    - Download from: https://code.visualstudio.com/
@@ -94,7 +94,7 @@ This will install all the required packages:
 - jsonwebtoken (JWT authentication)
 - cors (Cross-Origin Resource Sharing)
 - dotenv (environment variables)
-- @google/generative-ai (Gemini AI SDK)
+- openai (OpenAI SDK for Grok API compatibility)
 - morgan (HTTP request logger)
 - nodemon (auto-restart during development)
 
@@ -119,8 +119,8 @@ MONGO_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/pathfin
 # JWT Secret (use a strong random string)
 JWT_SECRET=your_super_secret_jwt_key_change_this_in_production
 
-# Google Gemini AI API Key
-GEMINI_API_KEY=your_gemini_api_key_here
+# xAI Grok API Key
+GROK_API_KEY=your_grok_api_key_here
 ```
 
 **To get your MongoDB URI:**
@@ -330,14 +330,14 @@ PORT=3001
 app.use(cors());
 ```
 
-### Issue 4: Gemini API Key Invalid
+### Issue 4: Grok API Key Invalid
 
 **Error:** `Failed to generate career recommendations`
 
 **Solutions:**
 1. Verify API key is correct in `.env`
 2. Check API key has no extra spaces
-3. Ensure API key is active in Google AI Studio
+3. Ensure API key is active in xAI Console (https://console.x.ai)
 4. Check API quota limits
 
 ### Issue 5: npm install Fails
@@ -445,7 +445,7 @@ git push origin main
 - **React Documentation:** https://react.dev/
 - **MongoDB Documentation:** https://docs.mongodb.com/
 - **Vite Documentation:** https://vitejs.dev/
-- **Google Gemini AI:** https://ai.google.dev/
+- **xAI Grok API:** https://docs.x.ai/
 
 ### Troubleshooting Checklist
 - [ ] All dependencies installed?
