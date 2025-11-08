@@ -1,9 +1,12 @@
-// geminiAIService.js
-const { GoogleGenerativeAI } = require('@google/generative-ai');
+// grokAIService.js
+const OpenAI = require('openai');
 require('dotenv').config(); // Load environment variables from .env
 
-const geminiApiKey = process.env.GEMINI_API_KEY;
-const genAI = new GoogleGenerativeAI(geminiApiKey);
+const grokApiKey = process.env.GROK_API_KEY;
+const client = new OpenAI({
+    apiKey: grokApiKey,
+    baseURL: 'https://api.x.ai/v1'
+});
 
 async function generateCareerRecommendations(userData) {
     try {
@@ -44,24 +47,37 @@ async function generateCareerRecommendations(userData) {
                 ]
             }`;
 
-        // 2. Call the Gemini AI API
-        const model = genAI.model({ model: "gemini-pro" }); // Or "gemini-1.5-pro-latest" or another model
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        const text = response.text();
+        // 2. Call the Grok AI API using OpenAI-compatible endpoint
+        const completion = await client.chat.completions.create({
+            model: 'grok-beta',
+            messages: [
+                {
+                    role: 'system',
+                    content: 'You are a career guidance AI assistant. Provide career recommendations in valid JSON format only.'
+                },
+                {
+                    role: 'user',
+                    content: prompt
+                }
+            ],
+            temperature: 0.7,
+            response_format: { type: 'json_object' }
+        });
+
+        const text = completion.choices[0].message.content;
 
         // 3. Parse the JSON response
         try {
             const recommendations = JSON.parse(text);
             return recommendations;
         } catch (parseError) {
-            console.error('Error parsing JSON response from Gemini AI:', parseError);
-            console.error('Raw response from Gemini AI:', text); // Log the raw response for debugging
-            throw new Error('Failed to parse Gemini AI response. Check the raw response for errors.');
+            console.error('Error parsing JSON response from Grok AI:', parseError);
+            console.error('Raw response from Grok AI:', text); // Log the raw response for debugging
+            throw new Error('Failed to parse Grok AI response. Check the raw response for errors.');
         }
 
     } catch (error) {
-        console.error('Error calling Gemini AI API:', error);
+        console.error('Error calling Grok AI API:', error);
         throw new Error('Failed to generate career recommendations. Please try again later.');
     }
 }
