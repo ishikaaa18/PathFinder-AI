@@ -121,8 +121,16 @@ JWT_SECRET=<your JWT secret>
 GROK_API_KEY=<your Grok API key>
 ```
 
-### Replit Secrets (Configured)
-- `GROK_API_KEY` - Active and working
+### Environment Setup
+**For Replit Environment:**
+- Secrets stored in backend/.env file (gitignored)
+- GROK_API_KEY configured and working
+
+**For Local Development:**
+- Copy backend/.env.example to backend/.env
+- Copy frontend/.env.example to frontend/.env
+- Fill in your actual values
+- See SETUP_GUIDE.md for detailed instructions
 
 ## API Endpoints
 
