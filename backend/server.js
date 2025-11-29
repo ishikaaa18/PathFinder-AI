@@ -11,6 +11,7 @@ const qualificationRoutes = require('./routes/qualificationRoutes');
 const skillRoutes = require('./routes/skillRoutes');
 const interestRoutes = require('./routes/interestRoutes');
 const recommendationRoutes = require('./routes/recommendationRoutes');
+const resumeRoutes = require('./routes/resumeRoutes');
 
 dotenv.config(); // Load environment variables from .env
 
@@ -36,6 +37,10 @@ app.use('/api/qualifications', qualificationRoutes);
 app.use('/api/skills', skillRoutes);
 app.use('/api/interests', interestRoutes);
 app.use('/api/recommendations', recommendationRoutes);
+app.use('/api/resume', resumeRoutes);
+app.use('/api/goals', require('./routes/goalRoutes'));
+app.use('/api/quiz', require('./routes/quizRoutes'));
+app.use('/api/insights', require('./routes/insightRoutes'));
 
 // Error handling middleware (example)
 app.use((err, req, res, next) => {

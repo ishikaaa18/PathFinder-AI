@@ -46,11 +46,8 @@ exports.getInterestsByUserId = async (req, res) => {
         const interests = await Interest.find({ userId })
             .sort({ createdAt: -1 });
         
-        if (!interests || interests.length === 0) {
-            return res.status(404).json({ message: 'No interests found for this user' });
-        }
-        
-        res.json(interests);
+        // Return empty array if no interests found (not an error)
+        res.json(interests || []);
     } catch (error) {
         console.error('Error fetching user interests:', error);
         res.status(500).json({ message: error.message });

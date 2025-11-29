@@ -46,11 +46,8 @@ exports.getQualificationsByUserId = async (req, res) => {
         const qualifications = await Qualification.find({ userId })
             .sort({ dateObtained: -1 });
         
-        if (!qualifications || qualifications.length === 0) {
-            return res.status(404).json({ message: 'No qualifications found for this user' });
-        }
-        
-        res.json(qualifications);
+        // Return empty array if no qualifications found (not an error)
+        res.json(qualifications || []);
     } catch (error) {
         console.error('Error fetching user qualifications:', error);
         res.status(500).json({ message: error.message });

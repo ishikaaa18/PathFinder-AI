@@ -1,24 +1,28 @@
 // src/features/career/career.service.js
-export const getCareerRecommendations = async () => {
-  // Mock API response
-  return [
-    {
-      id: 1,
-      title: "Data Scientist",
-      description: "Analyze data to uncover insights and drive decisions.",
-      field: "AI & Data",
-    },
-    {
-      id: 2,
-      title: "Frontend Developer",
-      description: "Build interactive and responsive web applications.",
-      field: "Web Development",
-    },
-    {
-      id: 3,
-      title: "UX Designer",
-      description: "Design user-friendly and engaging interfaces.",
-      field: "Design",
-    },
-  ];
+import api from '../../services/api';
+
+export const careerService = {
+  // Get all recommendations for a user
+  async getRecommendations(userId) {
+    const response = await api.get(`/recommendations/user/${userId}`);
+    return response.data;
+  },
+
+  // Generate new recommendations
+  async generateRecommendations(userId) {
+    const response = await api.post(`/recommendations/generate/${userId}`);
+    return response.data;
+  },
+
+  // Delete a recommendation
+  async deleteRecommendation(recommendationId) {
+    const response = await api.delete(`/recommendations/${recommendationId}`);
+    return response.data;
+  },
+
+  // Get recommendation by ID
+  async getRecommendationById(recommendationId) {
+    const response = await api.get(`/recommendations/${recommendationId}`);
+    return response.data;
+  },
 };

@@ -46,11 +46,8 @@ exports.getSkillsByUserId = async (req, res) => {
         const skills = await Skill.find({ userId })
             .sort({ yearsExperience: -1 });
         
-        if (!skills || skills.length === 0) {
-            return res.status(404).json({ message: 'No skills found for this user' });
-        }
-        
-        res.json(skills);
+        // Return empty array if no skills found (not an error)
+        res.json(skills || []);
     } catch (error) {
         console.error('Error fetching user skills:', error);
         res.status(500).json({ message: error.message });

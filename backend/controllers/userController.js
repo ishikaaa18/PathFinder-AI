@@ -22,9 +22,13 @@ exports.registerUser = async (req, res) => {
         const user = await User.create({ username, email, password, firstName, lastName });
 
         res.status(201).json({
-            _id: user._id,
-            username: user.username,
-            email: user.email,
+            user: {
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                firstName: user.firstName,
+                lastName: user.lastName,
+            },
             token: generateToken(user._id),
         });
     } catch (error) {
@@ -40,9 +44,13 @@ exports.loginUser = async (req, res) => {
 
         if (user && (await user.matchPassword(password))) {
             res.json({
-                _id: user._id,
-                username: user.username,
-                email: user.email,
+                user: {
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                },
                 token: generateToken(user._id),
             });
         } else {

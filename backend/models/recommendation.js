@@ -8,7 +8,17 @@ const recommendationSchema = new Schema({
     justification: { type: String },
     aiModelUsed: { type: String, default: 'Gemini Pro' },
     confidenceScore: { type: Number, min: 0, max: 1, default: 0.8 },
-    skillGaps: [{ type: String }]
+    skillGaps: [{ type: String }],
+    roadmap: [{
+        phase: { type: String, required: true },
+        duration: { type: String },
+        topics: [{ type: String }],
+        status: { 
+            type: String, 
+            enum: ['pending', 'in-progress', 'completed'], 
+            default: 'pending' 
+        }
+    }]
 }, { timestamps: true });
 
 const Recommendation = mongoose.model('Recommendation', recommendationSchema);
