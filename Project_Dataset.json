@@ -1,0 +1,256 @@
+[
+    {
+        "user_id": "u_001",
+        "profile": {
+            "firstName": "Aarav",
+            "lastName": "Sharma",
+            "email": "aarav.s@example.com",
+            "current_education": "B.Tech Computer Science"
+        },
+        "skills": [
+            {
+                "skillName": "JavaScript",
+                "proficiencyLevel": "Advanced",
+                "yearsExperience": 3
+            },
+            {
+                "skillName": "React.js",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "Node.js",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 1
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Web Development",
+                "description": "Building interactive web applications"
+            },
+            {
+                "interestName": "UI/UX Design",
+                "description": "Creating user-friendly interfaces"
+            }
+        ],
+        "qualifications": [
+            {
+                "qualificationName": "Certified React Developer",
+                "institution": "Meta/Coursera",
+                "year": 2023
+            }
+        ],
+        "target_recommendation": {
+            "role": "Full Stack Developer",
+            "match_score": 0.95,
+            "skill_gaps": [
+                "MongoDB",
+                "Docker"
+            ],
+            "learning_path": "Advanced Backend Development"
+        }
+    },
+    {
+        "user_id": "u_002",
+        "profile": {
+            "firstName": "Priya",
+            "lastName": "Patel",
+            "email": "priya.p@example.com",
+            "current_education": "B.E. Information Technology"
+        },
+        "skills": [
+            {
+                "skillName": "Python",
+                "proficiencyLevel": "Advanced",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "TensorFlow",
+                "proficiencyLevel": "Beginner",
+                "yearsExperience": 1
+            },
+            {
+                "skillName": "Mathematics",
+                "proficiencyLevel": "Expert",
+                "yearsExperience": 4
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Artificial Intelligence",
+                "description": "Machine Learning algorithms and implementation"
+            },
+            {
+                "interestName": "Data Science",
+                "description": "Analyzing large datasets"
+            }
+        ],
+        "qualifications": [
+            {
+                "qualificationName": "Data Science Bootcamp",
+                "institution": "Udemy",
+                "year": 2024
+            }
+        ],
+        "target_recommendation": {
+            "role": "Machine Learning Engineer",
+            "match_score": 0.88,
+            "skill_gaps": [
+                "PyTorch",
+                "NLP"
+            ],
+            "learning_path": "Deep Learning Specialization"
+        }
+    },
+    {
+        "user_id": "u_003",
+        "profile": {
+            "firstName": "Rohan",
+            "lastName": "Gupta",
+            "email": "rohan.g@example.com",
+            "current_education": "B.Sc Computer Science"
+        },
+        "skills": [
+            {
+                "skillName": "Java",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "SQL",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "HTML/CSS",
+                "proficiencyLevel": "Advanced",
+                "yearsExperience": 3
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Backend Development",
+                "description": "Server-side logic and database management"
+            },
+            {
+                "interestName": "Cloud Computing",
+                "description": "AWS and serverless architectures"
+            }
+        ],
+        "qualifications": [],
+        "target_recommendation": {
+            "role": "Backend Developer",
+            "match_score": 0.82,
+            "skill_gaps": [
+                "Spring Boot",
+                "AWS"
+            ],
+            "learning_path": "Cloud Native Java Development"
+        }
+    },
+    {
+        "user_id": "u_004",
+        "profile": {
+            "firstName": "Neha",
+            "lastName": "Singh",
+            "email": "neha.singh@example.com",
+            "current_education": "B.Tech Electronics"
+        },
+        "skills": [
+            {
+                "skillName": "C++",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "Embedded Systems",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 1
+            },
+            {
+                "skillName": "IoT",
+                "proficiencyLevel": "Beginner",
+                "yearsExperience": 0.5
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Robotics",
+                "description": "Automation and hardware integration"
+            },
+            {
+                "interestName": "Internet of Things",
+                "description": "Smart devices"
+            }
+        ],
+        "qualifications": [
+            {
+                "qualificationName": "IoT Fundamentals",
+                "institution": "Cisco",
+                "year": 2023
+            }
+        ],
+        "target_recommendation": {
+            "role": "Embedded Systems Engineer",
+            "match_score": 0.90,
+            "skill_gaps": [
+                "RTOS",
+                "Microcontrollers"
+            ],
+            "learning_path": "Embedded Software Engineering"
+        }
+    },
+    {
+        "user_id": "u_005",
+        "profile": {
+            "firstName": "Karthik",
+            "lastName": "Reddy",
+            "email": "karthik.r@example.com",
+            "current_education": "MCA"
+        },
+        "skills": [
+            {
+                "skillName": "Figma",
+                "proficiencyLevel": "Expert",
+                "yearsExperience": 3
+            },
+            {
+                "skillName": "Adobe XD",
+                "proficiencyLevel": "Advanced",
+                "yearsExperience": 2
+            },
+            {
+                "skillName": "HTML",
+                "proficiencyLevel": "Intermediate",
+                "yearsExperience": 2
+            }
+        ],
+        "interests": [
+            {
+                "interestName": "Graphic Design",
+                "description": "Visual aesthetics and branding"
+            },
+            {
+                "interestName": "User Experience",
+                "description": "User journey mapping and wireframing"
+            }
+        ],
+        "qualifications": [
+            {
+                "qualificationName": "Google UX Design Certificate",
+                "institution": "Google",
+                "year": 2023
+            }
+        ],
+        "target_recommendation": {
+            "role": "UI/UX Designer",
+            "match_score": 0.94,
+            "skill_gaps": [
+                "CSS Animations",
+                "User Research"
+            ],
+            "learning_path": "Advanced Prototyping and Interaction Design"
+        }
+    }
+]
