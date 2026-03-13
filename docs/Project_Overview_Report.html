@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PathFinder AI — Project Overview Report</title>
+  <link href="https://fonts.googleapis.com/css2?family=Times+New+Roman&family=Georgia:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    @media print {
+      body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .no-print { display: none !important; }
+      .page { padding: 20mm 22mm; box-shadow: none; margin: 0; }
+      html, body { background: white; }
+      .section-break { page-break-inside: avoid; }
+    }
+
+    body {
+      font-family: 'Inter', 'Times New Roman', serif;
+      background: #d0d0d0;
+      color: #111111;
+      min-height: 100vh;
+      padding: 30px 0 60px;
+    }
+
+    /* ── PRINT BUTTON ── */
+    .print-btn {
+      display: block;
+      width: fit-content;
+      margin: 0 auto 24px;
+      padding: 10px 28px;
+      background: #111;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+      transition: background 0.2s;
+    }
+    .print-btn:hover { background: #333; }
+
+    /* ── DOCUMENT PAGE ── */
+    .page {
+      max-width: 780px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 48px 60px 56px;
+      box-shadow: 0 4px 32px rgba(0,0,0,0.18);
+    }
+
+    /* ── DOCUMENT HEADER ── */
+    .doc-header {
+      text-align: center;
+      padding-bottom: 24px;
+      border-bottom: 3px double #111;
+      margin-bottom: 28px;
+    }
+    .doc-header .project-title {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #000;
+      font-family: 'Inter', sans-serif;
+    }
+    .doc-header .project-subtitle {
+      font-size: 0.95rem;
+      color: #444;
+      margin-top: 6px;
+      font-style: italic;
+      font-family: Georgia, serif;
+    }
+    .doc-header .doc-meta-row {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: #555;
+      font-family: 'Inter', sans-serif;
+    }
+    .doc-meta-row span strong { color: #111; }
+
+    /* ── STATUS BAR ── */
+    .status-bar {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      padding: 10px 0;
+      border-top: 1px solid #ccc;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 28px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #222;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.3px;
+    }
+    .status-bar .dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #111;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    /* ── SECTION HEADING ── */
+    .section-heading {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: #111;
+      border-bottom: 2px solid #111;
+      padding-bottom: 5px;
+      margin-bottom: 14px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* ── SECTION ── */
+    .section { margin-bottom: 26px; }
+
+    /* ── DESCRIPTION TEXT ── */
+    .description {
+      font-size: 0.88rem;
+      line-height: 1.8;
+      color: #222;
+      font-family: Georgia, serif;
+      text-align: justify;
+    }
+    .description strong { color: #000; font-family: 'Inter', sans-serif; font-style: normal; }
+
+    /* ── TECH PILLS ── */
+    .tech-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .tech-pill {
+      padding: 4px 12px;
+      border-radius: 2px;
+      font-size: 0.73rem;
+      font-weight: 600;
+      border: 1.5px solid #333;
+      background: #f5f5f5;
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      letter-spacing: 0.2px;
+    }
+
+    /* ── TWO COLUMN ── */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+
+    /* ── FEATURE LIST ── */
+    .feature-list {
+      list-style: none;
+      padding: 0;
+    }
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.82rem;
+      color: #222;
+      font-family: 'Inter', sans-serif;
+    }
+    .feature-list li:last-child { border-bottom: none; }
+    .feature-list .marker {
+      font-weight: 700;
+      font-size: 0.78rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .marker-done    { color: #111; }
+    .marker-planned { color: #888; }
+    .feature-name   { font-weight: 600; color: #111; }
+    .feature-sub    { font-size: 0.74rem; color: #666; margin-top: 1px; }
+
+    /* ── STATUS TABLE ── */
+    .status-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+    }
+    .status-table th {
+      background: #111;
+      color: #fff;
+      padding: 7px 12px;
+      text-align: left;
+      font-size: 0.73rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .status-table td {
+      padding: 7px 12px;
+      border-bottom: 1px solid #e0e0e0;
+      color: #222;
+      vertical-align: middle;
+    }
+    .status-table tr:nth-child(even) td { background: #f9f9f9; }
+    .status-table .tag-done    { font-weight: 700; color: #111; }
+    .status-table .tag-planned { font-weight: 600; color: #888; font-style: italic; }
+
+    /* ── JOURNEY STEPS ── */
+    .journey-list {
+      list-style: none;
+      counter-reset: step;
+    }
+    .journey-list li {
+      counter-increment: step;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+    }
+    .journey-list li:last-child { border-bottom: none; }
+    .journey-list li::before {
+      content: counter(step);
+      min-width: 24px; height: 24px;
+      background: #111;
+      color: #fff;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .j-title  { font-weight: 600; color: #111; }
+    .j-desc   { font-size: 0.74rem; color: #666; margin-top: 2px; }
+
+    /* ── STATS ROW ── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .stat-box {
+      border: 2px solid #111;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .stat-box .stat-num {
+      font-family: 'Inter', sans-serif;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #000;
+      line-height: 1;
+    }
+    .stat-box .stat-lbl {
+      font-size: 0.68rem;
+      color: #555;
+      margin-top: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+    }
+
+    /* ── FLOW STRIP ── */
+    .flow-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 4px;
+      border: 2px solid #111;
+      padding: 12px 16px;
+      font-family: 'Inter', sans-serif;
+    }
+    .flow-node {
+      flex: 1;
+      text-align: center;
+      padding: 8px 4px;
+      background: #f5f5f5;
+      border: 1px solid #ccc;
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+      line-height: 1.4;
+    }
+    .flow-arrow {
+      font-size: 14px;
+      color: #111;
+      padding: 0 4px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ── NETLIFY BOX ── */
+    .netlify-box {
+      border: 2px solid #111;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      background: #f9f9f9;
+    }
+    .netlify-box .nl-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #111;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-family: 'Inter', sans-serif;
+    }
+    .netlify-box .nl-url {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #111;
+      font-family: 'Inter', sans-serif;
+      border-bottom: 2px solid #111;
+      padding-bottom: 2px;
+      letter-spacing: 0.3px;
+    }
+    .netlify-box .nl-sub {
+      font-size: 0.72rem;
+      color: #666;
+      margin-top: 3px;
+      font-family: Georgia, serif;
+      font-style: italic;
+    }
+
+    /* ── FUTURE SCOPE ── */
+    .future-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .future-item {
+      border: 1.5px solid #999;
+      padding: 8px 12px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: #666;
+      font-family: 'Inter', sans-serif;
+      background: #f9f9f9;
+      font-style: italic;
+    }
+
+    /* ── HORIZONTAL RULE ── */
+    hr { border: none; border-top: 1px solid #ccc; margin: 24px 0; }
+
+    /* ── FOOTER ── */
+    .doc-footer {
+      margin-top: 32px;
+      border-top: 3px double #111;
+      padding-top: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.74rem;
+      color: #555;
+    }
+    .doc-footer .brand {
+      font-size: 1rem;
+      font-weight: 800;
+      color: #111;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+    .doc-footer .right { text-align: right; line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+  <button class="print-btn no-print" onclick="window.print()">⬇ Print / Save as PDF</button>
+
+  <div class="page">
+
+    <!-- ═══ DOCUMENT HEADER ═══ -->
+    <div class="doc-header">
+      <div class="project-title">PathFinder AI</div>
+      <div class="project-subtitle">AI-Powered Career Guidance Platform — Project Overview Report</div>
+      <div class="doc-meta-row">
+        <span><strong>Technology:</strong> MERN Stack + Google Gemini AI</span>
+        <span><strong>Type:</strong> Full-Stack Web Application</span>
+        <span><strong>Date:</strong> March 2026</span>
+      </div>
+    </div>
+
+    <!-- ═══ STATUS BAR ═══ -->
+    <div class="status-bar">
+      <span><span class="dot"></span>All Core Modules Implemented</span>
+      <span><span class="dot"></span>Deployed on Netlify</span>
+      <span><span class="dot"></span>14 Features Built</span>
+      <span><span class="dot"></span>Production Ready</span>
+    </div>
+
+    <!-- ═══ 1. ABOUT THE PROJECT ═══ -->
+    <div class="section section-break">
+      <div class="section-heading">1. What is PathFinder AI?</div>
+      <p class="description">
+        <strong>PathFinder AI</strong> is a fully functional, AI-powered career guidance web application built to assist
+        <strong>students and job seekers</strong> in identifying the most suitable career path based on their individual
+        skills, academic background, and interests. The platform integrates <strong>Google's Gemini AI</strong> (a
+        large language model) to function as a <strong>24/7 personal career coach</strong> — generating tailored career
+        recommendations, personalized learning roadmaps, resume gap analysis reports, professional cover letters, skill
+        assessments, and career goal tracking — all delivered through a single, cohesive web interface.
+        The system eliminates the need for expensive career counselling by providing instant, data-driven guidance
+        accessible to anyone with an internet connection.
+      </p>
+      <div class="tech-row">
+        <span class="tech-pill">React.js (Vite)</span>
+        <span class="tech-pill">Node.js + Express.js</span>
+        <span class="tech-pill">MongoDB Atlas</span>
+        <span class="tech-pill">Google Gemini AI</span>
+        <span class="tech-pill">TailwindCSS</span>
+        <span class="tech-pill">JWT Authentication</span>
+        <span class="tech-pill">Recharts</span>
+        <span class="tech-pill">PDF-Parse</span>
+      </div>
+    </div>
+
+    <!-- ═══ 2. LIVE LINK ═══ -->
+    <div class="section section-break">
+      <div class="section-heading">2. Live Application Link (Netlify)</div>
+      <div class="netlify-box">
+        <div>
+          <div class="nl-label">🌐 Deployed &amp; Live — Access at:</div>
+          <div class="nl-sub">Open this link in any browser (Chrome, Edge, Firefox) — no installation required.</div>
+        </div>
+        <div class="nl-url">[ NETLIFY LINK TO BE ADDED ]</div>
+      </div>
+    </div>
+
+    <!-- ═══ 3. KEY STATS ═══ -->
+    <div class="section section-break">
+      <div class="section-heading">3. Project Scale at a Glance</div>
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="stat-num">14</div>
+          <div class="stat-lbl">Modules Built</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">12+</div>
+          <div class="stat-lbl">REST API Endpoints</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">3</div>
+          <div class="stat-lbl">Core AI Features</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-num">100%</div>
+          <div class="stat-lbl">Features Implemented</div>
+        </div>
+      </div>
+    </div>
+
+    <hr/>
+
+    <!-- ═══ 4. FEATURES + USER JOURNEY (two-col) ═══ -->
+    <div class="two-col section-break">
+
+      <!-- FEATURES -->
+      <div class="section">
+        <div class="section-heading">4. Features &amp; Modules</div>
+        <ul class="feature-list">
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Secure Login &amp; Registration</div><div class="feature-sub">JWT authentication with bcrypt password hashing</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">AI Career Recommendations</div><div class="feature-sub">Gemini generates career paths with confidence scores</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Learning Roadmap Generator</div><div class="feature-sub">Week-by-week AI study plan with course links</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Resume Analyzer (PDF Upload)</div><div class="feature-sub">Match score, strengths, skill gaps, improvement tips</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Skill Matrix Radar Chart</div><div class="feature-sub">Visual skill gap vs. ideal career profile</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">AI Cover Letter Generator</div><div class="feature-sub">Auto-generated cover letter from resume data</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Goal Tracker (Kanban Board)</div><div class="feature-sub">Career goals with deadlines, priority &amp; completion</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Skill Assessment Quiz (MCQ)</div><div class="feature-sub">Categorized multiple-choice skill verification</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Market Insights Dashboard</div><div class="feature-sub">Salary benchmarks, top companies, trends</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Resume History Archive</div><div class="feature-sub">All past analyses saved and viewable</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Profile Management</div><div class="feature-sub">Update skills, interests, qualifications anytime</div></div>
+          </li>
+          <li>
+            <span class="marker marker-done">✔</span>
+            <div><div class="feature-name">Dark / Light Mode Toggle</div><div class="feature-sub">System-wide theme with persistent state</div></div>
+          </li>
+          <li>
+            <span class="marker marker-planned">○</span>
+            <div><div class="feature-name" style="color:#888;">Interview Prep Coach</div><div class="feature-sub">Planned — Next development phase</div></div>
+          </li>
+          <li>
+            <span class="marker marker-planned">○</span>
+            <div><div class="feature-name" style="color:#888;">Job Description Matcher</div><div class="feature-sub">Planned — Next development phase</div></div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- USER JOURNEY -->
+      <div>
+        <div class="section">
+          <div class="section-heading">5. User Journey</div>
+          <ol class="journey-list">
+            <li>
+              <div>
+                <div class="j-title">Sign Up &amp; Build Profile</div>
+                <div class="j-desc">User registers and enters their skills, interests, and academic qualifications.</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div class="j-title">Receive AI Career Recommendations</div>
+                <div class="j-desc">Gemini AI suggests best-fit careers complete with percentage match scores and justification.</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div class="j-title">View Personalized Learning Roadmap</div>
+                <div class="j-desc">A week-by-week study plan is generated with curated course links from Coursera, edX, and Udemy.</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div class="j-title">Upload Resume for AI Analysis</div>
+                <div class="j-desc">AI reads the uploaded PDF resume and compares it against the target career to reveal skill gaps.</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div class="j-title">Generate a Cover Letter</div>
+                <div class="j-desc">One click generates a tailored, professional cover letter using the resume analysis data.</div>
+              </div>
+            </li>
+            <li>
+              <div>
+                <div class="j-title">Set Goals &amp; Take Skill Quiz</div>
+                <div class="j-desc">User sets career goals on a Kanban board and takes MCQ quizzes to verify skill progress.</div>
+              </div>
+            </li>
+          </ol>
+        </div>
+
+        <!-- FUTURE SCOPE -->
+        <div class="section section-break">
+          <div class="section-heading">6. Planned Future Enhancements</div>
+          <div class="future-grid">
+            <div class="future-item">Interview Prep Coach</div>
+            <div class="future-item">Job Description Matcher</div>
+            <div class="future-item">Portfolio Project Generator</div>
+            <div class="future-item">Daily Study Planner</div>
+            <div class="future-item">Learning Streak Tracker</div>
+            <div class="future-item">LinkedIn Profile Optimizer</div>
+            <div class="future-item">Certificate Tracker</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <hr/>
+
+    <!-- ═══ 7. IMPLEMENTATION STATUS TABLE ═══ -->
+    <div class="section section-break">
+      <div class="section-heading">7. Implementation Status Summary</div>
+      <table class="status-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Module / Feature</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>User Authentication (Login / Register)</td><td class="tag-done">✔ Completed</td><td>JWT-secured, bcrypt hashing</td></tr>
+          <tr><td>2</td><td>Profile Management</td><td class="tag-done">✔ Completed</td><td>Skills, interests, qualifications</td></tr>
+          <tr><td>3</td><td>AI Career Recommendation Engine</td><td class="tag-done">✔ Completed</td><td>Google Gemini AI integration</td></tr>
+          <tr><td>4</td><td>Learning Roadmap Generator</td><td class="tag-done">✔ Completed</td><td>Week-by-week AI plan + course links</td></tr>
+          <tr><td>5</td><td>Resume PDF Upload &amp; AI Analysis</td><td class="tag-done">✔ Completed</td><td>pdf-parse + Gemini comparison</td></tr>
+          <tr><td>6</td><td>Resume Match Score &amp; Gap Report</td><td class="tag-done">✔ Completed</td><td>% match, strengths, missing skills</td></tr>
+          <tr><td>7</td><td>Resume History Archive</td><td class="tag-done">✔ Completed</td><td>All past analyses stored</td></tr>
+          <tr><td>8</td><td>Skill Matrix Radar Chart</td><td class="tag-done">✔ Completed</td><td>Built with Recharts (interactive)</td></tr>
+          <tr><td>9</td><td>AI Cover Letter Generator</td><td class="tag-done">✔ Completed</td><td>Download as TXT, copy to clipboard</td></tr>
+          <tr><td>10</td><td>Goal Tracker (Kanban Board)</td><td class="tag-done">✔ Completed</td><td>Deadlines, priority, completion toggle</td></tr>
+          <tr><td>11</td><td>Skill Assessment Quiz (MCQ)</td><td class="tag-done">✔ Completed</td><td>Categorized, scored quiz system</td></tr>
+          <tr><td>12</td><td>Market Insights Dashboard</td><td class="tag-done">✔ Completed</td><td>Salary, companies, trending skills</td></tr>
+          <tr><td>13</td><td>Dark / Light Mode</td><td class="tag-done">✔ Completed</td><td>System-wide, persistent toggle</td></tr>
+          <tr><td>14</td><td>Interview Prep Coach</td><td class="tag-planned">○ Planned</td><td>AI mock interview Q&amp;A system</td></tr>
+          <tr><td>15</td><td>Job Description Matcher</td><td class="tag-planned">○ Planned</td><td>JD vs. resume AI comparison</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ═══ 8. SYSTEM FLOW ═══ -->
+    <div class="section section-break">
+      <div class="section-heading">8. System Architecture (How It Works)</div>
+      <div class="flow-strip">
+        <div class="flow-node">User<br>Browser</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">React.js<br>Frontend</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Node.js<br>API Server</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">MongoDB<br>Database</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node">Google<br>Gemini AI</div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-node" style="background:#111;color:#fff;border-color:#111;">AI Response<br>to User</div>
+      </div>
+      <p style="font-size:0.76rem;color:#555;margin-top:10px;font-family:Georgia,serif;font-style:italic;text-align:center;">
+        User submits profile → React sends a request to the Node.js REST API → API fetches data from MongoDB →
+        A structured prompt is sent to Google Gemini AI → Gemini returns career insights → Results are displayed to the user.
+      </p>
+    </div>
+
+    <!-- ═══ FOOTER ═══ -->
+    <div class="doc-footer">
+      <div>
+        <div class="brand">PathFinder AI</div>
+        <div style="margin-top:4px;">AI-Powered Career Guidance Platform</div>
+        <div>Full-Stack Web Application — Academic Project</div>
+      </div>
+      <div class="right">
+        <div><strong>Report Date:</strong> March 2026</div>
+        <div><strong>Stack:</strong> MERN + Google Gemini AI</div>
+        <div><strong>Deployment:</strong> Netlify (Frontend), Node.js (Backend)</div>
+        <div style="margin-top:4px;font-weight:700;color:#111;">Status: All Core Modules Implemented ✔</div>
+      </div>
+    </div>
+
+  </div><!-- /page -->
+
+</body>
+</html>

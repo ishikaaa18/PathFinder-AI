@@ -1,9 +1,12 @@
+// src/pages/ResumeAnalyzer.jsx
 import React, { useState, useEffect } from 'react';
-import { Upload, FileText, CheckCircle, AlertTriangle, Loader, ChevronRight } from 'lucide-react';
+import { Upload, FileText, CheckCircle, AlertTriangle, Loader, ChevronRight, Sparkles, Target, Zap, FileSearch, ShieldCheck, Mail } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
 import DashboardLayout from '../layouts/DashboardLayout';
+import SkillMatrix from '../components/SkillMatrix';
+import CoverLetterModal from '../components/CoverLetterModal';
 
 const ResumeAnalyzer = () => {
   const { user } = useAuth();
@@ -12,6 +15,7 @@ const ResumeAnalyzer = () => {
   const [careers, setCareers] = useState([]);
   const [analyzing, setAnalyzing] = useState(false);
   const [result, setResult] = useState(null);
+  const [showCoverLetter, setShowCoverLetter] = useState(false);
 
   useEffect(() => {
     if (user?._id) {
@@ -22,7 +26,6 @@ const ResumeAnalyzer = () => {
   const fetchCareers = async () => {
     try {
       const res = await api.get(`/recommendations/user/${user._id}`);
-      // Extract unique career titles
       const uniqueCareers = [...new Set(res.data.map(r => r.careerSuggestion))];
       setCareers(uniqueCareers);
     } catch (error) {
@@ -58,7 +61,7 @@ const ResumeAnalyzer = () => {
       });
 
       setResult(res.data);
-      toast.success('Resume analysis complete! 🎉');
+      toast.success('Resume analysis complete!');
     } catch (error) {
       console.error('Error analyzing resume:', error);
       const errorMsg = error.response?.data?.details || error.response?.data?.message || 'Failed to analyze resume';
@@ -70,165 +73,235 @@ const ResumeAnalyzer = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8 max-w-4xl mx-auto">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
-            <FileText className="text-purple-600 dark:text-purple-400 w-8 h-8" />
+      <div className="max-w-6xl mx-auto space-y-8 pb-12">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+              <FileSearch className="text-brand-500" size={24} />
+              Resume Checker
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              AI feedback to help you improve your resume for the job you want.
+            </p>
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">AI Resume Analyzer</h1>
-            <p className="text-gray-600 dark:text-gray-300">Get personalized feedback to match your dream job</p>
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-50 dark:bg-brand-500/10 rounded-xl border border-brand-100 dark:border-brand-500/20">
+             <ShieldCheck size={14} className="text-brand-600 dark:text-brand-400" />
+             <span className="text-[10px] font-bold text-brand-700 dark:text-brand-400 uppercase tracking-widest">Powered by PathFinder AI</span>
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Input Section */}
+
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          {/* Input Configuration */}
           <div className="space-y-6">
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">1. Select Target Career</h3>
-              <select
-                value={targetCareer}
-                onChange={(e) => setTargetCareer(e.target.value)}
-                className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
-              >
-                <option value="">-- Choose a career path --</option>
-                {careers.map((career, idx) => (
-                  <option key={idx} value={career}>{career}</option>
-                ))}
-                <option value="Software Engineer">Software Engineer (General)</option>
-                <option value="Data Scientist">Data Scientist (General)</option>
-                <option value="Product Manager">Product Manager (General)</option>
-              </select>
-            </div>
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-8 space-y-8 shadow-sm">
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                    <Target size={16} />
+                  </div>
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Step 01: Set Target</h3>
+                </div>
+                <select
+                  value={targetCareer}
+                  onChange={(e) => setTargetCareer(e.target.value)}
+                  className="w-full p-4 bg-slate-50 dark:bg-slate-800/10 border border-slate-200 dark:border-slate-800 rounded-2xl focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition text-sm font-semibold text-slate-900 dark:text-white"
+                >
+                  <option value="">Select a career path...</option>
+                  {careers.map((career, idx) => (
+                    <option key={idx} value={career}>{career}</option>
+                  ))}
+                  <option value="Software Engineer">Software Engineer</option>
+                  <option value="Data Scientist">Data Scientist</option>
+                  <option value="Product Manager">Product Manager</option>
+                </select>
 
-            <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
-              <h3 className="text-lg font-semibold text-gray-800 dark:text-white mb-4">2. Upload Resume (PDF)</h3>
-              <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-xl p-8 text-center hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors relative">
-                <input
-                  type="file"
-                  accept=".pdf"
-                  onChange={handleFileChange}
-                  className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                />
-                <Upload className="mx-auto text-gray-400 dark:text-gray-500 mb-3" size={32} />
-                {file ? (
-                  <p className="text-purple-600 dark:text-purple-400 font-medium">{file.name}</p>
-                ) : (
-                  <p className="text-gray-500 dark:text-gray-400">Drag & drop or click to upload PDF</p>
-                )}
               </div>
+
+              <div className="space-y-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-slate-50 dark:bg-slate-800 flex items-center justify-center text-slate-400">
+                    <Upload size={16} />
+                  </div>
+                  <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest">Step 02: Provide Resume</h3>
+                </div>
+                <div className="relative group">
+                  <input
+                    type="file"
+                    accept=".pdf"
+                    onChange={handleFileChange}
+                    className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
+                  />
+                  <div className="border-2 border-dashed border-slate-200 dark:border-slate-800 rounded-3xl p-12 text-center group-hover:bg-slate-50 dark:group-hover:bg-slate-800/20 group-hover:border-brand-500/30 transition-all">
+                    <div className="w-12 h-12 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 text-slate-400 group-hover:text-brand-500 transition-colors">
+                      <FileText size={24} />
+                    </div>
+                    {file ? (
+                      <div className="space-y-1">
+                        <p className="text-sm font-bold text-slate-900 dark:text-white truncate">{file.name}</p>
+                        <p className="text-[10px] font-bold text-brand-500 uppercase tracking-widest">File matches profile</p>
+                      </div>
+                    ) : (
+                      <div className="space-y-1">
+                        <p className="text-sm font-bold text-slate-700 dark:text-slate-300">Upload PDF Resume</p>
+                        <p className="text-[10px] text-slate-400 uppercase tracking-widest">Drag and drop or click to browse</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                onClick={handleAnalyze}
+                disabled={analyzing || !file || !targetCareer}
+                className="w-full py-4 bg-brand-500 text-white font-bold rounded-2xl transition-all hover:bg-brand-600 hover:shadow-lg disabled:opacity-50 disabled:hover:scale-100 active:scale-[0.98] flex items-center justify-center gap-3 overflow-hidden group/btn"
+              >
+                {analyzing ? (
+                  <>
+                    <Loader className="animate-spin" size={20} />
+                    <span className="text-sm uppercase tracking-widest">Analyzing Resume...</span>
+                  </>
+                ) : (
+                  <>
+                    <Sparkles size={20} className="group-hover/btn:scale-110 transition-transform" />
+                    <span className="text-sm uppercase tracking-widest">Analyze Resume</span>
+                  </>
+                )}
+              </button>
+
             </div>
 
-            <button
-              onClick={handleAnalyze}
-              disabled={analyzing || !file || !targetCareer}
-              className="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white py-4 rounded-xl font-bold text-lg hover:from-purple-700 hover:to-purple-800 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-            >
-              {analyzing ? (
-                <>
-                  <Loader className="animate-spin" /> Analyzing...
-                </>
-              ) : (
-                <>
-                  <Sparkles size={20} /> Analyze Resume
-                </>
-              )}
-            </button>
+            {/* Support Info */}
+            <div className="p-6 bg-slate-50/50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-800 rounded-3xl">
+               <div className="flex gap-4">
+                  <div className="w-10 h-10 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center flex-shrink-0">
+                     <AlertTriangle size={18} className="text-amber-500" />
+                  </div>
+                  <div className="space-y-1 text-xs">
+                     <p className="font-bold text-slate-700 dark:text-slate-200">Processing Disclaimer</p>
+                     <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Ensure your PDF is text-readable for the most accurate extraction of skills and experience tokens.</p>
+                  </div>
+               </div>
+            </div>
           </div>
 
-          {/* Results Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden min-h-[500px]">
+          {/* Analysis Result Output */}
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl min-h-[600px] shadow-sm flex flex-col overflow-hidden">
             {!result ? (
-              <div className="h-full flex flex-col items-center justify-center p-8 text-center text-gray-400 dark:text-gray-500">
-                <FileText size={64} className="mb-4 opacity-20" />
-                <p>Upload your resume and select a career to see AI insights here.</p>
+              <div className="flex-1 flex flex-col items-center justify-center p-12 text-center space-y-6">
+                <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center text-slate-300 dark:text-slate-700">
+                   <Zap size={32} />
+                </div>
+                <div className="space-y-2">
+                   <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Ready to Analyze</h3>
+                   <p className="text-xs text-slate-500 dark:text-slate-400 max-w-[260px] leading-relaxed mx-auto italic">Upload your resume and select a path to get feedback.</p>
+                </div>
               </div>
+
             ) : (
-              <div className="p-6 space-y-6 animate-fadeIn">
-                {/* Score Header */}
-                <div className="text-center pb-6 border-b border-gray-100 dark:border-gray-700">
-                  <div className="relative w-32 h-32 mx-auto mb-4 flex items-center justify-center">
-                    <svg className="w-full h-full transform -rotate-90">
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="60"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="transparent"
-                        className="text-gray-100 dark:text-gray-700"
-                      />
-                      <circle
-                        cx="64"
-                        cy="64"
-                        r="60"
-                        stroke="currentColor"
-                        strokeWidth="8"
-                        fill="transparent"
-                        strokeDasharray={377}
-                        strokeDashoffset={377 - (377 * result.matchScore) / 100}
-                        className={`text-purple-600 dark:text-purple-400 transition-all duration-1000 ease-out`}
-                      />
-                    </svg>
-                    <span className="absolute text-3xl font-bold text-gray-800 dark:text-white">{result.matchScore}%</span>
+              <div className="p-8 md:p-10 space-y-10 animate-edu-in">
+                {/* Visual Report Header */}
+                <div className="flex items-center justify-between pb-10 border-b border-slate-100 dark:border-slate-800">
+                  <div className="flex items-center gap-6">
+                    <div className="relative">
+                      <svg className="w-20 h-20 transform -rotate-90">
+                        <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="8" fill="transparent" className="text-slate-100 dark:text-slate-800" />
+                        <circle cx="40" cy="40" r="36" stroke="currentColor" strokeWidth="8" fill="transparent" strokeDasharray={2 * Math.PI * 36} strokeDashoffset={2 * Math.PI * 36 * (1 - result.matchScore / 100)} className="text-brand-500 transition-all duration-1000 ease-out" />
+                      </svg>
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="text-lg font-black text-slate-900 dark:text-white">{result.matchScore}%</span>
+                      </div>
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-md font-bold text-slate-900 dark:text-white uppercase tracking-tight">Resume Match</h3>
+                      <p className={`text-[10px] font-bold uppercase tracking-widest ${
+                        result.matchScore >= 70 ? 'text-emerald-500' : 'text-amber-500'
+                      }`}>
+                        {result.matchScore >= 70 ? 'Strong Candidate' : 'Improvement Needed'}
+                      </p>
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-gray-800 dark:text-white">Match Score</h3>
-                  <p className="text-gray-500 dark:text-gray-400 mt-2 text-sm">{result.summary}</p>
+                  
+                  <button 
+                    onClick={() => setShowCoverLetter(true)}
+                    className="px-4 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-[10px] font-bold uppercase tracking-widest flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all shadow-md"
+                  >
+                    <Mail size={14} />
+                    Cover Letter
+                  </button>
                 </div>
 
-                {/* Missing Skills */}
-                <div>
-                  <h4 className="font-semibold text-red-500 mb-3 flex items-center gap-2">
-                    <AlertTriangle size={18} /> Missing Skills
-                  </h4>
+
+                {/* Justification Summary */}
+                <div className="relative pl-6">
+                   <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500/20 rounded-full" />
+                   <p className="text-sm font-medium text-slate-600 dark:text-slate-300 leading-relaxed italic">
+                     "{result.summary}"
+                   </p>
+                </div>
+
+                {/* Skill Matrix */}
+                <div className="py-4">
+                  <SkillMatrix 
+                    strengths={result.strengths} 
+                    missingSkills={result.missingSkills} 
+                  />
+                </div>
+
+                {/* Tokens (Skills) Section */}
+                <div className="space-y-5">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                       <ShieldCheck size={14} />
+                       Missing Skills
+                    </h4>
+                    <span className="text-[10px] font-bold text-rose-500 px-2 py-0.5 bg-rose-50 dark:bg-rose-500/10 rounded-md">Action Required</span>
+                  </div>
+
                   <div className="flex flex-wrap gap-2">
                     {result.missingSkills.map((skill, idx) => (
-                      <span key={idx} className="bg-red-50 text-red-700 px-3 py-1 rounded-full text-sm font-medium border border-red-100">
+                      <span key={idx} className="bg-white dark:bg-slate-800 border-2 border-rose-100 dark:border-rose-500/20 text-rose-500 px-3 py-1.5 rounded-xl font-bold text-[10px] uppercase tracking-widest">
                         {skill}
                       </span>
                     ))}
                   </div>
                 </div>
 
-                {/* Improvements */}
-                <div>
-                  <h4 className="font-semibold text-blue-600 dark:text-blue-400 mb-3 flex items-center gap-2">
-                    <CheckCircle size={18} /> Recommended Improvements
+                {/* Strategic Roadmap */}
+                <div className="space-y-5">
+                  <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] flex items-center gap-2">
+                    <ChevronRight size={14} className="text-brand-500" />
+                    How to Improve
                   </h4>
-                  <ul className="space-y-3">
+                  <div className="space-y-3">
+
                     {result.improvements.map((tip, idx) => (
-                      <li key={idx} className="flex items-start gap-3 text-gray-700 dark:text-gray-200 text-sm bg-blue-50 dark:bg-blue-900/20 p-3 rounded-lg">
-                        <ChevronRight className="text-blue-500 dark:text-blue-400 min-w-[16px] mt-0.5" size={16} />
-                        {tip}
-                      </li>
+                      <div key={idx} className="flex items-start gap-4 p-4 bg-slate-50/50 dark:bg-slate-800/40 rounded-2xl border border-slate-100 dark:border-slate-800/50 hover:border-brand-500/20 transition-all group">
+                        <div className="w-6 h-6 rounded-lg bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 flex items-center justify-center text-[10px] font-bold text-slate-400 group-hover:bg-brand-500 group-hover:text-white group-hover:border-brand-500 transition-all">
+                           {idx + 1}
+                        </div>
+                        <span className="text-xs font-medium text-slate-600 dark:text-slate-400 leading-relaxed group-hover:text-slate-900 dark:group-hover:text-slate-200 transition-colors">
+                          {tip}
+                        </span>
+                      </div>
                     ))}
-                  </ul>
+                  </div>
                 </div>
               </div>
             )}
           </div>
         </div>
       </div>
+      
+      {showCoverLetter && result && (
+        <CoverLetterModal 
+          analysisId={result._id} 
+          onClose={() => setShowCoverLetter(false)} 
+        />
+      )}
     </DashboardLayout>
   );
 };
-
-// Add simple Sparkles component locally if not imported
-const Sparkles = ({ size = 24, className = "" }) => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width={size} 
-    height={size} 
-    viewBox="0 0 24 24" 
-    fill="none" 
-    stroke="currentColor" 
-    strokeWidth="2" 
-    strokeLinecap="round" 
-    strokeLinejoin="round" 
-    className={className}
-  >
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-  </svg>
-);
 
 export default ResumeAnalyzer;

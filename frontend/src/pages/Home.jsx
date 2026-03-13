@@ -1,51 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
-import { Tilt } from 'react-tilt';
+import { motion } from 'framer-motion';
 import { 
   Sparkles, ArrowRight, Brain, Target, Zap, TrendingUp, Users, Award, 
   Star, LayoutDashboard, User, Lightbulb, Map, FileText, CheckCircle, 
-  Gamepad2, Trophy, Sword, Scroll
+  Gamepad2, Trophy, Sword, Scroll, BookOpen, Search, BarChart2
 } from 'lucide-react';
 
 const Home = () => {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll();
+  const [activeIdx, setActiveIdx] = React.useState(0);
   
-  // Parallax background effect
-  const y1 = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const y2 = useTransform(scrollYProgress, [0, 1], [0, -200]);
-
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 2 - 1,
-        y: (e.clientY / window.innerHeight) * 2 - 1,
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveIdx(prev => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(timer);
   }, []);
-
-  const defaultTiltOptions = {
-    reverse: false,
-    max: 15,
-    perspective: 1000,
-    scale: 1.05,
-    speed: 1000,
-    transition: true,
-    axis: null,
-    reset: true,
-    easing: "cubic-bezier(.03,.98,.52,.99)",
-  };
-
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2
+        staggerChildren: 0.1
       }
     }
   };
@@ -54,423 +32,449 @@ const Home = () => {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
-      opacity: 1
+      opacity: 1,
+      transition: { type: 'spring', stiffness: 100, damping: 20 }
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0f172a] overflow-hidden text-white selection:bg-purple-500 selection:text-white" ref={containerRef}>
+    <div className="min-h-screen bg-edu-bg dark:bg-slate-950 overflow-hidden text-edu-border dark:text-slate-100 selection:bg-brand-500 selection:text-white pb-20 transition-colors duration-300" ref={containerRef}>
       
-      {/* Dynamic Background Grid */}
-      <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-purple-500 opacity-20 blur-[100px]"></div>
-        <div className="absolute right-0 bottom-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-blue-500 opacity-20 blur-[100px]"></div>
-      </div>
-
-      {/* Floating Particles */}
-      <div className="fixed inset-0 z-0 pointer-events-none">
-        {[...Array(15)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-white rounded-full"
-            initial={{ 
-              x: Math.random() * window.innerWidth, 
-              y: Math.random() * window.innerHeight,
-              opacity: Math.random() * 0.5 + 0.2
-            }}
-            animate={{ 
-              y: [null, Math.random() * -100],
-              opacity: [null, 0],
-            }}
-            transition={{ 
-              duration: Math.random() * 10 + 10, 
-              repeat: Infinity, 
-              ease: "linear" 
-            }}
-          />
-        ))}
-      </div>
-
       {/* Hero Section */}
-      <section className="relative z-10 min-h-screen flex items-center justify-center px-4 pt-20 pb-10">
-        <div className="max-w-6xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-          
-          {/* Text Content */}
-          <motion.div 
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-left space-y-6"
-          >
-            <motion.div variants={itemVariants} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium">
-              <Sparkles size={16} />
-              <span>AI-Powered Career Quest</span>
-            </motion.div>
-
-            <motion.h1 variants={itemVariants} className="text-5xl md:text-7xl font-bold leading-tight">
-              Level Up Your <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-blue-400 animate-gradient-x">
-                Career Journey
-              </span>
-            </motion.h1>
-
-            <motion.p variants={itemVariants} className="text-lg text-gray-400 max-w-xl leading-relaxed">
-              Embark on a personalized adventure to discover your dream role. Equip yourself with AI insights, unlock new skills, and conquer the job market.
-            </motion.p>
-
-            <motion.div variants={itemVariants} className="flex flex-wrap gap-4 pt-4">
-              <Link to="/register">
-                <motion.button 
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="group relative px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-xl font-bold text-lg shadow-lg shadow-purple-500/25 overflow-hidden"
-                >
-                  <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                  <span className="relative flex items-center gap-2">
-                    Start Quest <ArrowRight size={20} />
-                  </span>
-                </motion.button>
-              </Link>
-              
-              <Link to="/login">
-                <motion.button 
-                  whileHover={{ scale: 1.05, backgroundColor: "rgba(255,255,255,0.1)" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-8 py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-lg backdrop-blur-sm hover:border-white/20 transition-colors"
-                >
-                  Continue Game
-                </motion.button>
-              </Link>
-            </motion.div>
-
-            <motion.div variants={itemVariants} className="flex items-center gap-6 pt-8 text-gray-500 text-sm">
-              <div className="flex items-center gap-2">
-                <Users size={16} className="text-purple-400" />
-                <span>5k+ Players</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Trophy size={16} className="text-yellow-400" />
-                <span>95% Success Rate</span>
-              </div>
-            </motion.div>
+      <section className="max-w-7xl mx-auto px-6 pt-24 pb-24 grid lg:grid-cols-2 gap-16 items-center">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="space-y-8"
+        >
+          <motion.div variants={itemVariants} className="inline-flex items-center gap-3 px-4 py-2 rounded-2xl bg-white dark:bg-slate-900 border-[1.5px] border-edu-border dark:border-slate-800 shadow-sm text-[10px] font-black uppercase tracking-widest text-brand-500">
+             <Star size={16} className="fill-brand-500" />
+             <span>AI-Powered Career Assistant</span>
           </motion.div>
 
-          {/* 3D Hero Visual */}
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className="relative hidden lg:block"
-          >
-            <Tilt options={defaultTiltOptions} className="relative z-10">
-              <div className="relative w-full aspect-square max-w-md mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/30 to-blue-500/30 rounded-3xl blur-2xl animate-pulse"></div>
-                <div className="relative h-full w-full bg-[#1e293b]/80 backdrop-blur-xl border border-white/10 rounded-3xl p-8 shadow-2xl flex flex-col items-center justify-center gap-6 group">
-                  <div className="w-32 h-32 bg-gradient-to-br from-purple-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-500">
-                    <Gamepad2 size={64} className="text-white" />
-                  </div>
-                  <div className="text-center space-y-2">
-                    <h3 className="text-2xl font-bold text-white">Career Mode</h3>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-bold border border-green-500/30">ONLINE</span>
-                      <span className="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-bold border border-blue-500/30">LVL 1</span>
-                    </div>
-                  </div>
-                  
-                  {/* Floating Elements */}
-                  <motion.div 
-                    animate={{ y: [-10, 10, -10] }}
-                    transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -top-6 -right-6 p-4 bg-[#0f172a] border border-purple-500/30 rounded-2xl shadow-xl"
-                  >
-                    <Brain className="text-purple-400" size={32} />
-                  </motion.div>
-                  
-                  <motion.div 
-                    animate={{ y: [10, -10, 10] }}
-                    transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute -bottom-6 -left-6 p-4 bg-[#0f172a] border border-blue-500/30 rounded-2xl shadow-xl"
-                  >
-                    <Target className="text-blue-400" size={32} />
-                  </motion.div>
+          <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+            Design Your <br />
+            <span className="text-brand-500 decoration-brand-500/10 underline underline-offset-8">Growth Path</span>
+          </motion.h1>
+
+          <motion.p variants={itemVariants} className="text-lg text-slate-500 dark:text-slate-400 max-w-xl leading-relaxed font-semibold">
+            Analyze your resume, identify skill gaps, and explore AI career paths. Navigate the professional landscape with confidence.
+          </motion.p>
+
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
+             <div className="relative group flex-1 max-w-md">
+                <div className="absolute inset-y-0 left-4 flex items-center text-slate-400 group-focus-within:text-brand-500 transition-colors">
+                   <Search size={20} />
+                </div>
+                <input 
+                  type="text" 
+                  placeholder="Master your career path..." 
+                  className="w-full pl-12 pr-6 py-4 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-500/10 transition-all font-semibold placeholder:text-slate-300 shadow-sm"
+                />
+             </div>
+             <Link to="/register" className="btn-edu flex items-center justify-center gap-3 text-lg px-8">
+                Get Started <ArrowRight size={20} />
+             </Link>
+          </motion.div>
+          
+          <motion.div variants={itemVariants} className="flex items-center gap-6 pt-6 text-slate-400 font-bold text-xs uppercase tracking-widest">
+             <div className="flex -space-x-3">
+                {[...Array(4)].map((_, i) => (
+                   <div key={i} className={`w-8 h-8 rounded-full border-2 border-white dark:border-slate-950 bg-edu-${['yellow', 'purple', 'blue', 'yellow'][i]} flex items-center justify-center text-[10px] text-edu-dark font-black shadow-md`}>
+                      {String.fromCharCode(65 + i)}
+                   </div>
+                ))}
+                <div className="w-8 h-8 rounded-full border-2 border-white dark:border-slate-950 bg-brand-500 flex items-center justify-center text-[8px] text-white font-black shadow-md">+9.5k</div>
+             </div>
+             <span>Active Intelligence Network</span>
+          </motion.div>
+        </motion.div>
+
+        {/* Hero Visual - AI Intelligence Portal Mockup */}
+        <motion.div 
+          initial={{ opacity: 0, x: 20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="relative lg:h-[600px] flex items-center justify-center"
+        >
+           {/* Main Glassmorphic Terminal */}
+           <div className="relative z-10 w-full max-w-lg bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
+              <div className="flex items-center justify-between mb-10">
+                 <div className="flex items-center gap-3">
+                    <div className="w-3 h-3 rounded-full bg-brand-500 animate-pulse"></div>
+                    <h3 className="text-sm font-black uppercase tracking-[0.2em] text-slate-800 dark:text-slate-200">AI Explorer</h3>
+                 </div>
+                 <div className="px-3 py-1 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[8px] font-black uppercase tracking-widest">v2.0 Beta</div>
+              </div>
+
+              {/* Dynamic Carousel Content */}
+              <div className="h-[400px] relative">
+                <div className="h-full">
+                  {/* Slide 1: Market Potency */}
+                  {activeIdx === 0 && (
+                    <motion.div 
+                      key="market"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="space-y-8"
+                    >
+                      <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/20 rounded-full blur-3xl"></div>
+                         <div className="relative z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-400 mb-2">Market Demand</p>
+                            <div className="text-5xl font-black mb-6 tracking-tighter">94.8<span className="text-xl text-white/40 ml-1">%</span></div>
+                            <div className="flex gap-1 h-12 items-end mb-6">
+                               {[40, 70, 45, 90, 65, 80, 55, 95].map((h, i) => (
+                                  <div key={i} className="flex-1 bg-white/20 rounded-t-sm" style={{ height: `${h}%` }} />
+                               ))}
+                            </div>
+                            <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/50">
+                               <span>Quarterly Growth</span>
+                               <span className="text-brand-400">+12.4%</span>
+                            </div>
+                         </div>
+                      </div>
+                      <div className="flex items-center gap-4 p-5 rounded-3xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm">
+                         <div className="w-10 h-10 rounded-2xl bg-edu-purple flex items-center justify-center">
+                            <Brain size={20} className="text-edu-dark" />
+                         </div>
+                         <div>
+                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Neural Extract</p>
+                            <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">AI Architecture Proficient</h4>
+                         </div>
+                         <div className="ml-auto w-2 h-2 rounded-full bg-green-500"></div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Slide 2: Skill Assessment */}
+                  {activeIdx === 1 && (
+                    <motion.div 
+                      key="skills"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="space-y-8"
+                    >
+                      <div className="p-8 rounded-[2.5rem] bg-brand-500 text-white relative overflow-hidden group">
+                         <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+                         <div className="relative z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-2">Skill Checker</p>
+                            <div className="text-4xl font-black mb-6 tracking-tighter uppercase whitespace-nowrap">Improvement Hub</div>
+                            <div className="space-y-3">
+                               {['Python Skills', 'AI Design', 'Logic'].map((skill, i) => (
+                                  <div key={i} className="space-y-1">
+                                     <div className="flex justify-between text-[8px] font-black uppercase">
+                                        <span>{skill}</span>
+                                        <span>{95 - (i * 15)}%</span>
+                                     </div>
+                                     <div className="h-1 bg-white/20 rounded-full overflow-hidden">
+                                        <div className="h-full bg-white" style={{ width: `${95 - (i * 15)}%` }}></div>
+                                     </div>
+                                  </div>
+                               ))}
+                            </div>
+                         </div>
+                      </div>
+                      <div className="flex items-center gap-4 p-5 rounded-3xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm">
+                         <div className="w-10 h-10 rounded-2xl bg-edu-blue flex items-center justify-center">
+                            <Zap size={20} className="text-edu-dark" />
+                         </div>
+                         <div>
+                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Sync Priority</p>
+                            <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Cloud Scalar Scaling</h4>
+                         </div>
+                         <div className="ml-auto w-2 h-2 rounded-full bg-brand-500 animate-ping"></div>
+                      </div>
+                    </motion.div>
+                  )}
+
+                  {/* Slide 3: Growth Trajectory */}
+                  {activeIdx === 2 && (
+                    <motion.div 
+                      key="growth"
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -20 }}
+                      className="space-y-8"
+                    >
+                      <div className="p-8 rounded-[2.5rem] bg-edu-purple text-edu-dark relative overflow-hidden group">
+                         <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
+                         <div className="relative z-10">
+                            <p className="text-[10px] font-black uppercase tracking-[0.3em] text-edu-dark/60 mb-2">Salary Growth</p>
+                            <div className="text-5xl font-black mb-6 tracking-tighter text-edu-dark">₹12.4<span className="text-xl opacity-40 ml-1">L avg</span></div>
+                            <div className="flex items-center gap-3 py-3 px-4 bg-white/40 rounded-2xl border border-black/5">
+                               <TrendingUp size={16} className="text-edu-dark" />
+                               <span className="text-[10px] font-black uppercase tracking-widest">+22% Annual Growth</span>
+                            </div>
+                         </div>
+                      </div>
+                      <div className="flex items-center gap-4 p-5 rounded-3xl bg-white dark:bg-white/5 border border-slate-100 dark:border-white/10 shadow-sm">
+                         <div className="w-10 h-10 rounded-2xl bg-edu-yellow flex items-center justify-center">
+                            <Award size={20} className="text-edu-dark" />
+                         </div>
+                         <div>
+                            <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Next Milestone</p>
+                            <h4 className="text-xs font-black uppercase text-slate-800 dark:text-white">Senior Vector Architect</h4>
+                         </div>
+                         <div className="ml-auto w-2 h-2 rounded-full bg-blue-500"></div>
+                      </div>
+                    </motion.div>
+                  )}
+                </div>
+
+                {/* Carousel Indicators */}
+                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-2">
+                   {[0, 1, 2].map(i => (
+                      <div 
+                        key={i} 
+                        className={`h-1.5 rounded-full transition-all duration-500 ${activeIdx === i ? 'w-8 bg-brand-500' : 'w-2 bg-slate-200 dark:bg-slate-700'}`}
+                      />
+                   ))}
                 </div>
               </div>
-            </Tilt>
-          </motion.div>
-        </div>
+
+              {/* Background Glow */}
+              <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-brand-500/10 rounded-full blur-[100px] z-0"></div>
+           </div>
+
+           {/* Decorative Orbitals */}
+           <motion.div 
+              animate={{ rotate: 360 }}
+              transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+              className="absolute w-[120%] h-[120%] border border-slate-200 dark:border-white/5 rounded-full z-0 pointer-events-none"
+           >
+              <div className="absolute top-1/4 -left-2 w-4 h-4 rounded-full bg-brand-200 dark:bg-brand-500/20 blur-sm"></div>
+              <div className="absolute bottom-1/4 -right-2 w-6 h-6 rounded-full bg-edu-purple/30 blur-sm"></div>
+           </motion.div>
+        </motion.div>
       </section>
 
-      {/* Features "Quest Log" Section */}
-      <section className="py-24 relative z-10">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-4">
-              Choose Your <span className="text-purple-400">Quest</span>
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Unlock powerful tools to guide your journey. Each feature is designed to help you level up your career stats.
-            </p>
-          </motion.div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                icon: <LayoutDashboard size={32} />,
-                title: "Command Center",
-                desc: "Your personal dashboard to track progress and stats.",
-                color: "from-blue-500 to-cyan-500",
-                delay: 0
-              },
-              {
-                icon: <Lightbulb size={32} />,
-                title: "AI Oracle",
-                desc: "Consult the AI for personalized career guidance.",
-                color: "from-purple-500 to-pink-500",
-                delay: 0.1
-              },
-              {
-                icon: <Map size={32} />,
-                title: "Skill Tree",
-                desc: "Visualize your path and unlock new abilities.",
-                color: "from-green-500 to-emerald-500",
-                delay: 0.2
-              },
-              {
-                icon: <FileText size={32} />,
-                title: "Resume Forge",
-                desc: "Craft a legendary resume with AI enhancements.",
-                color: "from-orange-500 to-red-500",
-                delay: 0.3
-              },
-              {
-                icon: <Target size={32} />,
-                title: "Goal Tracker",
-                desc: "Set targets and earn achievements.",
-                color: "from-yellow-500 to-orange-500",
-                delay: 0.4
-              },
-              {
-                icon: <Sword size={32} />,
-                title: "Skill Arena",
-                desc: "Test your might with technical quizzes.",
-                color: "from-indigo-500 to-violet-500",
-                delay: 0.5
-              }
-            ].map((feature, idx) => (
-              <Tilt key={idx} options={{ ...defaultTiltOptions, scale: 1.02 }}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
+      {/* Intelligence Inventory - Interactive Premium Carousel */}
+      <section id="features" className="relative max-w-7xl mx-auto px-6 py-32">
+         {/* Artistic Background Elements */}
+         <div className="absolute top-1/2 -left-20 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
+         
+         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-24 relative z-10">
+            <div className="space-y-4">
+               <motion.div 
+                  initial={{ opacity: 0, y: -10 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ delay: feature.delay }}
-                  className="h-full bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-colors group relative overflow-hidden"
-                >
-                  {/* Holographic Gradient on Hover */}
-                  <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
-                  
-                  <div className={`w-14 h-14 rounded-xl bg-gradient-to-br ${feature.color} flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <div className="text-white">
-                      {feature.icon}
-                    </div>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-purple-300 transition-colors">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-400 leading-relaxed">
-                    {feature.desc}
-                  </p>
-                  
-                  <div className="mt-6 flex items-center text-sm font-medium text-gray-500 group-hover:text-white transition-colors">
-                    <span>Unlock Feature</span>
-                    <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                  </div>
-                </motion.div>
-              </Tilt>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Roadmap Preview */}
-      <section className="py-24 bg-black/20 relative">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="text-4xl font-bold mb-6">
-                Your <span className="text-blue-400">Adventure Map</span>
-              </h2>
-              <p className="text-gray-400 text-lg mb-8">
-                Don't wander aimlessly. Follow a proven path to success with our interactive career roadmaps. Track your progress from Novice to Master.
-              </p>
-              
-              <div className="space-y-6">
-                {[
-                  { title: "Discover", desc: "Identify your strengths", icon: <Scroll size={20} /> },
-                  { title: "Learn", desc: "Master new technologies", icon: <Brain size={20} /> },
-                  { title: "Build", desc: "Create portfolio projects", icon: <LayoutDashboard size={20} /> },
-                  { title: "Achieve", desc: "Land your dream job", icon: <Trophy size={20} /> },
-                ].map((step, idx) => (
-                  <motion.div 
-                    key={idx}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: idx * 0.1 }}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">
-                      {step.icon}
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white">{step.title}</h4>
-                      <p className="text-sm text-gray-400">{step.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white dark:bg-slate-900 border border-edu-border/10 dark:border-slate-800 shadow-sm text-[10px] font-black uppercase tracking-[0.25em] text-brand-500"
+               >
+                  <Sparkles size={14} />
+                  <span>Our Features</span>
+               </motion.div>
+               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
+                  Feature <span className="text-brand-500">List</span>
+               </h2>
+            </div>
             
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="relative"
-            >
-              <div className="relative w-full aspect-video bg-[#0f172a] rounded-2xl border border-white/10 shadow-2xl overflow-hidden group">
-                {/* Grid Background */}
-                <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
-                
-                {/* Connecting Line (Snake Path) */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none" viewBox="0 0 800 450" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="gradient-snake" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="#3b82f6" stopOpacity="1" />
-                      <stop offset="50%" stopColor="#8b5cf6" stopOpacity="1" />
-                      <stop offset="100%" stopColor="#ec4899" stopOpacity="1" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Continuous Snake Path */}
-                  <motion.path 
-                    d="M100,225 C200,225 200,125 300,125 C400,125 400,325 500,325 C600,325 600,225 700,225" 
-                    fill="none" 
-                    stroke="url(#gradient-snake)" 
-                    strokeWidth="6"
-                    strokeLinecap="round"
-                    initial={{ pathLength: 0 }}
-                    whileInView={{ pathLength: 1 }}
-                    transition={{ duration: 2.5, ease: "easeInOut" }}
-                  />
-                </svg>
+            <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs max-w-sm">
+               Explore our suite of AI-powered modules designed to accelerate your professional growth.
+            </p>
+         </div>
 
-                {/* Nodes - Positioned on the path */}
-                <div className="absolute inset-0">
-                  {/* Node 1: Start (100, 225) -> 12.5%, 50% */}
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    className="absolute left-[12.5%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-16 h-16 rounded-full bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/50 z-10 border-4 border-[#0f172a]"
+         {/* Carousel Container - Animated Marquee */}
+         <div className="relative flex overflow-hidden group">
+            <div className="flex gap-8 px-4 whitespace-nowrap animate-marquee-slow pause-on-hover">
+               {[
+                  { title: 'Resume Insight', color: 'bg-edu-yellow', icon: Brain, desc: 'AI analysis of your resume to help you grow your career.', longDesc: 'Our advanced AI breaks down your experience into key skills and market-relevant keywords.', path: '/resume-analyzer' },
+                  { title: 'Success Map', color: 'bg-edu-purple', icon: Map, desc: 'Visual career paths based on real-world expert data.', longDesc: 'Track your progress across 500+ unique career paths with AI-generated milestones.', path: '/roadmap' },
+                  { title: 'Market Trends', color: 'bg-edu-blue', icon: BarChart2, desc: 'Real-time market insights to give you a competitive edge.', longDesc: 'Daily updates on hiring trends, salary shifts, and required technologies in your sector.', path: '/market-insights' },
+                  { title: 'Assessment', color: 'bg-edu-yellow', icon: Trophy, desc: 'AI technical tests to verify your skills and expertise.', longDesc: 'Verify your claims with technical challenges that adapt to your target career.', path: '/skill-quiz' },
+                  { title: 'Skill Finder', color: 'bg-edu-purple', icon: Lightbulb, desc: 'Discover hidden skills that work across different industries.', longDesc: 'Our cross-domain mapping identifies non-obvious strengths that make you a unique candidate.', path: '/dashboard' },
+                  { title: 'Career Pulse', color: 'bg-edu-blue', icon: Users, desc: 'Connect with mentors and peers along similar career paths.', longDesc: 'Intelligent matching based on career goals, skill gaps, and professional background.', path: '/dashboard' },
+                  // Duplicate for seamless loop
+                  { title: 'Resume Insight', color: 'bg-edu-yellow', icon: Brain, desc: 'AI analysis of your resume to help you grow your career.', longDesc: 'Our advanced AI breaks down your experience into key skills and market-relevant keywords.', path: '/resume-analyzer' },
+                  { title: 'Success Map', color: 'bg-edu-purple', icon: Map, desc: 'Visual career paths based on real-world expert data.', longDesc: 'Track your progress across 500+ unique career paths with AI-generated milestones.', path: '/roadmap' },
+                  { title: 'Market Trends', color: 'bg-edu-blue', icon: BarChart2, desc: 'Real-time market insights to give you a competitive edge.', longDesc: 'Daily updates on hiring trends, salary shifts, and required technologies in your sector.', path: '/market-insights' },
+                  { title: 'Assessment', color: 'bg-edu-yellow', icon: Trophy, desc: 'AI technical tests to verify your skills and expertise.', longDesc: 'Verify your claims with technical challenges that adapt to your target career.', path: '/skill-quiz' },
+                  { title: 'Skill Finder', color: 'bg-edu-purple', icon: Lightbulb, desc: 'Discover hidden skills that work across different industries.', longDesc: 'Our cross-domain mapping identifies non-obvious strengths that make you a unique candidate.', path: '/dashboard' },
+                  { title: 'Career Pulse', color: 'bg-edu-blue', icon: Users, desc: 'Connect with mentors and peers along similar career paths.', longDesc: 'Intelligent matching based on career goals, skill gaps, and professional background.', path: '/dashboard' },
+               ].map((f, i) => (
+                  <div 
+                    key={i}
+                    className="w-[320px] md:w-[420px] shrink-0"
                   >
-                    <User className="text-white" size={24} />
-                  </motion.div>
+                     <div className="group h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] p-10 shadow-sm transition-all duration-500 flex flex-col hover:shadow-2xl hover:border-brand-500/30 overflow-hidden relative">
+                        
+                        <div className="flex justify-between items-start mb-10 relative z-10">
+                           <div className={`w-16 h-16 ${f.color} border border-edu-border/5 dark:border-slate-700/50 rounded-2xl flex items-center justify-center shadow-lg group-hover:rotate-6 transition-transform duration-500`}>
+                              <f.icon size={32} className="text-edu-dark" />
+                           </div>
+                           <div className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-300 dark:text-slate-700">Module #{String((i % 6) + 1).padStart(2, '0')}</div>
+                        </div>
+                        
+                        <div className="relative z-10 flex-grow">
+                           <h3 className="text-2xl font-black mb-5 uppercase tracking-tight text-slate-900 dark:text-white leading-tight whitespace-normal">{f.title}</h3>
+                           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 leading-relaxed mb-6 italic whitespace-normal">
+                              {f.desc}
+                           </p>
+                           <p className="text-xs font-bold text-slate-400 dark:text-slate-500 leading-loose opacity-0 group-hover:opacity-100 transition-opacity duration-500 whitespace-normal">
+                              {f.longDesc}
+                           </p>
+                        </div>
+                        
+                        <div className="mt-10 flex items-center justify-between relative z-10">
+                           <Link to={f.path} className="flex items-center text-[10px] font-black uppercase tracking-[0.2em] gap-3 text-brand-500 hover:gap-5 transition-all">
+                              Launch <ArrowRight size={14} />
+                           </Link>
+                           <div className="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></div>
+                        </div>
 
-                  {/* Node 2: Peak (300, 125) -> 37.5%, 27.8% */}
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ delay: 0.8 }}
-                    className="absolute left-[37.5%] top-[27.8%] -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-xl bg-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/50 z-10 border-4 border-[#0f172a]"
-                  >
-                    <Brain className="text-white" size={24} />
-                  </motion.div>
-
-                  {/* Node 3: Trough (500, 325) -> 62.5%, 72.2% */}
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ delay: 1.6 }}
-                    className="absolute left-[62.5%] top-[72.2%] -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-xl bg-pink-600 flex items-center justify-center shadow-lg shadow-pink-500/50 z-10 border-4 border-[#0f172a]"
-                  >
-                    <Target className="text-white" size={24} />
-                  </motion.div>
-
-                  {/* Node 4: End (700, 225) -> 87.5%, 50% */}
-                  <motion.div 
-                    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    transition={{ delay: 2.4 }}
-                    className="absolute left-[87.5%] top-[50%] -translate-x-1/2 -translate-y-1/2 w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center shadow-xl shadow-indigo-500/50 z-10 border-4 border-[#0f172a]"
-                  >
-                    <Trophy className="text-white" size={32} />
-                  </motion.div>
-                </div>
-                
-                {/* Floating Badge */}
-                <motion.div 
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute top-6 right-6 bg-[#0f172a]/90 backdrop-blur-md p-3 rounded-xl border border-white/10 shadow-xl flex items-center gap-3 z-20"
-                >
-                  <div className="w-10 h-10 rounded-full bg-green-500/20 flex items-center justify-center text-green-400">
-                    <CheckCircle size={20} />
+                        {/* Subtle Background Mark */}
+                        <div className="absolute -bottom-4 -right-2 text-[80px] font-black text-slate-900/[0.02] dark:text-white/[0.02] uppercase select-none pointer-events-none group-hover:text-brand-500/[0.05] transition-colors duration-700 leading-none">
+                           {f.title.split(' ')[0]}
+                        </div>
+                     </div>
                   </div>
-                  <div>
-                    <div className="text-[10px] text-gray-400 uppercase tracking-wider">Status</div>
-                    <div className="font-bold text-white text-sm">Level 5 Unlocked</div>
-                  </div>
-                </motion.div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
+               ))}
+            </div>
+         </div>
+
+         {/* Scroll Progress Bar */}
+         <div className="max-w-2xl mx-auto h-1 bg-slate-100 dark:bg-white/5 rounded-full mt-12 overflow-hidden">
+            <motion.div 
+               initial={{ width: "20%" }}
+               whileInView={{ width: "100%" }}
+               transition={{ duration: 2 }}
+               className="h-full bg-brand-500"
+            />
+         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-purple-900/20"></div>
-        <div className="max-w-4xl mx-auto px-4 text-center relative z-10">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-5xl md:text-6xl font-bold mb-8"
-          >
-            Ready to <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">Start?</span>
-          </motion.h2>
-          
-          <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
+      {/* Platform Advantages - Infinite Loop Carousel */}
+      <section className="py-24 bg-slate-50 dark:bg-slate-900/40 border-y border-edu-border/5 dark:border-white/5 overflow-hidden">
+         <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-4">
+               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-[10px] font-black uppercase tracking-widest text-brand-500">
+                  <TrendingUp size={14} />
+                  <span>The Edge</span>
+               </div>
+               <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
+                  Why <span className="text-brand-500">Choose Us</span>
+               </h2>
+            </div>
+            <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-xs max-w-sm">
+               Why elite professionals choose PathFinder to engineer their career growth.
+            </p>
+         </div>
+
+         {/* Infinite Scroll Container */}
+         <div className="relative flex overflow-hidden group">
+            <div className="flex gap-8 px-4 whitespace-nowrap animate-marquee-slow pause-on-hover">
+               {[
+                  { title: "AI Accuracy", val: "99.4%", desc: "Precise document parsing using advanced AI.", icon: Brain },
+                  { title: "Market Data", val: "500k+", desc: "Real-time tracking of global career paths.", icon: BarChart2 },
+                  { title: "Career Speed", val: "2.5x", desc: "Accelerate your transition into new roles.", icon: Zap },
+                  { title: "Live Updates", val: "24/7", desc: "Live updates from across the industry.", icon: Sparkles },
+                  { title: "AI Accuracy", val: "99.4%", desc: "Precise document parsing using advanced AI.", icon: Brain },
+                  { title: "Market Data", val: "500k+", desc: "Real-time tracking of global career paths.", icon: BarChart2 },
+                  { title: "Career Speed", val: "2.5x", desc: "Accelerate your transition into new roles.", icon: Zap },
+                  { title: "Live Updates", val: "24/7", desc: "Live updates from across the industry.", icon: Sparkles },
+               ].map((item, i) => (
+                  <div key={i} className="inline-block w-[350px] shrink-0">
+                     <div className="p-10 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] shadow-sm hover:shadow-xl hover:border-brand-500/20 transition-all duration-500">
+                        <div className="flex justify-between items-start mb-8">
+                           <div className="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-white/5 border border-slate-100 dark:border-white/10 flex items-center justify-center">
+                              <item.icon size={28} className="text-brand-500" />
+                           </div>
+                           <div className="text-3xl font-black text-slate-200 dark:text-slate-800 tracking-tighter">#{String(i % 4 + 1).padStart(2, '0')}</div>
+                        </div>
+                        <div className="text-4xl font-black text-brand-500 mb-2 tracking-tighter">{item.val}</div>
+                        <h4 className="text-xl font-black uppercase text-slate-900 dark:text-white mb-4 tracking-tight">{item.title}</h4>
+                        <p className="text-sm font-semibold text-slate-500 dark:text-slate-400 whitespace-normal leading-relaxed">
+                           {item.desc}
+                        </p>
+                     </div>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* Final CTA Section - Professional Light Design */}
+      <section className="max-w-7xl mx-auto px-6 py-32 text-center relative overflow-hidden">
+         {/* Atmospheric Backgrounds - Softer for Light Mode */}
+         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none"></div>
+         
+         <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="p-1 rounded-2xl bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500"
-          >
-            <div className="bg-[#0f172a] rounded-xl p-12">
-              <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-                Join thousands of players who have already discovered their true potential. The game of life is better with a guide.
-              </p>
-              <Link to="/register">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="px-12 py-5 bg-white text-black rounded-xl font-bold text-xl shadow-lg shadow-white/20 hover:shadow-white/40 transition-shadow"
-                >
-                  Create Character
-                </motion.button>
-              </Link>
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            className="relative z-10 rounded-[3rem] p-12 md:p-24 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border/10 dark:border-slate-800 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden group"
+         >
+            {/* Soft Gradient Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-br from-brand-50/50 via-transparent to-edu-blue/10 opacity-70"></div>
+            
+            {/* Decorative Floating Elements - Soft Colors */}
+            <motion.div 
+               animate={{ y: [0, -15, 0] }}
+               transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+               className="absolute top-10 right-10 w-24 h-24 bg-edu-yellow/10 rounded-[2rem] blur-2xl"
+            ></motion.div>
+            <motion.div 
+               animate={{ y: [0, 15, 0] }}
+               transition={{ duration: 7, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+               className="absolute bottom-10 left-10 w-32 h-32 bg-brand-100/20 rounded-full blur-2xl"
+            ></motion.div>
+
+            <div className="relative z-10 space-y-10">
+               <div className="space-y-4">
+                  <motion.div 
+                     initial={{ opacity: 0, y: 10 }}
+                     whileInView={{ opacity: 1, y: 0 }}
+                     viewport={{ once: true }}
+                     className="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-[10px] font-black uppercase tracking-[0.3em] text-brand-500 mb-4"
+                  >
+                     <Zap size={14} className="fill-brand-500" />
+                     <span>Future-Proof Your Career</span>
+                  </motion.div>
+                  
+                  <h2 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[0.9] uppercase">
+                     Start Your <br /> 
+                     <span className="text-brand-500 underline underline-offset-[12px] decoration-brand-500/10">Career Path</span>
+                  </h2>
+               </div>
+
+               <p className="text-slate-500 dark:text-slate-400 font-bold text-lg md:text-xl max-w-2xl mx-auto leading-relaxed uppercase tracking-wide">
+                  Join a network of professionals leveraging AI to navigate the modern job market with confidence.
+               </p>
+
+               <div className="flex flex-col sm:flex-row gap-6 justify-center pt-10">
+                  <Link 
+                     to="/register" 
+                     className="group/btn relative px-12 py-6 bg-brand-500 text-white rounded-2xl font-black text-xl uppercase tracking-widest overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(240,101,67,0.3)] active:scale-95"
+                  >
+                     <span className="relative z-10 flex items-center gap-3">
+                        Join PathFinder <ArrowRight className="group-hover/btn:translate-x-2 transition-transform" />
+                     </span>
+                     <div className="absolute inset-0 bg-white/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></div>
+                  </Link>
+
+                  <Link 
+                     to="/login" 
+                     className="px-12 py-6 bg-white dark:bg-white/5 border-[1.5px] border-edu-border dark:border-white/20 text-slate-900 dark:text-white rounded-2xl font-black text-xl uppercase tracking-widest transition-all hover:bg-slate-50 dark:hover:bg-white/10 active:scale-95 shadow-sm"
+                  >
+                     Login Access
+                  </Link>
+               </div>
+               
+               <div className="pt-12 flex items-center justify-center gap-8 opacity-20">
+                  <div className="h-px w-12 bg-slate-900 dark:bg-white"></div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-900 dark:text-white">Powered by PathFinder AI v2.0</span>
+                  <div className="h-px w-12 bg-slate-900 dark:bg-white"></div>
+               </div>
             </div>
-          </motion.div>
-        </div>
+         </motion.div>
       </section>
 
     </div>

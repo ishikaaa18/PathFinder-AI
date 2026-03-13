@@ -155,3 +155,44 @@ exports.getAnalysisById = async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch analysis details' });
     }
 };
+// @desc    Generate a cover letter for a specific analysis
+// @route   POST /api/resume/cover-letter/:id
+// @access  Protected
+exports.generateCoverLetter = async (req, res) => {
+    try {
+        const analysis = await ResumeAnalysis.findOne({
+            _id: req.params.id,
+            user: req.user._id
+        });
+
+        if (!analysis) {
+            return res.status(404).json({ message: 'Analysis not found' });
+        }
+
+        const prompt = `Write a professional, modern cover letter for a ${analysis.targetCareer} position.
+            
+            USER DATA:
+            Resume Summary: ${analysis.summary}
+            Top Strengths: ${analysis.strengths.join(', ')}
+            Skills Gaps Identified: ${analysis.missingSkills.join(', ')}
+            
+            INSTRUCTIONS:
+            1. The letter should be professional yet enthusiastic.
+            2. Address the "Skills Gaps" by mentioning how the user is actively improving in these areas (mention that they are following a personalized learning roadmap with PathFinder AI).
+            3. Highlight the "Strengths" and how they align with the ${analysis.targetCareer} role.
+            4. Keep the tone confident but humble.
+            5. Structure: Opening (expressing interest), Body (linking experience to the role and addressing gaps), and Closing (call to action).
+            
+            Format: Return the text directly. Do not use markdown backticks.`;
+
+        const result = await model.generateContent(prompt);
+        const response = await result.response;
+        const letterText = response.text();
+
+        res.json({ coverLetter: letterText });
+
+    } catch (error) {
+        console.error('Error generating cover letter:', error);
+        res.status(500).json({ message: 'Failed to generate cover letter' });
+    }
+};

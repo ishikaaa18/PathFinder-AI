@@ -1,6 +1,6 @@
 // src/pages/Profile.jsx
 import React, { useState, useEffect } from 'react';
-import { Plus, X, GraduationCap, Code, Heart } from 'lucide-react';
+import { Plus, X, GraduationCap, Code, Heart, Trophy, Target, Star, Trash2 } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -71,24 +71,22 @@ const Profile = () => {
     e.preventDefault();
     if (!newQualification.title.trim()) return;
     try {
-      // Convert year to dateObtained if year is provided
       const qualificationData = {
         title: newQualification.title,
         institution: newQualification.institution,
       };
       
       if (newQualification.year) {
-        // Create a date from the year (set to Jan 1 of that year)
         qualificationData.dateObtained = new Date(newQualification.year, 0, 1);
       }
       
       const res = await api.post('/qualifications', qualificationData);
       setQualifications([...qualifications, res.data]);
       setNewQualification({ title: '', institution: '', year: '' });
-      toast.success('Qualification added successfully! 🎓');
+      toast.success('Education details added! 🎓');
     } catch (error) {
       console.error('Error adding qualification:', error);
-      toast.error('Failed to add qualification');
+      toast.error('Failed to save details');
     }
   };
 
@@ -108,10 +106,10 @@ const Profile = () => {
       const res = await api.post('/interests', { interestName: newInterest });
       setInterests([...interests, res.data]);
       setNewInterest('');
-      toast.success('Interest added successfully! ❤️');
+      toast.success('Interest registered! ❤️');
     } catch (error) {
       console.error('Error adding interest:', error);
-      toast.error('Failed to add interest');
+      toast.error('Registry error');
     }
   };
 
@@ -128,7 +126,7 @@ const Profile = () => {
     return (
       <DashboardLayout>
         <div className="flex items-center justify-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-4 border-brand-500"></div>
         </div>
       </DashboardLayout>
     );
@@ -136,77 +134,84 @@ const Profile = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">My Profile</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-2">Manage your skills, qualifications, and interests</p>
+      <div className="space-y-12 pb-20 animate-edu-in">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">My Profile</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2 text-[10px] font-black uppercase tracking-widest">Manage Your Skills & Education</p>
+          </div>
+          <div className="w-12 h-12 bg-edu-yellow rounded-[1.5rem] flex items-center justify-center border border-edu-border dark:border-slate-800 shadow-xl">
+             <Star size={24} className="text-edu-dark" fill="currentColor" />
+          </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-8">
+        <div className="grid lg:grid-cols-3 gap-10">
           {/* Skills Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-primary-100 dark:bg-primary-900/30 rounded-lg flex items-center justify-center">
-                <Code className="text-primary-600 dark:text-primary-400" size={20} />
+          <div className="surface-edu bg-white dark:bg-slate-900 p-8 border-edu-border dark:border-slate-800 transition-colors shadow-sm">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 bg-edu-blue rounded-2xl flex items-center justify-center border border-edu-border shadow-md">
+                <Code className="text-edu-dark" size={24} />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Skills</h2>
+              <h2 className="text-xl font-extrabold text-slate-900 dark:text-slate-100 uppercase tracking-tight">My Skills</h2>
             </div>
 
-            <form onSubmit={addSkill} className="mb-4">
-              <div className="flex gap-2">
+            <form onSubmit={addSkill} className="mb-8">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
-                  placeholder="Add a skill"
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  placeholder="ADD SKILL"
+                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition"
+                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border"
                 >
-                  <Plus size={20} />
+                  <Plus size={24} strokeWidth={3} />
                 </button>
               </div>
             </form>
 
-            <div className="space-y-2">
+            <div className="space-y-3 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
               {skills.map((skill) => (
                 <div
                   key={skill._id}
-                  className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 px-4 py-3 rounded-lg"
+                  className="flex items-center justify-between bg-edu-bg dark:bg-slate-950/50 p-4 rounded-2xl border-[1.5px] border-edu-border dark:border-slate-800 group transition-all hover:bg-edu-blue/10"
                 >
-                  <span className="text-gray-700 dark:text-gray-200">{skill.skillName}</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-bold text-sm">{skill.skillName}</span>
                   <button
                     onClick={() => deleteSkill(skill._id)}
-                    className="text-red-500 hover:text-red-400"
+                    className="text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100"
                   >
-                    <X size={18} />
+                    <Trash2 size={18} />
                   </button>
                 </div>
               ))}
               {skills.length === 0 && (
-                <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-4">No skills added yet</p>
+                <div className="text-center py-10 opacity-20">
+                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No skills added yet</p>
+                </div>
               )}
             </div>
           </div>
 
           {/* Qualifications Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-secondary-100 dark:bg-secondary-900/30 rounded-lg flex items-center justify-center">
-                <GraduationCap className="text-secondary-600 dark:text-secondary-400" size={20} />
+          <div className="surface-edu bg-white dark:bg-slate-900 p-8 border-edu-border dark:border-slate-800 transition-colors shadow-sm lg:col-span-1">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 bg-edu-purple rounded-2xl flex items-center justify-center border border-edu-border shadow-md">
+                <GraduationCap className="text-edu-dark" size={24} />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Qualifications</h2>
+              <h2 className="text-xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">Education</h2>
             </div>
 
-            <form onSubmit={addQualification} className="mb-4 space-y-2">
+            <form onSubmit={addQualification} className="mb-8 space-y-3">
               <input
                 type="text"
                 value={newQualification.title}
                 onChange={(e) => setNewQualification({ ...newQualification, title: e.target.value })}
-                placeholder="Degree/Certificate"
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                placeholder="DEGREE / TITLE"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
               />
               <input
                 type="text"
@@ -214,101 +219,105 @@ const Profile = () => {
                 onChange={(e) =>
                   setNewQualification({ ...newQualification, institution: e.target.value })
                 }
-                placeholder="Institution"
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                placeholder="INSTITUTION"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
               />
-              <div className="flex gap-2">
+              <div className="flex gap-3">
                 <input
                   type="number"
                   value={newQualification.year}
                   onChange={(e) => setNewQualification({ ...newQualification, year: e.target.value })}
-                  placeholder="Year"
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-secondary-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  placeholder="YEAR"
+                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="bg-secondary-600 text-white px-4 py-2 rounded-lg hover:bg-secondary-700 transition"
+                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 transition-all shadow-lg border-[1.5px] border-edu-border"
                 >
-                  <Plus size={20} />
+                  <Plus size={24} strokeWidth={3} />
                 </button>
               </div>
             </form>
 
-            <div className="space-y-2">
+            <div className="space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
               {qualifications.map((qual) => (
                 <div
                   key={qual._id}
-                  className="flex items-start justify-between bg-gray-50 dark:bg-gray-700/50 px-4 py-3 rounded-lg"
+                  className="bg-edu-bg dark:bg-slate-950/50 p-5 rounded-2xl border-[1.5px] border-edu-border dark:border-slate-800 relative group transition-all"
                 >
-                  <div>
-                    <p className="font-medium text-gray-700 dark:text-gray-200">{qual.title}</p>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">{qual.institution}</p>
-                    {qual.dateObtained && (
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
-                        {new Date(qual.dateObtained).getFullYear()}
-                      </p>
-                    )}
+                  <div className="flex justify-between items-start">
+                    <div className="space-y-1">
+                      <p className="font-extrabold text-edu-dark dark:text-slate-100 text-sm uppercase tracking-tight">{qual.title}</p>
+                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{qual.institution}</p>
+                      {qual.dateObtained && (
+                         <span className="inline-block mt-2 bg-edu-purple/30 text-edu-dark text-[8px] font-black px-2 py-0.5 rounded-full border border-edu-purple/50">
+                            {new Date(qual.dateObtained).getFullYear()}
+                         </span>
+                      )}
+                    </div>
+                    <button
+                      onClick={() => deleteQualification(qual._id)}
+                      className="text-slate-300 hover:text-rose-500 opacity-0 group-hover:opacity-100 transition-all"
+                    >
+                      <Trash2 size={16} />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => deleteQualification(qual._id)}
-                    className="text-red-500 hover:text-red-400"
-                  >
-                    <X size={18} />
-                  </button>
                 </div>
               ))}
               {qualifications.length === 0 && (
-                <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-4">
-                  No qualifications added yet
-                </p>
+                <div className="text-center py-10 opacity-20 italic">
+                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">Registry Empty</p>
+                </div>
               )}
             </div>
           </div>
 
           {/* Interests Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6 border border-gray-100 dark:border-gray-700">
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 bg-accent-100 dark:bg-accent-900/30 rounded-lg flex items-center justify-center">
-                <Heart className="text-accent-600 dark:text-accent-400" size={20} />
+          <div className="surface-edu bg-white dark:bg-slate-900 p-8 border-edu-border dark:border-slate-800 transition-colors shadow-sm">
+            <div className="flex items-center gap-4 mb-8">
+              <div className="w-12 h-12 bg-edu-yellow rounded-2xl flex items-center justify-center border border-edu-border shadow-md">
+                <Heart className="text-edu-dark" size={24} />
               </div>
-              <h2 className="text-xl font-bold text-gray-900 dark:text-white">Interests</h2>
+              <h2 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Focus Vectors</h2>
             </div>
 
-            <form onSubmit={addInterest} className="mb-4">
-              <div className="flex gap-2">
+            <form onSubmit={addInterest} className="mb-8">
+              <div className="flex gap-3">
                 <input
                   type="text"
                   value={newInterest}
                   onChange={(e) => setNewInterest(e.target.value)}
-                  placeholder="Add an interest"
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-accent-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500"
+                  placeholder="ADD VECTOR"
+                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-black italic transition-all dark:text-white"
                 />
                 <button
                   type="submit"
-                  className="bg-accent-600 text-white px-4 py-2 rounded-lg hover:bg-accent-700 transition"
+                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border"
                 >
-                  <Plus size={20} />
+                  <Plus size={24} strokeWidth={3} />
                 </button>
               </div>
             </form>
 
-            <div className="space-y-2">
+            <div className="flex flex-wrap gap-2 max-h-[400px] overflow-y-auto custom-scrollbar pr-2">
               {interests.map((interest) => (
                 <div
                   key={interest._id}
-                  className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 px-4 py-3 rounded-lg"
+                  className="flex items-center gap-3 bg-edu-yellow/20 px-4 py-2 rounded-2xl border-[1.5px] border-edu-border dark:border-slate-800 group shadow-sm transition-all hover:bg-edu-yellow/40"
                 >
-                  <span className="text-gray-700 dark:text-gray-200">{interest.interestName}</span>
+                  <span className="text-edu-dark dark:text-slate-300 font-black text-[10px] uppercase tracking-widest">{interest.interestName}</span>
                   <button
                     onClick={() => deleteInterest(interest._id)}
-                    className="text-red-500 hover:text-red-400"
+                    className="text-edu-dark/30 hover:text-rose-500"
                   >
-                    <X size={18} />
+                    <X size={14} strokeWidth={3} />
                   </button>
                 </div>
               ))}
               {interests.length === 0 && (
-                <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-4">No interests added yet</p>
+                <div className="w-full text-center py-10 opacity-20 italic">
+                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">Registry Empty</p>
+                </div>
               )}
             </div>
           </div>

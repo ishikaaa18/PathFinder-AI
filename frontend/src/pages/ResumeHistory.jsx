@@ -1,14 +1,17 @@
 // src/pages/ResumeHistory.jsx
 import React, { useState, useEffect } from 'react';
 import { getResumeHistory, getResumeAnalysisById } from '../services/api';
-import { FileText, Calendar, ChevronRight, ArrowLeft, CheckCircle, AlertCircle, TrendingUp, Clock, Award } from 'lucide-react';
+import { FileText, Calendar, ChevronRight, ArrowLeft, CheckCircle, AlertCircle, TrendingUp, Clock, Award, Zap, History, Target, ShieldCheck, Mail } from 'lucide-react';
 import DashboardLayout from '../layouts/DashboardLayout';
+import SkillMatrix from '../components/SkillMatrix';
+import CoverLetterModal from '../components/CoverLetterModal';
 
 const ResumeHistory = () => {
   const [history, setHistory] = useState([]);
   const [selectedAnalysis, setSelectedAnalysis] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showCoverLetter, setShowCoverLetter] = useState(false);
 
   useEffect(() => {
     fetchHistory();
@@ -18,9 +21,9 @@ const ResumeHistory = () => {
     try {
       const data = await getResumeHistory();
       setHistory(data);
-      setLoading(false);
     } catch (err) {
-      setError('Failed to load history');
+      setError('Failed to load history.');
+    } finally {
       setLoading(false);
     }
   };
@@ -30,9 +33,9 @@ const ResumeHistory = () => {
     try {
       const data = await getResumeAnalysisById(id);
       setSelectedAnalysis(data);
-      setLoading(false);
     } catch (err) {
-      setError('Failed to load analysis details');
+      setError('Failed to load analysis details.');
+    } finally {
       setLoading(false);
     }
   };
@@ -43,218 +46,252 @@ const ResumeHistory = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex justify-center items-center bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-white"></div>
-      </div>
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+        </div>
+      </DashboardLayout>
     );
   }
 
   if (selectedAnalysis) {
     return (
       <DashboardLayout>
-        <div className="min-h-[calc(100vh-theme(spacing.32))] bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 text-white p-4 md:p-8 rounded-2xl shadow-xl">
-          <div className="max-w-5xl mx-auto space-y-6 animate-fade-in-up">
+        <div className="max-w-6xl mx-auto space-y-8 pb-12">
+          {/* Detailed View Header */}
+          <div className="flex items-center justify-between">
             <button 
               onClick={handleBack}
-              className="flex items-center text-white/80 hover:text-white font-medium transition-colors bg-white/10 px-4 py-2 rounded-lg backdrop-blur-sm hover:bg-white/20"
+              className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
             >
-              <ArrowLeft size={20} className="mr-2" />
+              <ArrowLeft size={16} /> 
               Back to History
             </button>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => setShowCoverLetter(true)}
+                className="flex items-center gap-2 px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
+              >
+                <Mail size={14} />
+                Generate Cover Letter
+              </button>
+              <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-50 dark:bg-brand-500/10 rounded-xl border border-brand-100 dark:border-brand-500/20">
+                 <ShieldCheck size={14} className="text-brand-600 dark:text-brand-400" />
+                 <span className="text-[10px] font-bold text-brand-700 dark:text-brand-400 uppercase tracking-widest">Verified History</span>
+              </div>
+            </div>
+          </div>
 
-            <div className="glass-morphism rounded-2xl p-6 md:p-8 shadow-2xl">
-              {/* ... existing content ... */}
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 border-b border-white/10 pb-8">
-                <div>
-                  <div className="flex items-center gap-3 mb-2">
-                    <Award className="text-accent-400" size={28} />
-                    <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-300">
-                      Analysis Result
-                    </h1>
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] shadow-sm overflow-hidden animate-edu-in">
+            {/* Context Header */}
+            <div className="p-8 md:p-12 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/20">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                <div className="space-y-4">
+                  <div className="space-y-1">
+                    <p className="text-[10px] font-bold text-brand-500 uppercase tracking-widest">Target Career</p>
+                    <h1 className="text-3xl font-bold text-slate-900 dark:text-white uppercase tracking-tight">{selectedAnalysis.targetCareer}</h1>
                   </div>
-                  <p className="text-xl text-white/90">
-                    Target Career: <span className="font-bold text-secondary-400">{selectedAnalysis.targetCareer}</span>
-                  </p>
-                  <div className="flex items-center gap-4 mt-2 text-sm text-white/60">
-                    <span className="flex items-center bg-white/5 px-3 py-1 rounded-full">
-                      <Calendar size={14} className="mr-2" />
+                  <div className="flex items-center gap-6 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <span className="flex items-center gap-2">
+                      <Calendar size={14} className="text-slate-300" />
                       {new Date(selectedAnalysis.createdAt).toLocaleDateString()}
                     </span>
-                    <span className="flex items-center bg-white/5 px-3 py-1 rounded-full">
-                      <Clock size={14} className="mr-2" />
-                      {new Date(selectedAnalysis.createdAt).toLocaleTimeString()}
+                    <span className="flex items-center gap-2">
+                      <Clock size={14} className="text-slate-300" />
+                      {new Date(selectedAnalysis.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
                 </div>
                 
-                <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/10">
-                  <div className="text-right">
-                    <div className="text-sm text-white/60 uppercase tracking-wider font-semibold">Match Score</div>
-                    <div className={`text-4xl font-bold ${
-                      selectedAnalysis.matchScore >= 70 ? 'text-green-400' :
-                      selectedAnalysis.matchScore >= 40 ? 'text-yellow-400' : 'text-red-400'
+                <div className="flex items-center gap-6 p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl shadow-sm">
+                  <div className="text-right space-y-0.5">
+                    <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold">Match Score</p>
+                    <p className={`text-3xl font-black ${
+                      selectedAnalysis.matchScore >= 70 ? 'text-brand-500' :
+                      selectedAnalysis.matchScore >= 40 ? 'text-amber-500' : 'text-rose-500'
                     }`}>
                       {selectedAnalysis.matchScore}%
-                    </div>
+                    </p>
                   </div>
-                  <div className={`w-16 h-16 rounded-full flex items-center justify-center border-4 ${
-                      selectedAnalysis.matchScore >= 70 ? 'border-green-400 text-green-400' :
-                      selectedAnalysis.matchScore >= 40 ? 'border-yellow-400 text-yellow-400' : 'border-red-400 text-red-400'
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center ${
+                      selectedAnalysis.matchScore >= 70 ? 'bg-brand-500/10 text-brand-500' :
+                      selectedAnalysis.matchScore >= 40 ? 'bg-amber-500/10 text-amber-500' : 'bg-rose-500/10 text-rose-500'
                     }`}>
-                    <Award size={32} />
+                    <Award size={24} />
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="space-y-8">
-                <div className="bg-white/5 p-6 rounded-xl border border-white/10">
-                  <h3 className="text-xl font-semibold text-white mb-3 flex items-center">
-                    <FileText className="mr-2 text-secondary-400" /> Executive Summary
-                  </h3>
-                  <p className="text-white/80 leading-relaxed text-lg">{selectedAnalysis.summary}</p>
-                </div>
-
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="bg-green-500/10 p-6 rounded-xl border border-green-500/20">
-                    <h3 className="flex items-center text-xl font-semibold text-green-400 mb-4">
-                      <CheckCircle size={24} className="mr-2" />
-                      Key Strengths
+            {/* Analysis Content */}
+            <div className="p-8 md:p-12 space-y-12">
+              <div className="grid lg:grid-cols-5 gap-12">
+                <div className="lg:col-span-3 space-y-12">
+                  <div className="relative pl-6">
+                    <div className="absolute left-0 top-0 bottom-0 w-1 bg-brand-500 rounded-full" />
+                    <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                      <FileText className="text-brand-500" size={14} /> 
+                      AI Summary
                     </h3>
-                    <ul className="space-y-3">
-                      {selectedAnalysis.strengths.map((strength, index) => (
-                        <li key={index} className="flex items-start text-white/90 bg-green-500/10 p-3 rounded-lg">
-                          <span className="mr-3 text-green-400 font-bold">•</span>
-                          {strength}
-                        </li>
-                      ))}
-                    </ul>
+                    <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm font-medium italic">{selectedAnalysis.summary}</p>
                   </div>
 
-                  <div className="bg-red-500/10 p-6 rounded-xl border border-red-500/20">
-                    <h3 className="flex items-center text-xl font-semibold text-red-400 mb-4">
-                      <AlertCircle size={24} className="mr-2" />
-                      Missing Skills
-                    </h3>
-                    <ul className="space-y-3">
-                      {selectedAnalysis.missingSkills.map((skill, index) => (
-                        <li key={index} className="flex items-start text-white/90 bg-red-500/10 p-3 rounded-lg">
-                          <span className="mr-3 text-red-400 font-bold">•</span>
-                          {skill}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-
-                <div className="bg-blue-500/10 p-6 rounded-xl border border-blue-500/20">
-                  <h3 className="flex items-center text-xl font-semibold text-blue-400 mb-4">
-                    <TrendingUp size={24} className="mr-2" />
-                    Recommended Improvements
-                  </h3>
-                  <div className="grid gap-3">
-                    {selectedAnalysis.improvements.map((improvement, index) => (
-                      <div key={index} className="flex items-start text-white/90 bg-blue-500/10 p-4 rounded-lg hover:bg-blue-500/20 transition-colors">
-                        <span className="flex-shrink-0 w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center text-blue-400 font-bold mr-4">
-                          {index + 1}
-                        </span>
-                        <p className="mt-1">{improvement}</p>
+                  <div className="grid md:grid-cols-2 gap-8">
+                    <div className="p-6 bg-slate-50 dark:bg-slate-800/10 rounded-3xl border border-slate-100 dark:border-slate-800">
+                      <h3 className="text-[10px] font-bold text-slate-400 mb-6 uppercase tracking-widest flex items-center gap-2">
+                        <CheckCircle className="text-emerald-500" size={16} /> 
+                        Your Strengths
+                      </h3>
+                      <div className="space-y-3">
+                        {selectedAnalysis.strengths.map((strength, index) => (
+                          <div key={index} className="flex items-start gap-3 p-3 bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800/50 text-xs font-semibold text-slate-600 dark:text-slate-400 italic">
+                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-1.5 flex-shrink-0" />
+                            {strength}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+
+                    <div className="p-6 bg-slate-50 dark:bg-slate-800/10 rounded-3xl border border-slate-100 dark:border-slate-800">
+                      <h3 className="text-[10px] font-bold text-slate-400 mb-6 uppercase tracking-widest flex items-center gap-2">
+                        <AlertCircle className="text-rose-500" size={16} /> 
+                        Missing Skills
+                      </h3>
+                      <div className="space-y-3">
+                        {selectedAnalysis.missingSkills.map((skill, index) => (
+                          <div key={index} className="flex items-start gap-3 p-3 bg-white dark:bg-slate-900/50 rounded-2xl border border-slate-100 dark:border-slate-800/50 text-xs font-semibold text-slate-600 dark:text-slate-400 italic">
+                            <div className="w-1.5 h-1.5 rounded-full bg-rose-500 mt-1.5 flex-shrink-0" />
+                            {skill}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                <div className="lg:col-span-2">
+                  <SkillMatrix 
+                    strengths={selectedAnalysis.strengths} 
+                    missingSkills={selectedAnalysis.missingSkills} 
+                  />
+                </div>
+              </div>
+
+              <div className="p-8 bg-slate-900 dark:bg-slate-950 rounded-[2rem] shadow-xl">
+                <h3 className="text-[10px] font-bold text-brand-500 mb-8 uppercase tracking-widest flex items-center gap-2">
+                   <TrendingUp size={18} /> 
+                   Evolutionary Directives
+                </h3>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {selectedAnalysis.improvements.map((improvement, index) => (
+                    <div key={index} className="flex items-start gap-4 p-4 bg-white/5 rounded-2xl border border-white/5 hover:bg-white/10 transition-all group">
+                      <div className="flex-shrink-0 w-8 h-8 bg-brand-500 text-white rounded-xl flex items-center justify-center font-bold text-xs">
+                        {index + 1}
+                      </div>
+                      <p className="text-xs text-slate-300 font-medium leading-relaxed group-hover:text-white transition-colors">
+                        {improvement}
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
         </div>
+        
+        {showCoverLetter && (
+          <CoverLetterModal 
+            analysisId={selectedAnalysis._id} 
+            onClose={() => setShowCoverLetter(false)} 
+          />
+        )}
       </DashboardLayout>
     );
   }
 
   return (
     <DashboardLayout>
-      <div className="min-h-[calc(100vh-theme(spacing.32))] bg-gradient-to-br from-primary-900 via-primary-800 to-secondary-900 text-white p-4 md:p-8 rounded-2xl shadow-xl">
-        <div className="max-w-7xl mx-auto space-y-8">
-          <div className="text-center space-y-4 animate-fade-in-up">
-            <h1 className="text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white via-secondary-200 to-white">
-              Resume Analysis History
+      <div className="max-w-6xl mx-auto space-y-8 pb-12">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+              <History className="text-brand-500" size={24} />
+              Resume History
             </h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Track your progress and review past insights to continuously improve your resume.
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              A history of your previous resume analyses.
             </p>
           </div>
+          <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400">
+             <Target size={20} />
+          </div>
+        </div>
 
-          {error && (
-            <div className="bg-red-500/10 border border-red-500/20 text-red-200 p-4 rounded-xl text-center max-w-2xl mx-auto">
-              {error}
-            </div>
-          )}
+        {error && (
+          <div className="bg-rose-50 dark:bg-rose-500/10 border border-rose-200 dark:border-rose-500/20 text-rose-600 dark:text-rose-400 p-4 rounded-xl text-xs font-bold uppercase tracking-widest text-center">
+            {error}
+          </div>
+        )}
 
-          {history.length === 0 ? (
-            <div className="text-center py-20 glass-morphism rounded-2xl animate-scale-in max-w-2xl mx-auto">
-              <div className="bg-white/5 w-24 h-24 rounded-full flex items-center justify-center mx-auto mb-6">
-                <FileText size={48} className="text-white/40" />
-              </div>
-              <h3 className="text-2xl font-bold text-white mb-2">No analyses yet</h3>
-              <p className="text-white/60 mb-8">Upload a resume to get your first AI-powered analysis</p>
-              <a href="/resume-analyzer" className="btn-gradient px-8 py-3 rounded-xl font-semibold text-white shadow-lg hover:shadow-xl transition-all">
-                Analyze New Resume
-              </a>
+        {history.length === 0 ? (
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-20 text-center space-y-6 shadow-sm">
+            <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto text-slate-300 dark:text-slate-700">
+              <Zap size={32} />
             </div>
-          ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {history.map((item, index) => (
-                <div 
-                  key={item._id}
-                  onClick={() => handleViewDetails(item._id)}
-                  className="glass-morphism rounded-xl p-6 hover:bg-white/10 transition-all duration-300 cursor-pointer group card-3d border border-white/5 hover:border-white/20 relative overflow-hidden animate-fade-in-up"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                    <FileText size={100} />
-                  </div>
-                  
-                  <div className="relative z-10">
-                    <div className="flex justify-between items-start mb-4">
-                      <div className="bg-white/10 p-3 rounded-lg group-hover:bg-secondary-500/20 transition-colors">
-                        <FileText className="text-secondary-400" size={24} />
-                      </div>
-                      <div className={`px-3 py-1 rounded-full text-sm font-bold ${
-                        item.matchScore >= 70 ? 'bg-green-500/20 text-green-400' :
-                        item.matchScore >= 40 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
-                      }`}>
-                        {item.matchScore}% Match
-                      </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Empty History</h3>
+              <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto font-medium">No previous scans found. Start by analyzing a resume.</p>
+            </div>
+            <a href="/resume-analyzer" className="inline-flex items-center px-6 py-2.5 bg-brand-500 text-white font-bold rounded-xl text-sm transition-all hover:shadow-lg active:scale-95">
+              Start Analysis
+            </a>
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {history.map((item) => (
+              <div 
+                key={item._id}
+                onClick={() => handleViewDetails(item._id)}
+                className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl hover:border-brand-500/50 hover:shadow-xl cursor-pointer group transition-all duration-300 overflow-hidden shadow-sm flex flex-col"
+              >
+                <div className="p-6 space-y-6 flex-1">
+                  <div className="flex justify-between items-start">
+                    <div className="w-10 h-10 bg-slate-50 dark:bg-slate-800 rounded-xl flex items-center justify-center text-slate-400 group-hover:bg-brand-500 group-hover:text-white transition-all">
+                      <FileText size={20} />
                     </div>
+                    <div className="px-3 py-1 bg-slate-50 dark:bg-slate-800 rounded-full border border-slate-100 dark:border-slate-700 text-[10px] font-bold text-slate-500 uppercase tracking-widest">
+                      {item.matchScore}% Match
+                    </div>
+                  </div>
 
-                    <h3 className="text-xl font-bold text-white mb-2 group-hover:text-secondary-300 transition-colors">
+                  <div className="space-y-2">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white transition-colors line-clamp-1">
                       {item.targetCareer}
                     </h3>
-                    
-                    <div className="flex items-center gap-4 text-sm text-white/50 mb-4">
-                      <span className="flex items-center">
-                        <Calendar size={14} className="mr-1" />
-                        {new Date(item.createdAt).toLocaleDateString()}
-                      </span>
-                    </div>
-
-                    <p className="text-white/70 text-sm line-clamp-2 mb-6 h-10">
-                      {item.summary}
-                    </p>
-
-                    <div className="flex items-center justify-between pt-4 border-t border-white/10">
-                      <span className="text-xs text-white/40 truncate max-w-[150px]">
-                        {item.originalFilename}
-                      </span>
-                      <span className="flex items-center text-secondary-400 text-sm font-semibold group-hover:translate-x-1 transition-transform">
-                        View Details <ChevronRight size={16} className="ml-1" />
-                      </span>
+                    <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                      <Calendar size={12} strokeWidth={2.5} />
+                      {new Date(item.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </div>
                   </div>
+
+                  <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed line-clamp-3 font-medium italic">
+                    {item.summary}
+                  </p>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
+
+                <div className="px-6 py-4 bg-slate-50/50 dark:bg-slate-800/30 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                   <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest truncate max-w-[120px]">
+                     {item.originalFilename}
+                   </span>
+                   <div className="flex items-center gap-1 text-brand-500 font-bold text-[10px] uppercase tracking-widest group-hover:gap-2 transition-all">
+                      View Analysis <ChevronRight size={14} />
+                   </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </DashboardLayout>
   );

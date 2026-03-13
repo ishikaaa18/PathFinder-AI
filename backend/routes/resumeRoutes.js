@@ -38,5 +38,6 @@ if (!fs.existsSync(uploadDir)){
 router.post('/analyze', authMiddleware, upload.single('resume'), resumeController.analyzeResume);
 router.get('/history', authMiddleware, resumeController.getAnalysisHistory);
 router.get('/history/:id', authMiddleware, resumeController.getAnalysisById);
+router.post('/cover-letter/:id', authMiddleware, resumeController.generateCoverLetter);
 
 module.exports = router;

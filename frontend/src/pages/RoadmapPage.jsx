@@ -1,5 +1,6 @@
+// src/pages/RoadmapPage.jsx
 import React, { useState, useEffect } from 'react';
-import { Map, Sparkles, AlertCircle } from 'lucide-react';
+import { Map, Sparkles, AlertCircle, Compass, History, Target } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -24,7 +25,6 @@ const RoadmapPage = () => {
       setRecommendations(res.data);
     } catch (error) {
       console.error('Error fetching recommendations:', error);
-      // Don't show error if it's just 404 (no recommendations yet)
       if (error.response?.status !== 404) {
         toast.error('Failed to load roadmaps');
       }
@@ -35,26 +35,22 @@ const RoadmapPage = () => {
 
   const handleRoadmapUpdate = async (recommendationId, phaseIndex, newStatus) => {
     try {
-      // Find the recommendation
       const recommendation = recommendations.find(r => r._id === recommendationId);
       if (!recommendation) return;
 
-      // Create updated roadmap
       const updatedRoadmap = [...recommendation.roadmap];
       updatedRoadmap[phaseIndex] = { ...updatedRoadmap[phaseIndex], status: newStatus };
 
-      // Optimistic update
       const updatedRecommendations = recommendations.map(r => 
         r._id === recommendationId ? { ...r, roadmap: updatedRoadmap } : r
       );
       setRecommendations(updatedRecommendations);
 
-      // API call
       await api.put(`/recommendations/${recommendationId}`, {
         roadmap: updatedRoadmap
       });
       
-      toast.success('Progress updated! 🚀');
+      toast.success('Progress updated!');
     } catch (error) {
       console.error('Error updating roadmap:', error);
       toast.error('Failed to update progress');
@@ -62,55 +58,86 @@ const RoadmapPage = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
+
   return (
     <DashboardLayout>
-      <div className="space-y-8">
-        <div className="flex items-center gap-3">
-          <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
-            <Map className="text-blue-600 dark:text-blue-400 w-8 h-8" />
+      <div className="max-w-6xl mx-auto space-y-8 pb-12">
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-3">
+              <Compass className="text-brand-500" size={24} />
+              Career Roadmaps
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Step-by-step guides to help you reach your career goals.
+            </p>
+
           </div>
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Career Roadmaps</h1>
-            <p className="text-gray-600 dark:text-gray-300">Track your progress towards your dream career</p>
+          <div className="flex items-center gap-3">
+            <button className="px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all flex items-center gap-2">
+              <History size={14} />
+              View History
+            </button>
           </div>
         </div>
 
-        {loading ? (
-          <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          </div>
-        ) : recommendations.length === 0 ? (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-12 text-center border border-gray-100 dark:border-gray-700">
-            <Sparkles className="mx-auto text-gray-400 dark:text-gray-500 mb-4" size={48} />
-            <h3 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">
-              No roadmaps found
-            </h3>
-            <p className="text-gray-500 dark:text-gray-400 mb-6">
-              Generate career recommendations in your Dashboard first to see your personalized roadmaps.
-            </p>
-            <a 
-              href="/dashboard" 
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
-            >
-              Go to Dashboard
+        {recommendations.length === 0 ? (
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-20 text-center space-y-6 shadow-sm">
+            <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
+               <Target size={32} />
+            </div>
+            <div className="space-y-2">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">No Roadmap Found</h3>
+
+              <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto">
+                Generate a career recommendation first to unlock your personalized roadmap.
+              </p>
+            </div>
+            <a href="/dashboard" className="inline-flex items-center px-6 py-2.5 bg-brand-500 text-white font-bold rounded-xl text-sm transition-all hover:shadow-lg active:scale-95">
+              Launch Dashboard
             </a>
           </div>
         ) : (
-          <div className="grid gap-8">
+          <div className="grid gap-12">
             {recommendations.map((rec) => (
-              <div key={rec._id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-md overflow-hidden border border-gray-100 dark:border-gray-700">
-                <div className="bg-gray-50 dark:bg-gray-700/50 px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center">
-                  <h2 className="text-xl font-bold text-gray-800 dark:text-white">{rec.careerSuggestion}</h2>
-                  <span className="text-sm text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-700 px-3 py-1 rounded-full border border-gray-200 dark:border-gray-600">
-                    {rec.aiModelUsed}
-                  </span>
+              <div key={rec._id} className="space-y-6">
+                <div className="flex items-center justify-between px-2">
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 rounded-xl bg-brand-500/10 flex items-center justify-center text-brand-500">
+                      <Target size={20} />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-slate-900 dark:text-white">{rec.careerSuggestion}</h2>
+                      <div className="flex items-center gap-3 mt-1">
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400">
+                          ID: {rec._id.slice(-8)}
+                        </span>
+
+                        <div className="w-1 h-1 rounded-full bg-slate-300" />
+                        <span className="text-[10px] font-bold uppercase tracking-widest text-brand-500">
+                          Model: {rec.aiModelUsed?.split('-')[0] || 'Neural'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                
-                <div className="p-6">
+
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 lg:p-12 shadow-sm transition-all duration-300">
                   {(!rec.roadmap || rec.roadmap.length === 0) ? (
-                    <div className="flex items-center gap-2 text-amber-600 bg-amber-50 p-4 rounded-lg">
-                      <AlertCircle size={20} />
-                      <p>No roadmap data available for this recommendation. Try regenerating it.</p>
+                    <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-500 text-sm font-medium">
+                      <AlertCircle size={20} className="flex-shrink-0 text-amber-500" />
+                      <p>Loading roadmap details. Please refresh or regenerate if it doesn't appear.</p>
+
                     </div>
                   ) : (
                     <Roadmap 

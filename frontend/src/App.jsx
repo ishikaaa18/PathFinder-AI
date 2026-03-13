@@ -18,6 +18,7 @@ import ResumeAnalyzer from './pages/ResumeAnalyzer';
 import ResumeHistory from './pages/ResumeHistory';
 import GoalTracker from './pages/GoalTracker';
 import SkillQuiz from './pages/SkillQuiz';
+import MarketInsightsPage from './pages/MarketInsightsPage';
 
 const App = () => {
   return (
@@ -42,6 +43,7 @@ const App = () => {
               <Route path="/resume-history" element={<ResumeHistory />} />
               <Route path="/goals" element={<GoalTracker />} />
               <Route path="/quiz" element={<SkillQuiz />} />
+              <Route path="/market-insights" element={<MarketInsightsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>

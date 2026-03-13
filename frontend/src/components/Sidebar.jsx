@@ -13,7 +13,9 @@ import {
   FileText,
   History,
   Target,
-  Award
+  Award,
+  BarChart2,
+  BookOpen
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../utils/cn';
@@ -28,12 +30,13 @@ const Sidebar = () => {
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Profile', href: '/profile', icon: User },
-    { name: 'Recommendations', href: '/recommendations', icon: Lightbulb },
+    { name: 'Career Paths', href: '/recommendations', icon: Lightbulb },
     { name: 'Roadmap', href: '/roadmap', icon: Map },
-    { name: 'Resume Analyzer', href: '/resume-analyzer', icon: FileText },
+    { name: 'Resume Checker', href: '/resume-analyzer', icon: FileText },
     { name: 'Resume History', href: '/resume-history', icon: History },
     { name: 'Goals', href: '/goals', icon: Target },
-    { name: 'Skill Quizzes', href: '/quiz', icon: Award },
+    { name: 'Skill Center', href: '/quiz', icon: Award },
+    { name: 'Market Insights', href: '/market-insights', icon: BarChart2 },
   ];
 
   const handleLogout = () => {
@@ -46,7 +49,7 @@ const Sidebar = () => {
       {/* Mobile menu button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-primary-600 text-white"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-slate-900 dark:bg-slate-800 text-white border border-white/10"
       >
         {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
@@ -54,78 +57,79 @@ const Sidebar = () => {
       {/* Overlay for mobile */}
       {isMobileMenuOpen && (
         <div
-          className="lg:hidden fixed inset-0 bg-black/50 z-30"
+          className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-30"
           onClick={() => setIsMobileMenuOpen(false)}
         />
       )}
 
       {/* Sidebar */}
-      <aside
-        className={cn(
-          'fixed top-0 left-0 z-40 h-screen w-64 bg-gradient-to-b from-primary-900 to-primary-800 text-white transition-transform duration-300',
-          isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
-        )}
-      >
-        <div className="flex flex-col h-full">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 p-6 border-b border-primary-700 hover:bg-primary-800/50 transition-colors">
-            <Sparkles className="text-secondary-400" size={32} />
-            <h1 className="text-2xl font-bold">PathFinder AI</h1>
+    <aside
+      className={cn(
+        'h-screen w-72 bg-white dark:bg-slate-950 border-r border-slate-200 dark:border-white/5 transition-transform duration-300 z-40',
+        isMobileMenuOpen ? 'fixed translate-x-0' : 'max-lg:fixed max-lg:-translate-x-full lg:translate-x-0'
+      )}
+    >
+      <div className="flex flex-col h-full">
+        {/* Logo */}
+        <div className="h-20 flex items-center px-8 border-b border-slate-200 dark:border-white/5">
+          <Link to="/" className="flex items-center gap-2.5 group">
+            <div className="w-8 h-8 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-sm">
+              <Sparkles size={18} strokeWidth={2.5} />
+            </div>
+            <h1 className="text-sm font-black tracking-tight uppercase dark:text-white">PathFinder AI</h1>
           </Link>
+        </div>
 
-          {/* User info */}
-          <div className="p-6 border-b border-primary-700">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-secondary-400 to-accent-500 flex items-center justify-center text-white font-bold">
-                {user?.firstName?.[0]}{user?.lastName?.[0]}
-              </div>
-              <div>
-                <p className="font-semibold">{user?.firstName} {user?.lastName}</p>
-                <p className="text-sm text-primary-300">{user?.email}</p>
-              </div>
+        {/* Navigation */}
+        <nav className="flex-1 px-4 py-6 space-y-1 overflow-y-auto no-scrollbar">
+          {navigation.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname === item.href;
+            
+            return (
+              <Link
+                key={item.name}
+                to={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  'flex items-center gap-3 px-4 py-2.5 transition-all duration-200 rounded-xl text-xs font-bold',
+                  isActive 
+                    ? 'bg-slate-100 dark:bg-white/5 text-brand-500' 
+                    : 'text-slate-500 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-white/5'
+                )}
+              >
+                <Icon size={18} strokeWidth={isActive ? 2.5 : 2} />
+                <span>{item.name}</span>
+              </Link>
+            );
+          })}
+        </nav>
+
+        {/* Footer info & Logout */}
+        <div className="p-4 border-t border-slate-200 dark:border-white/5 space-y-4">
+          <div className="flex items-center gap-3 px-4 py-3 bg-slate-50 dark:bg-white/5 rounded-2xl">
+            <div className="w-8 h-8 rounded-lg bg-edu-yellow flex items-center justify-center text-edu-dark font-black text-[10px]">
+              {user?.firstName?.[0]}{user?.lastName?.[0]}
+            </div>
+            <div className="min-w-0">
+              <p className="text-[10px] font-black truncate dark:text-white">{user?.firstName} {user?.lastName}</p>
+              <p className="text-[8px] text-slate-500 truncate">Pro Account</p>
             </div>
           </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 px-3 py-6 space-y-1">
-            {navigation.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.href;
-              
-              return (
-                <Link
-                  key={item.name}
-                  to={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    'flex items-center gap-3 px-3 py-3 rounded-lg transition-all duration-200',
-                    isActive
-                      ? 'bg-primary-700 text-white shadow-lg'
-                      : 'text-primary-200 hover:bg-primary-700/50 hover:text-white'
-                  )}
-                >
-                  <Icon size={20} />
-                  <span className="font-medium">{item.name}</span>
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Logout button */}
-          <div className="p-3 border-t border-primary-700 space-y-2">
-            <div className="px-3">
-              <ThemeToggle className="w-full flex justify-center bg-primary-800/50 hover:bg-primary-700 text-primary-200" />
-            </div>
+          
+          <div className="flex items-center gap-2">
+            <ThemeToggle className="flex-1 flex justify-center bg-slate-50 dark:bg-white/5 py-2 rounded-xl border border-slate-200 dark:border-white/10 text-slate-400" />
             <button
               onClick={handleLogout}
-              className="flex items-center gap-3 w-full px-3 py-3 rounded-lg text-primary-200 hover:bg-red-500/20 hover:text-red-300 transition-all duration-200"
+              className="p-2 rounded-xl text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 transition-all border border-slate-200 dark:border-white/10"
+              title="Sign Out"
             >
-              <LogOut size={20} />
-              <span className="font-medium">Logout</span>
+              <LogOut size={18} />
             </button>
           </div>
         </div>
-      </aside>
+      </div>
+    </aside>
     </>
   );
 };

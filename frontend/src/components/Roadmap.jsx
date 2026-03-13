@@ -1,72 +1,88 @@
+// src/components/Roadmap.jsx
 import React from 'react';
-import { CheckCircle, Circle, Clock } from 'lucide-react';
+import { CheckCircle, Circle, Clock, Target, Calendar } from 'lucide-react';
+import { cn } from '../utils/cn';
 
 const Roadmap = ({ roadmap, onUpdateStatus }) => {
   if (!roadmap || roadmap.length === 0) return null;
 
   return (
-    <div className="mt-6">
-      <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Career Roadmap</h4>
-      <div className="relative border-l-2 border-gray-200 dark:border-gray-700 ml-3 space-y-8">
+    <div className="space-y-12 animate-edu-in">
+      <div className="relative border-l-2 border-slate-100 dark:border-slate-800 ml-6 space-y-12">
         {roadmap.map((phase, index) => (
-          <div key={index} className="mb-8 ml-6 relative">
+          <div key={index} className="ml-10 relative group">
             {/* Status Icon */}
-            <span className="absolute -left-10 flex items-center justify-center w-8 h-8 bg-white dark:bg-gray-800 rounded-full ring-4 ring-white dark:ring-gray-800">
-              {phase.status === 'completed' ? (
-                <CheckCircle className="text-green-500 w-6 h-6" />
-              ) : phase.status === 'in-progress' ? (
-                <Clock className="text-blue-500 w-6 h-6" />
-              ) : (
-                <Circle className="text-gray-300 dark:text-gray-600 w-6 h-6" />
-              )}
+            <span className={cn(
+               "absolute -left-[54px] flex items-center justify-center w-10 h-10 rounded-xl border-2 z-10 transition-all duration-300 shadow-sm",
+               phase.status === 'completed' 
+                ? 'bg-emerald-500 border-emerald-500 text-white' 
+                : phase.status === 'in-progress' 
+                ? 'bg-brand-500 border-brand-500 text-white animate-pulse' 
+                : 'bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 text-slate-300 dark:text-slate-600'
+            )}>
+              {phase.status === 'completed' ? <CheckCircle size={18} /> : 
+               phase.status === 'in-progress' ? <Clock size={18} /> : <Circle size={18} />}
             </span>
 
-            {/* Content */}
-            <div className="bg-white dark:bg-gray-800 p-4 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
-              <div className="flex justify-between items-start mb-2">
-                <h5 className="text-md font-semibold text-gray-900 dark:text-white">{phase.phase}</h5>
-                <span className="text-xs font-medium px-2.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
-                  {phase.duration}
-                </span>
+            {/* Content Card */}
+            <div className="bg-slate-50/50 dark:bg-slate-800/10 p-6 md:p-8 rounded-3xl border border-slate-100 dark:border-slate-800 transition-all duration-300 group-hover:bg-white dark:group-hover:bg-slate-800/20 group-hover:shadow-md group-hover:border-brand-500/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                <div className="space-y-1">
+                  <h5 className="text-lg font-bold text-slate-900 dark:text-white transition-colors">
+                    {phase.phase}
+                  </h5>
+                  <div className="flex items-center gap-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                    <Calendar size={12} strokeWidth={2.5} />
+                    {phase.duration}
+                  </div>
+                </div>
               </div>
               
-              <ul className="list-disc list-inside text-sm text-gray-600 dark:text-gray-300 mb-3 space-y-1">
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
                 {phase.topics.map((topic, idx) => (
-                  <li key={idx}>{topic}</li>
+                  <div key={idx} className="flex items-start gap-3 p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800/50 group/item hover:border-brand-500/20 transition-all">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
+                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-slate-200 transition-colors leading-snug">
+                       {topic}
+                    </span>
+                  </div>
                 ))}
-              </ul>
+              </div>
 
               {/* Status Controls */}
-              <div className="flex gap-2 mt-3">
+              <div className="flex flex-wrap gap-3 pt-6 border-t border-slate-100 dark:border-slate-800/50">
                 <button
                   onClick={() => onUpdateStatus(index, 'pending')}
-                  className={`text-xs px-3 py-1 rounded-full border ${
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all",
                     phase.status === 'pending' 
-                      ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 border-gray-300 dark:border-gray-600' 
-                      : 'text-gray-500 dark:text-gray-400 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700/50'
-                  }`}
+                      ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white' 
+                      : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  )}
                 >
                   Pending
                 </button>
                 <button
                   onClick={() => onUpdateStatus(index, 'in-progress')}
-                  className={`text-xs px-3 py-1 rounded-full border ${
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all",
                     phase.status === 'in-progress' 
-                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-700' 
-                      : 'text-gray-500 dark:text-gray-400 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700/50'
-                  }`}
+                      ? 'bg-brand-500 text-white border-brand-500 shadow-md shadow-brand-500/20' 
+                      : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  )}
                 >
-                  In Progress
+                  Active
                 </button>
                 <button
                   onClick={() => onUpdateStatus(index, 'completed')}
-                  className={`text-xs px-3 py-1 rounded-full border ${
+                  className={cn(
+                    "px-4 py-2 rounded-xl text-[10px] font-bold uppercase tracking-widest border transition-all",
                     phase.status === 'completed' 
-                      ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 border-green-200 dark:border-green-700' 
-                      : 'text-gray-500 dark:text-gray-400 border-transparent hover:bg-gray-50 dark:hover:bg-gray-700/50'
-                  }`}
+                      ? 'bg-emerald-500 text-white border-emerald-500 shadow-md shadow-emerald-500/20' 
+                      : 'bg-white dark:bg-slate-900 text-slate-500 border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800'
+                  )}
                 >
-                  Completed
+                  Passed
                 </button>
               </div>
             </div>

@@ -8,14 +8,24 @@ const ThemeToggle = ({ className = '' }) => {
   return (
     <button
       onClick={toggleTheme}
-      className={`p-2 rounded-lg transition-colors duration-200 
+      className={`p-3 rounded-2xl transition-all duration-300 flex items-center gap-3 font-black text-xs uppercase tracking-widest
         ${theme === 'dark' 
-          ? 'bg-gray-800 text-yellow-400 hover:bg-gray-700' 
-          : 'bg-primary-100 text-primary-600 hover:bg-primary-200'} 
+          ? 'bg-slate-900 text-yellow-500 border border-white/10 hover:bg-slate-800' 
+          : 'bg-edu-bg text-edu-dark border border-edu-border hover:bg-slate-50'} 
         ${className}`}
       aria-label="Toggle theme"
     >
-      {theme === 'dark' ? <Sun size={20} /> : <Moon size={20} />}
+      {theme === 'dark' ? (
+        <>
+          <Sun size={18} fill="currentColor" />
+          <span>Day Mode</span>
+        </>
+      ) : (
+        <>
+          <Moon size={18} fill="currentColor" />
+          <span>Dark Mode</span>
+        </>
+      )}
     </button>
   );
 };

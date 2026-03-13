@@ -1,0 +1,109 @@
+[
+    {
+        "name": "Careerflow.ai",
+        "url": "https://www.careerflow.ai",
+        "description": "AI-powered platform streamlining the job search process with CRM, resume building, and LinkedIn optimization.",
+        "features": [
+            "AI Resume Builder",
+            "LinkedIn Profile Optimization",
+            "Job Application Tracking (CRM)",
+            "AI Cover Letter Generator",
+            "Skill Gap Analyzer",
+            "Browser Extension"
+        ],
+        "pricing": "Freemium. Free Basic Plan. Premium: ~$9/week, ~$24/month, ~$173/year.",
+        "targetAudience": "Job seekers, professionals optimizing LinkedIn profiles.",
+        "sourceCitations": [
+            "https://www.careerflow.ai",
+            "https://scale.jobs/tool/careerflow-ai"
+        ]
+    },
+    {
+        "name": "Kickresume",
+        "url": "https://www.kickresume.com",
+        "description": "AI resume and cover letter writer that also creates a personal career map.",
+        "features": [
+            "AI Resume Writer",
+            "AI Cover Letter Generator",
+            "Career Map",
+            "AI Career Coach",
+            "Pyjama Jobs (Job Board)"
+        ],
+        "pricing": "Freemium. Free Basic. Premium: ~$19/month, ~$84/year (prices vary by region/promo). Student discounts available.",
+        "targetAudience": "Students, job seekers needing document creation.",
+        "sourceCitations": [
+            "https://www.kickresume.com",
+            "https://resumegenius.com/blog/resume-help/kickresume-review"
+        ]
+    },
+    {
+        "name": "Mindler",
+        "url": "https://www.mindler.com",
+        "description": "Comprehensive career counseling and guidance platform combining 5-dimensional assessment with human experts.",
+        "features": [
+            "5-Dimensional Career Assessment",
+            "Personalized Career Counseling",
+            "34-page Career Report",
+            "Virtual Career Simulators",
+            "College Application Support"
+        ],
+        "pricing": "Paid. Tiers from ~₹2,400 (Assessment only) to ~₹25,000+ (Full mentoring).",
+        "targetAudience": "High school students (Class 8-12), Graduates, Parents.",
+        "sourceCitations": [
+            "https://www.mindler.com",
+            "https://www.mindler.com/career-counselling-plans"
+        ]
+    },
+    {
+        "name": "LinkedIn Career Explorer",
+        "url": "https://linkedin.github.io/career-explorer/",
+        "description": "Tool to map current skills to new job titles and identify learning paths.",
+        "features": [
+            "Skill-to-Role matching",
+            "Overlap score calculation",
+            "LinkedIn Learning integration",
+            "Job market insights"
+        ],
+        "pricing": "Free (Career Explorer tool). LinkedIn Premium/Learning requires subscription.",
+        "targetAudience": "Professionals pivoting careers, workforce planners.",
+        "sourceCitations": [
+            "https://linkedin.github.io/career-explorer/",
+            "https://socialmediatoday.com/news/linkedin-adds-new-career-explorer-tool-to-highlight-transferable-skills/587978/"
+        ]
+    },
+    {
+        "name": "Google Interview Warmup",
+        "url": "https://grow.google/certificates/interview-warmup/",
+        "description": "AI-based tool to practice answering interview questions and garner insights.",
+        "features": [
+            "Voice-to-text answer transcription",
+            "Key term analysis",
+            "Industry-specific question sets",
+            "No grading/judgment (Self-reflection)"
+        ],
+        "pricing": "Free",
+        "targetAudience": "Job seekers, certificate learners.",
+        "sourceCitations": [
+            "https://grow.google/certificates/interview-warmup/",
+            "https://blog.google/outreach-initiatives/grow-with-google/interview-warmup/"
+        ]
+    },
+    {
+        "name": "Teal",
+        "url": "https://www.tealhq.com",
+        "description": "All-in-one career growth platform with resume builder, job tracker, and AI integration.",
+        "features": [
+            "AI Resume Builder",
+            "Job Application Tracker",
+            "AI Cover Letter Generator",
+            "LinkedIn Review",
+            "Chrome Extension"
+        ],
+        "pricing": "Freemium. Free Basic. Teal+ ~$9/week or ~$29/month.",
+        "targetAudience": "Job seekers, career growers.",
+        "sourceCitations": [
+            "https://www.tealhq.com",
+            "https://www.tealhq.com/pricing"
+        ]
+    }
+]

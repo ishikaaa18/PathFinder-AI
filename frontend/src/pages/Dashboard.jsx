@@ -1,6 +1,6 @@
 // src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { Sparkles, TrendingUp, BookOpen, ExternalLink, Map } from 'lucide-react';
+import { Sparkles, TrendingUp, BookOpen, ExternalLink, Map, Trophy, Target, Star, ChevronRight, ArrowRight } from 'lucide-react';
 import { toast } from 'react-toastify';
 import api from '../services/api';
 import { useAuth } from '../context/AuthContext';
@@ -29,7 +29,6 @@ const Dashboard = () => {
       setLoading(true);
       const res = await api.get(`/recommendations/user/${user._id}`);
       setRecommendations(Array.isArray(res.data) ? res.data : []);
-      console.log('Fetched recommendations:', res.data); // Debug log
     } catch (error) {
       console.error('Error fetching recommendations:', error);
     } finally {
@@ -39,7 +38,6 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     if (!user?._id) return;
-    
     try {
       const [skills, quals, interests] = await Promise.all([
         api.get(`/skills/user/${user._id}`).catch(() => ({ data: [] })),
@@ -57,13 +55,9 @@ const Dashboard = () => {
   };
 
   const generateRecommendations = async () => {
-    if (!user?._id) {
-      alert('User not found. Please log in again.');
-      return;
-    }
-    
+    if (!user?._id) return;
     if (stats.skills === 0 && stats.qualifications === 0 && stats.interests === 0) {
-      alert('Please add at least one skill, qualification, or interest before generating recommendations.');
+      toast.warning('Please add skills or interests first.');
       return;
     }
 
@@ -71,13 +65,10 @@ const Dashboard = () => {
       setGenerating(true);
       const res = await api.post(`/recommendations/generate/${user._id}`);
       setRecommendations(res.data.recommendations);
-      console.log('Generated recommendations:', res.data.recommendations); // Debug log
-      toast.success('🎯 AI recommendations generated successfully!');
+      toast.success('Career paths generated! 🚀');
     } catch (error) {
       console.error('Error generating recommendations:', error);
-      const errorMsg = error.response?.data?.message || 'Failed to generate recommendations';
-      toast.error(errorMsg);
-      alert(errorMsg);
+      toast.error('Failed to update path.');
     } finally {
       setGenerating(false);
     }
@@ -91,197 +82,152 @@ const Dashboard = () => {
     }
   };
 
-  // Helper function to ensure URL has proper protocol
   const ensureHttps = (url) => {
     if (!url) return '#';
-    // If URL already has a protocol, return as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-    // If URL starts with //, add https:
-    if (url.startsWith('//')) {
-      return `https:${url}`;
-    }
-    // Otherwise, add https:// prefix
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
+    if (url.startsWith('//')) return `https:${url}`;
     return `https://${url}`;
   };
 
   const handleRoadmapUpdate = async (recommendationId, phaseIndex, newStatus) => {
     try {
-      // Find the recommendation
       const recommendation = recommendations.find(r => r._id === recommendationId);
       if (!recommendation) return;
-
-      // Create updated roadmap
       const updatedRoadmap = [...recommendation.roadmap];
       updatedRoadmap[phaseIndex] = { ...updatedRoadmap[phaseIndex], status: newStatus };
-
-      // Optimistic update
       const updatedRecommendations = recommendations.map(r => 
         r._id === recommendationId ? { ...r, roadmap: updatedRoadmap } : r
       );
       setRecommendations(updatedRecommendations);
-
-      // API call
-      await api.put(`/recommendations/${recommendationId}`, {
-        roadmap: updatedRoadmap
-      });
-      
-      toast.success('Progress updated! 🚀');
+      await api.put(`/recommendations/${recommendationId}`, { roadmap: updatedRoadmap });
+      toast.success('Saved successfully.');
     } catch (error) {
-      console.error('Error updating roadmap:', error);
-      toast.error('Failed to update progress');
-      // Revert on error (could be improved by refetching)
+      toast.error('Save failed.');
       fetchRecommendations();
     }
   };
 
+  const cardColors = ['yellow', 'purple', 'blue'];
+
   return (
     <DashboardLayout>
-      <div className="space-y-8">
+      <div className="space-y-6 animate-edu-in">
         {/* Header */}
         <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Welcome back, {user?.firstName}! 👋
-            </h1>
-            <p className="text-gray-600 dark:text-gray-300 mt-2">
-              Here are your personalized career recommendations
-            </p>
+          <div className="flex items-baseline gap-2">
+            <h1 className="text-lg font-black tracking-tight uppercase text-slate-800 dark:text-white">My Dashboard</h1>
+            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{user?.firstName}</span>
           </div>
           <button
             onClick={generateRecommendations}
             disabled={generating}
-            className="bg-gradient-to-r from-primary-600 to-primary-700 text-white px-6 py-3 rounded-lg font-semibold hover:from-primary-700 hover:to-primary-800 transition duration-200 flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+            className="px-4 py-1.5 bg-brand-500 text-white text-[10px] font-black uppercase tracking-widest rounded-lg flex items-center gap-2 hover:brightness-105 transition-all shadow-sm"
           >
             {generating ? (
-              <>
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                Generating...
-              </>
-            ) : (
-              <>
-                <Sparkles size={20} />
-                Generate Recommendations
-              </>
-            )}
+              <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white"></div>
+            ) : <Sparkles size={14} />}
+            Update My Path
           </button>
         </div>
 
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-3 gap-6">
-          <div className="bg-gradient-to-br from-primary-50 to-primary-100 dark:from-primary-900/50 dark:to-primary-800/50 rounded-2xl p-6 border border-primary-200 dark:border-primary-700">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-primary-600 rounded-lg flex items-center justify-center">
-                <TrendingUp className="text-white" size={24} />
-              </div>
-              <div>
-                <p className="text-sm text-primary-700 dark:text-primary-300 font-medium">Skills</p>
-                <p className="text-3xl font-bold text-primary-900 dark:text-white">{stats.skills}</p>
-              </div>
-            </div>
-          </div>
 
-          <div className="bg-gradient-to-br from-secondary-50 to-secondary-100 dark:from-secondary-900/50 dark:to-secondary-800/50 rounded-2xl p-6 border border-secondary-200 dark:border-secondary-700">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-secondary-600 rounded-lg flex items-center justify-center">
-                <BookOpen className="text-white" size={24} />
+        {/* Stats Section */}
+        <div className="grid grid-cols-3 gap-4">
+          {[
+            { label: 'Skills', value: stats.skills, icon: Trophy, color: 'brand' },
+            { label: 'Degree', value: stats.qualifications, icon: Target, color: 'emerald' },
+            { label: 'Matches', value: recommendations.length, icon: Sparkles, color: 'blue' }
+          ].map((stat, i) => (
+            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-4 rounded-2xl flex items-center gap-3">
+              <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-${stat.color}-500/10 text-${stat.color}-500`}>
+                <stat.icon size={16} />
               </div>
               <div>
-                <p className="text-sm text-secondary-700 dark:text-secondary-300 font-medium">Qualifications</p>
-                <p className="text-3xl font-bold text-secondary-900 dark:text-white">{stats.qualifications}</p>
+                <p className="text-sm font-black text-slate-800 dark:text-white leading-none">{stat.value}</p>
+                <p className="text-[8px] font-bold uppercase tracking-widest text-slate-400 mt-1">{stat.label}</p>
               </div>
             </div>
-          </div>
-
-          <div className="bg-gradient-to-br from-accent-50 to-accent-100 dark:from-accent-900/50 dark:to-accent-800/50 rounded-2xl p-6 border border-accent-200 dark:border-accent-700">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 bg-accent-600 rounded-lg flex items-center justify-center">
-                <Sparkles className="text-white" size={24} />
-              </div>
-              <div>
-                <p className="text-sm text-accent-700 dark:text-accent-300 font-medium">Recommendations</p>
-                <p className="text-3xl font-bold text-accent-900 dark:text-white">{recommendations.length}</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
 
-        {/* Recommendations */}
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">Your Career Paths</h2>
+        {/* Career Paths Section */}
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <div className="w-1 h-3 bg-brand-500 rounded-full" />
+            <h2 className="text-[10px] font-black tracking-widest uppercase text-slate-400">Recommended Careers</h2>
+          </div>
           
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <div className="flex items-center justify-center h-48">
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-brand-500"></div>
             </div>
           ) : recommendations.length === 0 ? (
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-12 text-center border border-gray-100 dark:border-gray-700">
-              <Sparkles className="mx-auto text-gray-400 dark:text-gray-500 mb-4" size={48} />
-              <h3 className="text-xl font-semibold text-gray-700 dark:text-white mb-2">
-                No recommendations yet
-              </h3>
-              <p className="text-gray-500 dark:text-gray-400 mb-6">
-                Add your skills, qualifications, and interests, then click "Generate Recommendations"
-                to get AI-powered career suggestions.
-              </p>
+            <div className="bg-white dark:bg-slate-900 p-12 text-center space-y-4 rounded-3xl border border-slate-200 dark:border-white/5 shadow-sm">
+               <div className="w-12 h-12 bg-brand-500/10 rounded-2xl flex items-center justify-center mx-auto">
+                  <Sparkles className="text-brand-500" size={24} />
+               </div>
+               <div className="space-y-1">
+                 <h3 className="text-sm font-extrabold dark:text-white uppercase tracking-tight">No Paths Saved</h3>
+                 <p className="text-slate-500 dark:text-slate-400 font-semibold max-w-xs mx-auto text-[10px]">Update your profile to see recommendations.</p>
+               </div>
+               <button onClick={generateRecommendations} className="btn-edu text-[9px] py-2 px-6 shadow-none mt-2">Generate Now</button>
             </div>
           ) : (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {recommendations.map((rec) => {
+            <div className="grid gap-4">
+              {recommendations.slice(0, 2).map((rec, index) => {
                 const courses = parseCourses(rec.courseLink);
                 return (
-                  <div
-                    key={rec._id}
-                    className="bg-white dark:bg-gray-800 rounded-2xl shadow-md hover:shadow-xl transition-shadow duration-300 overflow-hidden border border-gray-100 dark:border-gray-700"
-                  >
-                    <div className="bg-gradient-to-r from-primary-600 to-primary-700 p-6">
-                      <h3 className="text-xl font-bold text-white">{rec.careerSuggestion}</h3>
-                      <p className="text-primary-100 text-sm mt-1">AI Model: {rec.aiModelUsed}</p>
-                    </div>
-                    
-                    <div className="p-6">
-                      <p className="text-gray-700 dark:text-gray-300 mb-4">{rec.justification}</p>
-                      
-                      {courses.length > 0 && (
-                        <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
-                            <BookOpen size={18} />
-                            Recommended Courses
-                          </h4>
-                          <div className="space-y-2">
-                             {courses.map((course, idx) => (
-                              <a
-                                key={idx}
-                                href={ensureHttps(course.link)}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center justify-between bg-gray-50 dark:bg-gray-700/50 hover:bg-primary-50 dark:hover:bg-primary-900/30 px-4 py-3 rounded-lg transition group border border-gray-100 dark:border-gray-600"
-                              >
-                                <span className="text-sm text-gray-700 dark:text-gray-200 group-hover:text-primary-700 dark:group-hover:text-primary-400">
-                                  {course.title}
-                                </span>
-                                <ExternalLink size={16} className="text-gray-400 group-hover:text-primary-600 dark:text-gray-500 dark:group-hover:text-primary-400" />
-                              </a>
-                            ))}
-                          </div>
-                        </div>
-                      )}
+                  <div key={rec._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-3xl overflow-hidden p-6">
+                    <div className="flex flex-col lg:flex-row gap-6">
+                         {/* Left Side: Career Info */}
+                         <div className="flex-1 space-y-3">
+                            <div className="flex items-center gap-3">
+                               <div className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[8px] font-black uppercase tracking-widest rounded-full border border-emerald-500/10">
+                                  Best Fit
+                               </div>
+                               <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Match Score: {(rec.confidenceScore * 100).toFixed(0)}%</span>
+                            </div>
+                            
+                            <h3 className="text-xl font-black text-slate-800 dark:text-white uppercase tracking-tight leading-tight">
+                               {rec.careerSuggestion}
+                            </h3>
+                            
+                            <p className="text-slate-500 dark:text-slate-400 font-medium leading-relaxed italic border-l-2 border-brand-500/10 pl-4 py-0.5 text-xs truncate max-w-xl">
+                               Why this: "{rec.justification}"
+                            </p>
 
-                      {/* Roadmap Section */}
-                      {rec.roadmap && rec.roadmap.length > 0 && (
-                        <Roadmap 
-                          roadmap={rec.roadmap} 
-                          onUpdateStatus={(phaseIndex, newStatus) => 
-                            handleRoadmapUpdate(rec._id, phaseIndex, newStatus)
-                          }
-                        />
-                      )}
 
-                      {/* Market Insights Section */}
-                      <MarketInsights role={rec.careerSuggestion} />
+                            <MarketInsights role={rec.careerSuggestion} />
+                         </div>
+
+                         {/* Right Side: Quick Specs */}
+                         <div className="lg:w-64 space-y-4">
+                            {courses.length > 0 && (
+                               <div className="space-y-2">
+                                  <h4 className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Resources</h4>
+                                  <div className="space-y-1">
+                                     {courses.slice(0, 2).map((course, idx) => (
+                                      <a
+                                        key={idx}
+                                        href={ensureHttps(course.link)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center justify-between bg-slate-50 dark:bg-white/5 px-3 py-2 rounded-xl border border-transparent hover:border-brand-500/10 transition-all text-[10px] font-bold text-slate-600 dark:text-slate-300"
+                                      >
+                                        <span className="truncate pr-2">{course.title}</span>
+                                        <ExternalLink size={10} className="flex-shrink-0 opacity-40" />
+                                      </a>
+                                    ))}
+                                  </div>
+                               </div>
+                            )}
+
+                            <button className="w-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-3 rounded-xl font-bold text-[10px] uppercase tracking-widest hover:bg-brand-500 hover:text-white transition-all shadow-sm active:scale-95 flex items-center justify-center gap-2">
+                               Start Path <ArrowRight size={12} />
+                            </button>
+                         </div>
+                      </div>
                     </div>
-                  </div>
                 );
               })}
             </div>
