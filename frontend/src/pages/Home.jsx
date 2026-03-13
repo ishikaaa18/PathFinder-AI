@@ -6,7 +6,6 @@ import {
   Star, LayoutDashboard, User, Lightbulb, Map, FileText, CheckCircle, 
   Gamepad2, Trophy, Sword, Scroll, BookOpen, Search, BarChart2, ShieldCheck, ChevronRight, Menu, X
 } from 'lucide-react';
-import Footer from "../components/Footer";
 
 const Home = () => {
   const containerRef = useRef(null);
@@ -102,7 +101,7 @@ const Home = () => {
           className="relative lg:h-[600px] flex items-center justify-center mt-4 lg:mt-0"
         >
            {/* Main Glassmorphic Terminal */}
-           <div className="relative z-10 w-full max-w-lg bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
+           <div className="relative z-10 w-full max-w-lg bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[2.5rem] sm:rounded-[3.5rem] p-6 sm:p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
               <div className="flex items-center justify-between mb-10">
                  <div className="flex items-center gap-3">
                     <div className="w-3 h-3 rounded-full bg-brand-500 animate-pulse"></div>
@@ -123,11 +122,11 @@ const Home = () => {
                       exit={{ opacity: 0, x: -20 }}
                       className="space-y-8"
                     >
-                      <div className="p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden group">
+                       <div className="p-5 sm:p-8 rounded-[2.5rem] bg-gradient-to-br from-slate-900 to-slate-800 text-white relative overflow-hidden group">
                          <div className="absolute top-0 right-0 w-32 h-32 bg-brand-500/20 rounded-full blur-3xl"></div>
                          <div className="relative z-10">
                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-brand-400 mb-2">Market Demand</p>
-                            <div className="text-5xl font-black mb-6 tracking-tighter">94.8<span className="text-xl text-white/40 ml-1">%</span></div>
+                             <div className="text-3xl sm:text-5xl font-black mb-6 tracking-tighter">94.8<span className="text-xl text-white/40 ml-1">%</span></div>
                             <div className="flex gap-1 h-12 items-end mb-6">
                                {[40, 70, 45, 90, 65, 80, 55, 95].map((h, i) => (
                                   <div key={i} className="flex-1 bg-white/20 rounded-t-sm" style={{ height: `${h}%` }} />
@@ -161,11 +160,11 @@ const Home = () => {
                       exit={{ opacity: 0, x: -20 }}
                       className="space-y-8"
                     >
-                      <div className="p-8 rounded-[2.5rem] bg-brand-500 text-white relative overflow-hidden group">
+                       <div className="p-5 sm:p-8 rounded-[2.5rem] bg-brand-500 text-white relative overflow-hidden group">
                          <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
                          <div className="relative z-10">
                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-white/60 mb-2">Skill Checker</p>
-                            <div className="text-4xl font-black mb-6 tracking-tighter uppercase whitespace-nowrap">Improvement Hub</div>
+                             <div className="text-2xl sm:text-4xl font-black mb-6 tracking-tighter uppercase">Improvement Hub</div>
                             <div className="space-y-3">
                                {['Python Skills', 'AI Design', 'Logic'].map((skill, i) => (
                                   <div key={i} className="space-y-1">
@@ -203,11 +202,11 @@ const Home = () => {
                       exit={{ opacity: 0, x: -20 }}
                       className="space-y-8"
                     >
-                      <div className="p-8 rounded-[2.5rem] bg-edu-purple text-edu-dark relative overflow-hidden group">
+                       <div className="p-5 sm:p-8 rounded-[2.5rem] bg-edu-purple text-edu-dark relative overflow-hidden group">
                          <div className="absolute top-0 right-0 w-32 h-32 bg-black/5 rounded-full blur-2xl"></div>
                          <div className="relative z-10">
                             <p className="text-[10px] font-black uppercase tracking-[0.3em] text-edu-dark/60 mb-2">Salary Growth</p>
-                            <div className="text-5xl font-black mb-6 tracking-tighter text-edu-dark">₹12.4<span className="text-xl opacity-40 ml-1">L avg</span></div>
+                             <div className="text-3xl sm:text-5xl font-black mb-6 tracking-tighter text-edu-dark">₹12.4<span className="text-xl opacity-40 ml-1">L avg</span></div>
                             <div className="flex items-center gap-3 py-3 px-4 bg-white/40 rounded-2xl border border-black/5">
                                <TrendingUp size={16} className="text-edu-dark" />
                                <span className="text-[10px] font-black uppercase tracking-widest">+22% Annual Growth</span>
@@ -477,8 +476,6 @@ const Home = () => {
             </div>
           </motion.div>
        </section>
-
-       <Footer />
     </div>
   );
 };
