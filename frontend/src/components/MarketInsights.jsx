@@ -58,7 +58,7 @@ const MarketInsights = ({ role }) => {
 
   return (
     <div className="space-y-8 animate-edu-in">
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
         {/* Salary Matrix */}
         <div className="bg-white dark:bg-slate-900 p-8 rounded-[2.5rem] border border-slate-200 dark:border-slate-800 shadow-sm relative overflow-hidden group">
           <div className="flex items-center gap-2 mb-6 text-[10px] font-bold uppercase tracking-widest text-slate-400">

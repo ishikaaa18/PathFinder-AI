@@ -119,7 +119,7 @@ const Recommendations = () => {
                   key={rec._id}
                   className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden group flex flex-col"
                 >
-                  <div className="p-8 flex flex-col md:flex-row gap-8">
+                 <div className="p-5 sm:p-8 flex flex-col sm:flex-row md:flex-row gap-6 sm:gap-8">
                     {/* Trajectory Scoring */}
                     <div className="flex md:flex-col items-center justify-between md:justify-start gap-4 md:w-28">
                        <div className="w-20 h-20 rounded-2xl bg-slate-50 dark:bg-slate-800/50 flex flex-col items-center justify-center text-slate-900 dark:text-white border border-slate-100 dark:border-slate-800 group-hover:border-brand-500/30 transition-colors shadow-inner">
@@ -224,7 +224,7 @@ const Recommendations = () => {
                  <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Featured Career Courses</h2>
               </div>
  
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                  {[
                    {
                      title: 'IBM DevOps & Software Engineering',

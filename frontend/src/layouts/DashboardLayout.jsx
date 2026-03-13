@@ -38,9 +38,16 @@ const DashboardLayout = ({ children }) => {
         </header>
 
         {/* Global Nav for Mobile */}
-        <header className="h-20 flex lg:hidden items-center justify-end px-6 border-b border-slate-200 dark:border-white/5 flex-shrink-0">
-           <div className="w-10 h-10 bg-brand-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
-              <Sparkles size={24} strokeWidth={2.5} />
+        <header className="h-16 flex lg:hidden items-center justify-between px-4 border-b border-slate-200 dark:border-white/5 flex-shrink-0 bg-white dark:bg-slate-950">
+           <div className="flex items-center gap-2">
+             <div className="w-8 h-8 bg-brand-500 rounded-xl flex items-center justify-center text-white shadow-md">
+               <Sparkles size={18} strokeWidth={2.5} />
+             </div>
+             <span className="text-sm font-extrabold tracking-tight uppercase dark:text-white">PathFinder AI</span>
+           </div>
+           <div className="flex items-center gap-2 px-2.5 py-1.5 bg-slate-50 dark:bg-white/5 rounded-lg border border-slate-100 dark:border-white/5">
+             <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+             <span className="text-[9px] font-black uppercase tracking-widest text-slate-400">Live</span>
            </div>
         </header>
 

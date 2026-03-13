@@ -61,7 +61,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-edu-bg dark:bg-slate-950 flex items-center justify-center p-6 py-12 transition-colors duration-300">
+    <div className="min-h-screen bg-edu-bg dark:bg-slate-950 flex items-center justify-center p-4 sm:p-6 py-8 sm:py-12 transition-colors duration-300">
       <div className="max-w-md w-full animate-edu-in space-y-10">
         <div className="text-center">
           <div className="flex justify-center mb-6">
@@ -73,7 +73,7 @@ const Register = () => {
           <p className="text-slate-500 dark:text-slate-400 font-bold uppercase tracking-widest text-[10px] mt-4">Join PathFinder AI to Start Your Career Journey</p>
         </div>
 
-        <div className="bg-white dark:bg-slate-900 border-[1.5px] border-edu-border dark:border-slate-800 rounded-[3.5rem] p-10 shadow-2xl transition-colors">
+        <div className="bg-white dark:bg-slate-900 border-[1.5px] border-edu-border dark:border-slate-800 rounded-[2.5rem] sm:rounded-[3.5rem] p-6 sm:p-10 shadow-2xl transition-colors">
           <form onSubmit={handleSubmit} className="space-y-6">
             {error && (
               <div className="bg-rose-50 dark:bg-rose-950/20 border-[1.5px] border-rose-500/30 text-rose-500 px-4 py-3 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3">
@@ -81,7 +81,7 @@ const Register = () => {
               </div>
             )}
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <label htmlFor="firstName" className="block text-[10px] font-black text-slate-400 dark:text-slate-500 uppercase tracking-[0.2em] ml-2">
                   First Name

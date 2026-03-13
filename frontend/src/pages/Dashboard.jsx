@@ -113,7 +113,7 @@ const Dashboard = () => {
     <DashboardLayout>
       <div className="space-y-6 animate-edu-in">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div className="flex items-baseline gap-2">
             <h1 className="text-lg font-black tracking-tight uppercase text-slate-800 dark:text-white">My Dashboard</h1>
             <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{user?.firstName}</span>
@@ -132,13 +132,13 @@ const Dashboard = () => {
 
 
         {/* Stats Section */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
           {[
             { label: 'Skills', value: stats.skills, icon: Trophy, color: 'brand' },
             { label: 'Degree', value: stats.qualifications, icon: Target, color: 'emerald' },
             { label: 'Matches', value: recommendations.length, icon: Sparkles, color: 'blue' }
           ].map((stat, i) => (
-            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-4 rounded-2xl flex items-center gap-3">
+            <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 p-3 sm:p-4 rounded-2xl flex items-center gap-2 sm:gap-3">
               <div className={`w-8 h-8 rounded-lg flex items-center justify-center bg-${stat.color}-500/10 text-${stat.color}-500`}>
                 <stat.icon size={16} />
               </div>
@@ -178,7 +178,7 @@ const Dashboard = () => {
                 const courses = parseCourses(rec.courseLink);
                 return (
                   <div key={rec._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 rounded-3xl overflow-hidden p-6">
-                    <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
                          {/* Left Side: Career Info */}
                          <div className="flex-1 space-y-3">
                             <div className="flex items-center gap-3">

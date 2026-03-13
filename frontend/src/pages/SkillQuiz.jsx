@@ -85,7 +85,7 @@ const SkillQuiz = () => {
                   </div>
                 </div>
                 
-                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
                   {careerPaths.map((career, idx) => (
                     <div key={idx} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 flex flex-col justify-between hover:shadow-lg transition-all duration-300 group">
                       <div className="space-y-4">
@@ -124,7 +124,7 @@ const SkillQuiz = () => {
                    <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Quick Quizzes</h2>
                 </div>
  
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
                   {skillGaps.map((gap, idx) => (
                     <div 
                       key={idx} 
@@ -160,7 +160,7 @@ const SkillQuiz = () => {
                   <a href="/profile" className="inline-block px-5 py-2 bg-brand-500 text-white font-bold rounded-xl text-xs uppercase tracking-widest transition-all hover:shadow-lg active:scale-95">Update Profile</a>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                   {skills.map((skill, idx) => (
                     <div key={skill._id} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl hover:border-slate-300 dark:hover:border-slate-700 hover:shadow-md transition-all group overflow-hidden flex flex-col">
                        <div className="flex-1 p-6 space-y-6">
@@ -196,7 +196,7 @@ const SkillQuiz = () => {
                  <h2 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-widest">Featured Courses</h2>
               </div>
  
-              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
                  {[
                    {
                      title: 'IBM DevOps & Software Engineering',

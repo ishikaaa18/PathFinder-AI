@@ -92,7 +92,7 @@ const RoadmapPage = () => {
         </div>
 
         {recommendations.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-20 text-center space-y-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-10 sm:p-20 text-center space-y-6 shadow-sm">
             <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto text-slate-400">
                <Target size={32} />
             </div>
@@ -132,7 +132,7 @@ const RoadmapPage = () => {
                   </div>
                 </div>
 
-                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-8 lg:p-12 shadow-sm transition-all duration-300">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2.5rem] p-5 sm:p-8 lg:p-12 shadow-sm transition-all duration-300">
                   {(!rec.roadmap || rec.roadmap.length === 0) ? (
                     <div className="flex items-center gap-4 bg-slate-50 dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 text-slate-500 text-sm font-medium">
                       <AlertCircle size={20} className="flex-shrink-0 text-amber-500" />

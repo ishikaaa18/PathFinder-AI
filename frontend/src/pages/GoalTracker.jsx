@@ -108,7 +108,7 @@ const GoalTracker = () => {
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-brand-500"></div>
           </div>
         ) : goals.length === 0 ? (
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-24 text-center space-y-6 shadow-sm">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-[2rem] p-10 sm:p-24 text-center space-y-6 shadow-sm">
             <div className="w-16 h-16 bg-slate-50 dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto text-slate-300 dark:text-slate-700">
                <Target size={32} />
             </div>
@@ -181,8 +181,8 @@ const GoalTracker = () => {
 
         {/* Unified Modal System */}
         {showAddModal && (
-          <div className="fixed inset-0 bg-slate-950/40 z-[100] flex items-center justify-center p-4 backdrop-blur-md animate-edu-in">
-            <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] w-full max-w-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl animate-scale-in">
+          <div className="fixed inset-0 bg-slate-950/40 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop-blur-md animate-edu-in">
+            <div className="bg-white dark:bg-slate-900 rounded-t-[2.5rem] sm:rounded-[2.5rem] w-full max-w-lg overflow-hidden border border-slate-200 dark:border-slate-800 shadow-2xl animate-scale-in">
               <div className="p-8 pb-0 flex justify-between items-center">
                  <div className="space-y-1">
                     <h2 className="text-xl font-bold text-slate-900 dark:text-white">Add New Goal</h2>

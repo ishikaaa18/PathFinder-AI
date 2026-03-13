@@ -59,7 +59,7 @@ const ResumeHistory = () => {
       <DashboardLayout>
         <div className="max-w-6xl mx-auto space-y-8 pb-12">
           {/* Detailed View Header */}
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
             <button 
               onClick={handleBack}
               className="flex items-center gap-2 px-4 py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800 transition-all"
@@ -67,7 +67,7 @@ const ResumeHistory = () => {
               <ArrowLeft size={16} /> 
               Back to History
             </button>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-4">
               <button 
                 onClick={() => setShowCoverLetter(true)}
                 className="flex items-center gap-2 px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg"
@@ -248,7 +248,7 @@ const ResumeHistory = () => {
             </a>
           </div>
         ) : (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {history.map((item) => (
               <div 
                 key={item._id}

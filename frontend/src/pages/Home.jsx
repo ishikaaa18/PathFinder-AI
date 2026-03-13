@@ -4,8 +4,9 @@ import { motion } from 'framer-motion';
 import { 
   Sparkles, ArrowRight, Brain, Target, Zap, TrendingUp, Users, Award, 
   Star, LayoutDashboard, User, Lightbulb, Map, FileText, CheckCircle, 
-  Gamepad2, Trophy, Sword, Scroll, BookOpen, Search, BarChart2
+  Gamepad2, Trophy, Sword, Scroll, BookOpen, Search, BarChart2, ShieldCheck, ChevronRight, Menu, X
 } from 'lucide-react';
+import Footer from "../components/Footer";
 
 const Home = () => {
   const containerRef = useRef(null);
@@ -41,7 +42,7 @@ const Home = () => {
     <div className="min-h-screen bg-edu-bg dark:bg-slate-950 overflow-hidden text-edu-border dark:text-slate-100 selection:bg-brand-500 selection:text-white pb-20 transition-colors duration-300" ref={containerRef}>
       
       {/* Hero Section */}
-      <section className="max-w-7xl mx-auto px-6 pt-24 pb-24 grid lg:grid-cols-2 gap-16 items-center">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 lg:pt-24 pb-12 sm:pb-16 lg:pb-24 grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
         <motion.div 
           variants={containerVariants}
           initial="hidden"
@@ -54,7 +55,7 @@ const Home = () => {
              <span>AI-Powered Career Assistant</span>
           </motion.div>
 
-          <motion.h1 variants={itemVariants} className="text-5xl md:text-6xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+          <motion.h1 variants={itemVariants} className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
             Design Your <br />
             <span className="text-brand-500 decoration-brand-500/10 underline underline-offset-8">Growth Path</span>
           </motion.h1>
@@ -63,7 +64,7 @@ const Home = () => {
             Analyze your resume, identify skill gaps, and explore AI career paths. Navigate the professional landscape with confidence.
           </motion.p>
 
-          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-4 pt-4">
+          <motion.div variants={itemVariants} className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-4">
              <div className="relative group flex-1 max-w-md">
                 <div className="absolute inset-y-0 left-4 flex items-center text-slate-400 group-focus-within:text-brand-500 transition-colors">
                    <Search size={20} />
@@ -74,12 +75,12 @@ const Home = () => {
                   className="w-full pl-12 pr-6 py-4 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:outline-none focus:ring-4 focus:ring-brand-500/10 transition-all font-semibold placeholder:text-slate-300 shadow-sm"
                 />
              </div>
-             <Link to="/register" className="btn-edu flex items-center justify-center gap-3 text-lg px-8">
+             <Link to="/register" className="btn-edu flex items-center justify-center gap-3 text-sm sm:text-lg px-6 sm:px-8 py-3 sm:py-4 w-full sm:w-auto">
                 Get Started <ArrowRight size={20} />
              </Link>
           </motion.div>
           
-          <motion.div variants={itemVariants} className="flex items-center gap-6 pt-6 text-slate-400 font-bold text-xs uppercase tracking-widest">
+          <motion.div variants={itemVariants} className="flex flex-wrap items-center gap-4 sm:gap-6 pt-4 sm:pt-6 text-slate-400 font-bold text-xs uppercase tracking-widest">
              <div className="flex -space-x-3">
                 {[...Array(4)].map((_, i) => (
                    <div key={i} className={`w-8 h-8 rounded-full border-2 border-white dark:border-slate-950 bg-edu-${['yellow', 'purple', 'blue', 'yellow'][i]} flex items-center justify-center text-[10px] text-edu-dark font-black shadow-md`}>
@@ -98,7 +99,7 @@ const Home = () => {
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="relative lg:h-[600px] flex items-center justify-center"
+          className="relative lg:h-[600px] flex items-center justify-center mt-4 lg:mt-0"
         >
            {/* Main Glassmorphic Terminal */}
            <div className="relative z-10 w-full max-w-lg bg-white/70 dark:bg-slate-900/80 backdrop-blur-2xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] p-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,0.15)] overflow-hidden">
@@ -256,11 +257,11 @@ const Home = () => {
 
 
       {/* Intelligence Inventory - Interactive Premium Carousel */}
-      <section id="features" className="relative max-w-7xl mx-auto px-6 py-32">
+      <section id="features" className="relative max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32">
          {/* Artistic Background Elements */}
          <div className="absolute top-1/2 -left-20 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none"></div>
          
-         <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-24 relative z-10">
+         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-16 lg:mb-24 relative z-10">
             <div className="space-y-4">
                <motion.div 
                   initial={{ opacity: 0, y: -10 }}
@@ -271,7 +272,7 @@ const Home = () => {
                   <Sparkles size={14} />
                   <span>Our Features</span>
                </motion.div>
-               <h2 className="text-4xl md:text-6xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
+               <h2 className="text-3xl sm:text-4xl md:text-6xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
                   Feature <span className="text-brand-500">List</span>
                </h2>
             </div>
@@ -301,7 +302,7 @@ const Home = () => {
                ].map((f, i) => (
                   <div 
                     key={i}
-                    className="w-[320px] md:w-[420px] shrink-0"
+                    className="w-[260px] sm:w-[320px] md:w-[380px] lg:w-[420px] shrink-0"
                   >
                      <div className="group h-full bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-[1.5px] border-edu-border/10 dark:border-slate-800 rounded-[3rem] p-10 shadow-sm transition-all duration-500 flex flex-col hover:shadow-2xl hover:border-brand-500/30 overflow-hidden relative">
                         
@@ -351,14 +352,14 @@ const Home = () => {
       </section>
 
       {/* Platform Advantages - Infinite Loop Carousel */}
-      <section className="py-24 bg-slate-50 dark:bg-slate-900/40 border-y border-edu-border/5 dark:border-white/5 overflow-hidden">
-         <div className="max-w-7xl mx-auto px-6 mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <section className="py-12 sm:py-16 lg:py-24 bg-slate-50 dark:bg-slate-900/40 border-y border-edu-border/5 dark:border-white/5 overflow-hidden">
+         <div className="max-w-7xl mx-auto px-4 sm:px-6 mb-10 sm:mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-4">
                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 text-[10px] font-black uppercase tracking-widest text-brand-500">
                   <TrendingUp size={14} />
                   <span>The Edge</span>
                </div>
-               <h2 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
+               <h2 className="text-2xl sm:text-3xl md:text-5xl font-black uppercase tracking-tight text-slate-900 dark:text-white leading-none">
                   Why <span className="text-brand-500">Choose Us</span>
                </h2>
             </div>
@@ -401,7 +402,7 @@ const Home = () => {
       </section>
 
       {/* Final CTA Section - Professional Light Design */}
-      <section className="max-w-7xl mx-auto px-6 py-32 text-center relative overflow-hidden">
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-16 sm:py-24 lg:py-32 text-center relative overflow-hidden">
          {/* Atmospheric Backgrounds - Softer for Light Mode */}
          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-brand-500/5 rounded-full blur-[120px] pointer-events-none"></div>
          
@@ -410,7 +411,7 @@ const Home = () => {
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className="relative z-10 rounded-[3rem] p-12 md:p-24 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border/10 dark:border-slate-800 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden group"
+             className="relative z-10 rounded-[2rem] sm:rounded-[3rem] p-6 sm:p-12 md:p-24 bg-white dark:bg-slate-900 border-[1.5px] border-edu-border/10 dark:border-slate-800 shadow-[0_32px_80px_-20px_rgba(0,0,0,0.08)] overflow-hidden group"
          >
             {/* Soft Gradient Overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-brand-50/50 via-transparent to-edu-blue/10 opacity-70"></div>
@@ -439,20 +440,20 @@ const Home = () => {
                      <span>Future-Proof Your Career</span>
                   </motion.div>
                   
-                  <h2 className="text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[0.9] uppercase">
+                  <h2 className="text-3xl sm:text-5xl md:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[0.9] uppercase">
                      Start Your <br /> 
                      <span className="text-brand-500 underline underline-offset-[12px] decoration-brand-500/10">Career Path</span>
                   </h2>
                </div>
 
-               <p className="text-slate-500 dark:text-slate-400 font-bold text-lg md:text-xl max-w-2xl mx-auto leading-relaxed uppercase tracking-wide">
+               <p className="text-slate-500 dark:text-slate-400 font-bold text-sm sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed uppercase tracking-wide">
                   Join a network of professionals leveraging AI to navigate the modern job market with confidence.
                </p>
 
-               <div className="flex flex-col sm:flex-row gap-6 justify-center pt-10">
+               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center pt-6 sm:pt-10">
                   <Link 
                      to="/register" 
-                     className="group/btn relative px-12 py-6 bg-brand-500 text-white rounded-2xl font-black text-xl uppercase tracking-widest overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(240,101,67,0.3)] active:scale-95"
+                     className="group/btn relative px-8 sm:px-12 py-4 sm:py-6 bg-brand-500 text-white rounded-2xl font-black text-base sm:text-xl uppercase tracking-widest overflow-hidden transition-all hover:shadow-[0_20px_40px_-10px_rgba(240,101,67,0.3)] active:scale-95 w-full sm:w-auto"
                   >
                      <span className="relative z-10 flex items-center gap-3">
                         Join PathFinder <ArrowRight className="group-hover/btn:translate-x-2 transition-transform" />
@@ -460,9 +461,9 @@ const Home = () => {
                      <div className="absolute inset-0 bg-white/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300"></div>
                   </Link>
 
-                  <Link 
-                     to="/login" 
-                     className="px-12 py-6 bg-white dark:bg-white/5 border-[1.5px] border-edu-border dark:border-white/20 text-slate-900 dark:text-white rounded-2xl font-black text-xl uppercase tracking-widest transition-all hover:bg-slate-50 dark:hover:bg-white/10 active:scale-95 shadow-sm"
+                   <Link 
+                      to="/login" 
+                      className="px-8 sm:px-12 py-4 sm:py-6 bg-white dark:bg-white/5 border-[1.5px] border-edu-border dark:border-white/20 text-slate-900 dark:text-white rounded-2xl font-black text-base sm:text-xl uppercase tracking-widest transition-all hover:bg-slate-50 dark:hover:bg-white/10 active:scale-95 shadow-sm w-full sm:w-auto text-center"
                   >
                      Login Access
                   </Link>
@@ -474,9 +475,10 @@ const Home = () => {
                   <div className="h-px w-12 bg-slate-900 dark:bg-white"></div>
                </div>
             </div>
-         </motion.div>
-      </section>
+          </motion.div>
+       </section>
 
+       <Footer />
     </div>
   );
 };

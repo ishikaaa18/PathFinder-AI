@@ -134,7 +134,7 @@ const Profile = () => {
 
   return (
     <DashboardLayout>
-      <div className="space-y-12 pb-20 animate-edu-in">
+      <div className="space-y-8 sm:space-y-12 pb-12 sm:pb-20 animate-edu-in">
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">My Profile</h1>
@@ -145,7 +145,7 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-10">
           {/* Skills Section */}
           <div className="surface-edu bg-white dark:bg-slate-900 p-8 border-edu-border dark:border-slate-800 transition-colors shadow-sm">
             <div className="flex items-center gap-4 mb-8">

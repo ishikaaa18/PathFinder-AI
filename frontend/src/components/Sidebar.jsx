@@ -49,9 +49,10 @@ const Sidebar = () => {
       {/* Mobile menu button */}
       <button
         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-xl bg-slate-900 dark:bg-slate-800 text-white border border-white/10"
+        className="lg:hidden fixed top-[11px] left-4 z-[60] p-2.5 rounded-xl bg-slate-950 dark:bg-white text-white dark:text-slate-900 shadow-lg active:scale-95 transition-all"
+        aria-label="Toggle Navigation"
       >
-        {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
 
       {/* Overlay for mobile */}
