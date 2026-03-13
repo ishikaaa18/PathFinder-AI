@@ -106,10 +106,10 @@ const Profile = () => {
       const res = await api.post('/interests', { interestName: newInterest });
       setInterests([...interests, res.data]);
       setNewInterest('');
-      toast.success('Interest registered! ❤️');
+      toast.success('Interest added! ❤️');
     } catch (error) {
       console.error('Error adding interest:', error);
-      toast.error('Registry error');
+      toast.error('Failed to add interest');
     }
   };
 
@@ -266,7 +266,7 @@ const Profile = () => {
               ))}
               {qualifications.length === 0 && (
                 <div className="text-center py-10 opacity-20 italic">
-                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">Registry Empty</p>
+                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No education added yet</p>
                 </div>
               )}
             </div>
@@ -278,7 +278,7 @@ const Profile = () => {
               <div className="w-12 h-12 bg-edu-yellow rounded-2xl flex items-center justify-center border border-edu-border shadow-md">
                 <Heart className="text-edu-dark" size={24} />
               </div>
-              <h2 className="text-xl font-black text-slate-900 dark:text-white uppercase tracking-tighter italic">Focus Vectors</h2>
+              <h2 className="text-xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">My Interests</h2>
             </div>
 
             <form onSubmit={addInterest} className="mb-8">
@@ -287,8 +287,8 @@ const Profile = () => {
                   type="text"
                   value={newInterest}
                   onChange={(e) => setNewInterest(e.target.value)}
-                  placeholder="ADD VECTOR"
-                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-black italic transition-all dark:text-white"
+                  placeholder="ADD INTEREST"
+                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white"
                 />
                 <button
                   type="submit"
@@ -316,7 +316,7 @@ const Profile = () => {
               ))}
               {interests.length === 0 && (
                 <div className="w-full text-center py-10 opacity-20 italic">
-                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">Registry Empty</p>
+                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No interests added yet</p>
                 </div>
               )}
             </div>
