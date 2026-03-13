@@ -166,9 +166,10 @@ const Profile = () => {
                 />
                 <button
                   type="submit"
-                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border"
+                  className="bg-brand-500 text-white px-6 py-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border flex items-center justify-center gap-2 font-extrabold text-sm uppercase tracking-wider"
                 >
-                  <Plus size={24} strokeWidth={3} />
+                  <Plus size={20} strokeWidth={3} />
+                  Add
                 </button>
               </div>
             </form>
@@ -232,9 +233,10 @@ const Profile = () => {
                 />
                 <button
                   type="submit"
-                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 transition-all shadow-lg border-[1.5px] border-edu-border"
+                  className="bg-brand-500 text-white px-6 py-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border flex items-center justify-center gap-2 font-extrabold text-sm uppercase tracking-wider"
                 >
-                  <Plus size={24} strokeWidth={3} />
+                  <Plus size={20} strokeWidth={3} />
+                  Add
                 </button>
               </div>
             </form>
@@ -292,9 +294,10 @@ const Profile = () => {
                 />
                 <button
                   type="submit"
-                  className="bg-brand-500 text-white p-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border"
+                  className="bg-brand-500 text-white px-6 py-3 rounded-2xl hover:brightness-105 active:scale-95 transition-all shadow-lg border-[1.5px] border-edu-border flex items-center justify-center gap-2 font-extrabold text-sm uppercase tracking-wider"
                 >
-                  <Plus size={24} strokeWidth={3} />
+                  <Plus size={20} strokeWidth={3} />
+                  Add
                 </button>
               </div>
             </form>
