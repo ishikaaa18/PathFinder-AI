@@ -40,9 +40,12 @@ const SkillQuiz = () => {
 
   const startQuiz = (topic) => {
     setSelectedTopic(topic);
+    // Scroll to top so the overlay is visible immediately without scrolling
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
+    <>
     <DashboardLayout>
       <div className="max-w-6xl mx-auto space-y-12 pb-12">
         {/* Header Section */}
@@ -254,14 +257,17 @@ const SkillQuiz = () => {
           </div>
         )}
 
-        {selectedTopic && (
-          <QuizModal 
-            skill={selectedTopic} 
-            onClose={() => setSelectedTopic(null)} 
-          />
-        )}
       </div>
     </DashboardLayout>
+
+    {/* Rendered outside DashboardLayout so fixed positioning works against true viewport */}
+    {selectedTopic && (
+      <QuizModal 
+        skill={selectedTopic} 
+        onClose={() => setSelectedTopic(null)} 
+      />
+    )}
+    </>
   );
 };
 
