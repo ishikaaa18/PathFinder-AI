@@ -37,7 +37,7 @@
 
   /* Edu Buttons */
   .btn-edu {
-    @apply px-6 py-2.5 rounded-2xl bg-brand-500 text-white font-black uppercase tracking-widest hover:brightness-105 active:scale-[0.98] transition-all border-[1.5px] border-edu-border dark:border-slate-800 shadow-md flex items-center justify-center gap-2;
+    @apply px-6 py-2.5 rounded-2xl bg-brand-500 text-white font-black uppercase tracking-widest hover:brightness-105 active:scale-[0.98] transition-all border-[1.5px] border-edu-border dark:border-slate-800 shadow-md flex items-center justify-center gap-2 min-w-[6rem] whitespace-nowrap;
   }
 
   .btn-primary {

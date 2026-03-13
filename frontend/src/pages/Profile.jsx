@@ -138,7 +138,7 @@ const Profile = () => {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <div>
             <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">My Profile</h1>
-            <p className="text-slate-500 dark:text-slate-400 mt-2 text-[10px] font-black uppercase tracking-widest">Manage Your Skills & Education</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-1.5 text-sm font-medium tracking-wide">Manage your skills & education</p>
           </div>
           <div className="w-12 h-12 bg-edu-yellow rounded-[1.5rem] flex items-center justify-center border border-edu-border dark:border-slate-800 shadow-xl">
              <Star size={24} className="text-edu-dark" fill="currentColor" />
@@ -156,20 +156,20 @@ const Profile = () => {
             </div>
 
             <form onSubmit={addSkill} className="mb-8">
-              <div className="flex gap-3">
+              <div className="flex flex-col gap-2">
                 <input
                   type="text"
                   value={newSkill}
                   onChange={(e) => setNewSkill(e.target.value)}
-                  placeholder="ADD SKILL"
-                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white shadow-inner"
+                  placeholder="Add a skill..."
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="btn-edu shrink-0"
+                  className="btn-edu w-full justify-center"
                 >
-                  <Plus size={20} strokeWidth={3} />
-                  Add
+                  <Plus size={16} strokeWidth={3} />
+                  Add Skill
                 </button>
               </div>
             </form>
@@ -180,7 +180,7 @@ const Profile = () => {
                   key={skill._id}
                   className="flex items-center justify-between bg-edu-bg dark:bg-slate-950/50 p-4 rounded-2xl border-[1.5px] border-edu-border dark:border-slate-800 group transition-all hover:bg-edu-blue/10"
                 >
-                  <span className="text-slate-700 dark:text-slate-300 font-bold text-sm">{skill.skillName}</span>
+                  <span className="text-slate-700 dark:text-slate-300 font-semibold text-sm capitalize">{skill.skillName}</span>
                   <button
                     onClick={() => deleteSkill(skill._id)}
                     className="text-slate-300 hover:text-rose-500 transition-colors opacity-0 group-hover:opacity-100"
@@ -190,9 +190,9 @@ const Profile = () => {
                 </div>
               ))}
               {skills.length === 0 && (
-                <div className="text-center py-10 opacity-20">
-                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No skills added yet</p>
-                </div>
+                <div className="text-center py-10 opacity-40">
+                   <p className="font-medium text-xs text-slate-400">No skills added yet</p>
+                 </div>
               )}
             </div>
           </div>
@@ -206,12 +206,12 @@ const Profile = () => {
               <h2 className="text-xl font-extrabold text-slate-900 dark:text-white uppercase tracking-tight">Education</h2>
             </div>
 
-            <form onSubmit={addQualification} className="mb-8 space-y-3">
+            <form onSubmit={addQualification} className="mb-8 space-y-2">
               <input
                 type="text"
                 value={newQualification.title}
                 onChange={(e) => setNewQualification({ ...newQualification, title: e.target.value })}
-                placeholder="DEGREE / TITLE"
+                placeholder="Degree / Title"
                 className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
               />
               <input
@@ -220,25 +220,23 @@ const Profile = () => {
                 onChange={(e) =>
                   setNewQualification({ ...newQualification, institution: e.target.value })
                 }
-                placeholder="INSTITUTION"
+                placeholder="Institution"
                 className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
               />
-              <div className="flex gap-3">
-                <input
-                  type="number"
-                  value={newQualification.year}
-                  onChange={(e) => setNewQualification({ ...newQualification, year: e.target.value })}
-                  placeholder="YEAR"
-                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
-                />
-                <button
-                  type="submit"
-                  className="btn-edu shrink-0"
-                >
-                  <Plus size={20} strokeWidth={3} />
-                  Add
-                </button>
-              </div>
+              <input
+                type="number"
+                value={newQualification.year}
+                onChange={(e) => setNewQualification({ ...newQualification, year: e.target.value })}
+                placeholder="Year"
+                className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold dark:text-white shadow-inner"
+              />
+              <button
+                type="submit"
+                className="btn-edu w-full justify-center"
+              >
+                <Plus size={16} strokeWidth={3} />
+                Add Education
+              </button>
             </form>
 
             <div className="space-y-4 max-h-[300px] overflow-y-auto custom-scrollbar pr-2">
@@ -249,13 +247,13 @@ const Profile = () => {
                 >
                   <div className="flex justify-between items-start">
                     <div className="space-y-1">
-                      <p className="font-extrabold text-edu-dark dark:text-slate-100 text-sm uppercase tracking-tight">{qual.title}</p>
-                      <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{qual.institution}</p>
-                      {qual.dateObtained && (
-                         <span className="inline-block mt-2 bg-edu-purple/30 text-edu-dark text-[8px] font-black px-2 py-0.5 rounded-full border border-edu-purple/50">
-                            {new Date(qual.dateObtained).getFullYear()}
-                         </span>
-                      )}
+                      <p className="font-bold text-slate-800 dark:text-slate-100 text-sm">{qual.title}</p>
+                       <p className="text-xs font-medium text-slate-400 mt-0.5">{qual.institution}</p>
+                       {qual.dateObtained && (
+                          <span className="inline-block mt-2 bg-edu-purple/30 text-edu-dark text-xs font-semibold px-2.5 py-0.5 rounded-full border border-edu-purple/50">
+                             {new Date(qual.dateObtained).getFullYear()}
+                          </span>
+                       )}
                     </div>
                     <button
                       onClick={() => deleteQualification(qual._id)}
@@ -267,9 +265,9 @@ const Profile = () => {
                 </div>
               ))}
               {qualifications.length === 0 && (
-                <div className="text-center py-10 opacity-20 italic">
-                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No education added yet</p>
-                </div>
+                <div className="text-center py-10 opacity-40">
+                   <p className="font-medium text-xs text-slate-400">No education added yet</p>
+                 </div>
               )}
             </div>
           </div>
@@ -284,20 +282,20 @@ const Profile = () => {
             </div>
 
             <form onSubmit={addInterest} className="mb-8">
-              <div className="flex gap-3">
+              <div className="flex flex-col gap-2">
                 <input
                   type="text"
                   value={newInterest}
                   onChange={(e) => setNewInterest(e.target.value)}
-                  placeholder="ADD INTEREST"
-                  className="flex-1 px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white"
+                  placeholder="Add an interest..."
+                  className="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border-[1.5px] border-edu-border dark:border-slate-800 rounded-2xl focus:border-brand-500 outline-none text-sm font-semibold transition-all dark:text-white shadow-inner"
                 />
                 <button
                   type="submit"
-                  className="btn-edu shrink-0"
+                  className="btn-edu w-full justify-center"
                 >
-                  <Plus size={20} strokeWidth={3} />
-                  Add
+                  <Plus size={16} strokeWidth={3} />
+                  Add Interest
                 </button>
               </div>
             </form>
@@ -308,7 +306,7 @@ const Profile = () => {
                   key={interest._id}
                   className="flex items-center gap-3 bg-edu-yellow/20 px-4 py-2 rounded-2xl border-[1.5px] border-edu-border dark:border-slate-800 group shadow-sm transition-all hover:bg-edu-yellow/40"
                 >
-                  <span className="text-edu-dark dark:text-slate-300 font-black text-[10px] uppercase tracking-widest">{interest.interestName}</span>
+                  <span className="text-edu-dark dark:text-slate-300 font-semibold text-xs capitalize">{interest.interestName}</span>
                   <button
                     onClick={() => deleteInterest(interest._id)}
                     className="text-edu-dark/30 hover:text-rose-500"
@@ -318,9 +316,9 @@ const Profile = () => {
                 </div>
               ))}
               {interests.length === 0 && (
-                <div className="w-full text-center py-10 opacity-20 italic">
-                   <p className="font-black text-[10px] uppercase tracking-widest text-slate-400">No interests added yet</p>
-                </div>
+                <div className="w-full text-center py-10 opacity-40">
+                   <p className="font-medium text-xs text-slate-400">No interests added yet</p>
+                 </div>
               )}
             </div>
           </div>
