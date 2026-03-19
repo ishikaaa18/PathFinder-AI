@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minor Project Report - PathFinder AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman&display=swap');
+
+        /* ── PRINT & LAYOUT SETTINGS ── */
+        @page {
+            size: A4;
+            margin: 0; /* Handled by .page class for precision */
+        }
+
+        @media print {
+            body { background: none; }
+            .page-break { page-break-after: always; }
+            .no-print { display: none !important; }
+        }
+
+        * {
+            box-sizing: border-box;
+            -webkit-print-color-adjust: exact;
+        }
+
+        body {
+            background: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            font-family: 'Times New Roman', Times, serif;
+            color: #000;
+        }
+
+        .page {
+            width: 210mm;
+            min-height: 297mm;
+            padding: 15mm 10mm 10mm 25mm; /* Top 1.5cm, Right 1cm, Bottom 1cm, Left 2.5cm as per spec */
+            margin: 10mm auto;
+            background: white;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            position: relative;
+            line-height: 1.5; /* 1.5 line spacing */
+            font-size: 12pt;
+        }
+
+        /* ── HEADING STYLES ── */
+        .chapter-header {
+            font-size: 18pt;
+            font-weight: bold;
+            text-decoration: underline;
+            text-align: center;
+            text-transform: uppercase;
+            margin-bottom: 30pt;
+            margin-top: 40pt;
+        }
+
+        .section-header {
+            font-size: 14pt;
+            font-weight: bold;
+            margin-top: 20pt;
+            margin-bottom: 10pt;
+        }
+
+        .content-text {
+            font-size: 12pt;
+            text-align: justify;
+        }
+
+        .center {
+            text-align: center;
+        }
+
+        /* ── TABLE STYLES ── */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15pt 0;
+        }
+
+        th, td {
+            border: 1px solid black;
+            padding: 8pt;
+            text-align: left;
+            font-size: 12pt;
+        }
+
+        .no-border td {
+            border: none;
+        }
+
+        /* ── PAGE NUMBERING ── */
+        .page-num {
+            position: absolute;
+            bottom: 12mm;
+            right: 10mm;
+            font-size: 11pt;
+        }
+
+        /* ── UTILITIES ── */
+        .spacer { height: 50pt; }
+        .flex-between { display: flex; justify-content: space-between; }
+        .mt-100 { margin-top: 100pt; }
+        .mt-50 { margin-top: 50pt; }
+
+        /* ── BUTTON ── */
+        .print-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            z-index: 1000;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="print-btn no-print" onclick="window.print()">Print Project Report</button>
+
+    <!-- ═══ COVER PAGE ═══ -->
+    <div class="page">
+        <div class="center">
+            <h2 style="font-size: 16pt; font-weight: bold;">MINOR PROJECT REPORT</h2>
+            <p style="font-size: 12pt; font-weight: bold;">ON</p>
+            <h1 style="font-size: 20pt; font-weight: bold; text-transform: uppercase;">“PATHFINDER AI: AN INTELLIGENT CAREER GUIDANCE AND PROGRESS TRACKING SYSTEM”</h1>
+            <p style="margin-top: 30pt;">Submitted To</p>
+            <h2 style="font-size: 16pt; font-weight: bold;">National Forensic Sciences University</h2>
+            
+            <div class="spacer"></div>
+            
+            <p style="font-size: 14pt; font-weight: bold; text-transform: uppercase;">[MASTER OF SCIENCE IN CYBER SECURITY]</p>
+            
+            <div class="spacer"></div>
+            
+            <p>Submitted By</p>
+            <h3 style="font-size: 14pt; font-weight: bold;">NAME OF STUDENT</h3>
+            <p>(ENROLLMENT NUMBER)</p>
+            
+            <div class="spacer"></div>
+            
+            <p>Under the Supervision of</p>
+            <h3 style="font-size: 14pt; font-weight: bold;">NAME OF GUIDE</h3>
+            <p>(DESIGNATION)</p>
+            
+            <div class="mt-50">
+                <p>Submitted to</p>
+                <h3 style="font-size: 14pt; font-weight: bold;">SCHOOL OF CYBER SECURITY & DIGITAL FORENSICS</h3>
+                <h3 style="font-size: 16pt; font-weight: bold;">NATIONAL FORENSIC SCIENCES UNIVERSITY</h3>
+                <p>GANDHINAGAR – 382009, GUJARAT, INDIA.</p>
+                <p style="font-weight: bold; margin-top: 10pt;">[MARCH, 2026]</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ DECLARATION ═══ -->
+    <div class="page page-break">
+        <div class="page-num">ii</div>
+        <h2 class="chapter-header">DECLARATION By STUDENT</h2>
+        <p class="content-text">
+            I hereby declare that the work being presented in this Report titled <strong>“PathFinder AI: An Intelligent Career Guidance and Progress Tracking System”</strong> by me i.e. <strong>NAME OF STUDENT</strong>, having Enrolment Number <strong>“ENROLLMENT NUMBER”</strong>, and submitted to the School of Cyber Security and Digital Forensic at National Forensic Sciences University, Gandhinagar; is my original work carried out during the period of <strong>“January 2026”</strong> to <strong>“March 2026”</strong> under the supervision of <strong>“Name of Supervisor”</strong>. I have complied it with the School’s Ethical Code of Conduct and have duly acknowledged all sources through proper citations and references. The plagiarism check confirms that the overall similarity index is within 10%.
+        </p>
+        
+        <div class="mt-100">
+            <p>__________________________</p>
+            <p>(Name & Signature of Student)</p>
+        </div>
+    </div>
+
+    <!-- ═══ CERTIFICATE FROM GUIDE ═══ -->
+    <div class="page page-break">
+        <div class="page-num">iii</div>
+        <h2 class="chapter-header">CERTIFICATE FROM GUIDE</h2>
+        <p class="content-text">
+            I hereby certify that the dissertation entitled <strong>“PathFinder AI: An Intelligent Career Guidance and Progress Tracking System”</strong>, embodies the result of bonafide minor project work done by <strong>[Name of Student]</strong> of the Semester <strong>[II/III/IV/VII]</strong>, having enrollment number <strong>“[Enrollment Number]”</strong> for the degree of <strong>“[Name of Degree]”</strong> in the <strong>“School of Cyber Security & Digital Forensics”</strong> of the <strong>“National Forensic Sciences University, Gandhinagar, Gujarat – India”</strong> under my guidance and supervision. I further certify that this is an original work and that whatever material obtained and used from other sources has been duly acknowledged in the report. This work has not been submitted for any degree or diploma of any university or institute, as per my knowledge.
+        </p>
+        
+        <div class="mt-50">
+            <p>Date:</p>
+            <p>Place: Gandhinagar, Gujarat</p>
+        </div>
+
+        <div class="mt-50">
+            <p><strong>[Name & Designation of Guide]</strong></p>
+            <p>School of Cyber Security & Digital Forensics</p>
+            <p>National Forensic Sciences University Gandhinagar, Gujarat – India, 382007.</p>
+        </div>
+    </div>
+
+    <!-- ═══ CERTIFICATE ═══ -->
+    <div class="page page-break">
+        <div class="page-num">iv</div>
+        <h2 class="chapter-header">CERTIFICATE</h2>
+        <p class="content-text">
+            This is to certify that the minor project viva of Mr./ Ms. <strong>[Name of Student]</strong> of the School of Cyber Security & Digital Forensics, National Forensic Sciences University, Gandhinagar, Gujarat, India - 382007 was conducted on <strong>[Date]</strong> at the National Forensic Sciences University, Gandhinagar Campus. His/Her Minor project titled <strong>“PathFinder AI: An Intelligent Career Guidance and Progress Tracking System”</strong> was evaluated and found satisfactory.
+        </p>
+        
+        <div class="mt-100 flex-between">
+            <div>
+                <p>__________________________</p>
+                <p>Name & Signature of Internal Examiner 1</p>
+            </div>
+            <div>
+                <p>__________________________</p>
+                <p>Name & Signature of Internal Examiner 2</p>
+            </div>
+        </div>
+
+        <div class="mt-50">
+            <p>Date:</p>
+            <p>Place: Gandhinagar, Gujarat</p>
+        </div>
+    </div>
+
+    <!-- ═══ ACKNOWLEDGEMENT ═══ -->
+    <div class="page page-break">
+        <div class="page-num">v</div>
+        <h2 class="chapter-header">ACKNOWLEDGEMENT</h2>
+        <p class="content-text">
+            I would like to express my deepest gratitude to my supervisor, <strong>[Name of Guide]</strong>, for their invaluable guidance, constant encouragement, and support throughout the course of this minor project. Their expertise and insights were instrumental in the development of <strong>PathFinder AI</strong>.
+        </p>
+        <p class="content-text">
+            I am also thankful to the Head of Department and all the faculty members of the School of Cyber Security & Digital Forensics for providing a conducive environment for research and learning. I would also like to acknowledge the support of my lab mates and friends who provided valuable feedback during the development phases.
+        </p>
+        <p class="content-text">
+            Finally, I thank my family for their unwavering support and belief in my efforts.
+        </p>
+        
+        <div class="mt-50">
+            <p>With Sincere Regards,</p>
+            <p><strong>Name of the Student</strong></p>
+            <p>Course Name</p>
+        </div>
+    </div>
+
+    <!-- ═══ ABSTRACT ═══ -->
+    <div class="page page-break">
+        <div class="page-num">vi</div>
+        <h2 class="chapter-header">ABSTRACT</h2>
+        <p class="content-text">
+            PathFinder AI is a comprehensive AI-driven career guidance platform designed to bridge the gap between education and employment. Leveraging the MERN (MongoDB, Express, React, Node) stack and Google's Gemini large language model, the platform provides a personalized "Input-to-Insight-to-Action" journey for students and job seekers. The system analyzes user profiles including skills, interests, and qualifications to generate tailored career recommendations with high confidence scores. It further provides personalized learning roadmaps with verified course links, an AI-powered resume analyzer that identifies skill gaps against target roles, and an automated cover letter generator. Additional modules include a Kanban-style goal tracker, a categorized skill assessment quiz, and a market insights dashboard. The project demonstrates the potential of LLMs in creating zero-training-cost AI interventions for career coaching, offering a scalable and accessible alternative to manual counseling. The architecture ensures secure, authenticated access and a premium responsive user experience across both dark and light modes.
+        </p>
+        <p class="content-text" style="margin-top: 20pt;">
+            <strong>Keywords:</strong> AI Career Coach, Google Gemini, MERN Stack, Career Recommendation Engine, Resume Analysis, Learning Roadmaps, Skill Gap Visualization, Cyber Security Careers, Career Development, NLP in Career Guidance.
+        </p>
+    </div>
+
+    <!-- ═══ LIST OF ABBREVIATIONS ═══ -->
+    <div class="page page-break">
+        <div class="page-num">vii</div>
+        <h2 class="chapter-header">LIST OF ABBREVIATIONS</h2>
+        <table>
+            <tr><th>Abbreviation</th><th>Description</th></tr>
+            <tr><td>MERN</td><td>MongoDB, Express, React, Node.js</td></tr>
+            <tr><td>AI</td><td>Artificial Intelligence</td></tr>
+            <tr><td>LLM</td><td>Large Language Model</td></tr>
+            <tr><td>JWT</td><td>JSON Web Token</td></tr>
+            <tr><td>JSON</td><td>JavaScript Object Notation</td></tr>
+            <tr><td>API</td><td>Application Programming Interface</td></tr>
+            <tr><td>PDF</td><td>Portable Document Format</td></tr>
+            <tr><td>CRUD</td><td>Create, Read, Update, Delete</td></tr>
+            <tr><td>ATS</td><td>Applicant Tracking System</td></tr>
+            <tr><td>AAA</td><td>Authentication, Authorization, and Accounting</td></tr>
+            <tr><td>CIA</td><td>Confidentiality, Integrity & Availability</td></tr>
+        </table>
+    </div>
+
+    <!-- ═══ TABLE OF CONTENTS ═══ -->
+    <div class="page page-break">
+        <div class="page-num">xii</div>
+        <h2 class="chapter-header">TABLE OF CONTENTS</h2>
+        <table class="no-border">
+            <tr><td>DECLARATION</td><td>ii</td></tr>
+            <tr><td>CERTIFICATE</td><td>iii</td></tr>
+            <tr><td>APPROVAL CERTIFICATE</td><td>iv</td></tr>
+            <tr><td>ACKNOWLEDGEMENTS</td><td>v</td></tr>
+            <tr><td>ABSTRACT</td><td>vi</td></tr>
+            <tr><td>LIST OF ABBREVIATIONS</td><td>vii</td></tr>
+            <tr><td>LIST OF TABLES</td><td>viii</td></tr>
+            <tr><td>LIST OF FIGURES</td><td>ix</td></tr>
+            <tr><td>LIST OF SYMBOLS</td><td>x</td></tr>
+            <tr><td>TABLE OF CONTENTS</td><td>xii</td></tr>
+            <tr><td><strong>1. INTRODUCTION</strong></td><td>1</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;1.1 Purpose</td><td>1</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;1.2 Aim</td><td>1</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;1.3 Objectives</td><td>1</td></tr>
+            <tr><td><strong>2. SYSTEM ARCHITECTURE</strong></td><td>2</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;2.1 User Interfaces</td><td>2</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;2.2 Software Interfaces</td><td>2</td></tr>
+            <tr><td><strong>3. SPECIFICATIONS FOR DISSERTATION FORMAT</strong></td><td>3</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;3.1 Preparation of Manuscript and Copies</td><td>3</td></tr>
+            <tr><td>&nbsp;&nbsp;&nbsp;3.2 Size and Margins</td><td>3</td></tr>
+        </table>
+    </div>
+
+    <!-- ═══ CHAPTER 1: INTRODUCTION ═══ -->
+    <div class="page page-break">
+        <div class="page-num">1</div>
+        <h2 class="chapter-header">1. INTRODUCTION</h2>
+        <h3 class="section-header">1.1 Purpose</h3>
+        <p class="content-text">
+            PathFinder AI is a comprehensive, AI-driven career guidance platform. Its purpose is to help students and job seekers identify optimal career paths by analyzing their skills, interests, and qualifications — and then providing a full ecosystem of tools to bridge the gap between their current state and their career goal. The platform leverages Google's Gemini large language model (LLM) for all AI-generated content, from career suggestions to personalized learning roadmaps, resume feedback, and professional cover letters.
+        </p>
+
+        <h3 class="section-header">1.2 Aim</h3>
+        <p class="content-text">
+            The aim of the project is to build a fully functional, production-ready web application that acts as a personal career coach. The system provides a streamlined "Input-to-Insight-to-Action" journey: users enter their profile, receive AI-generated career recommendations, can check their resume against their target role, track their learning goals, assess their skills, and generate application documents — all within a single platform.
+        </p>
+
+        <h3 class="section-header">1.3 Objectives</h3>
+        <ul class="content-text">
+            <li><strong>Core Recommendation Engine:</strong> Develop backend logic that returns tailored career recommendations with confidence scores.</li>
+            <li><strong>Resume Analysis:</strong> Implement an AI-powered resume checker that compares a user's PDF resume against a target career.</li>
+            <li><strong>Skill Visualization:</strong> Represent the gap between current skills and ideal profiles using interactive radar charts.</li>
+            <li><strong>Goal Tracking:</strong> Allow users to manage career-related goals on a Kanban board.</li>
+        </ul>
+    </div>
+
+    <!-- ═══ CHAPTER 2: SYSTEM ARCHITECTURE ═══ -->
+    <div class="page page-break">
+        <div class="page-num">2</div>
+        <h2 class="chapter-header">2. SYSTEM ARCHITECTURE</h2>
+        <h3 class="section-header">2.1 User Interfaces</h3>
+        <p class="content-text">
+            The platform features a modern, responsive user interface built with React.js and TailwindCSS. Key interfaces include the dynamic Hero carousel on the landing page, a compact data-rich Dashboard, a timeline view for Career Paths, and interactive charts for Skill Visualization. The design supports both dark and light modes with persistent user preferences.
+        </p>
+
+        <h3 class="section-header">2.2 Software Interfaces</h3>
+        <ul class="content-text">
+            <li><strong>MERN Stack:</strong> MongoDB, Express.js, React.js (Vite), Node.js.</li>
+            <li><strong>AI Interface:</strong> Google Gemini (gemini-flash-latest) API.</li>
+            <li><strong>Data Visualization:</strong> Recharts for radar and progress charts.</li>
+            <li><strong>Authentication:</strong> JWT-based secure session management.</li>
+        </ul>
+
+        <div class="center mt-50">
+            <p><em>(Insert Architecture Diagram Here)</em></p>
+            <p><strong>Figure 2.1: System Data Flow</strong></p>
+        </div>
+    </div>
+
+</body>
+</html>

@@ -40,11 +40,21 @@ const Roadmap = ({ roadmap, onUpdateStatus }) => {
               
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
                 {phase.topics.map((topic, idx) => (
-                  <div key={idx} className="flex items-start gap-3 p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800/50 group/item hover:border-brand-500/20 transition-all">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
-                    <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-slate-200 transition-colors leading-snug">
-                       {topic}
-                    </span>
+                  <div key={idx} className="flex flex-col p-3 bg-white dark:bg-slate-900/40 rounded-xl border border-slate-100 dark:border-slate-800/50 group/item hover:border-brand-500/20 transition-all">
+                    <div className="flex items-start gap-3">
+                      <div className="w-1.5 h-1.5 rounded-full bg-brand-500 mt-1.5 flex-shrink-0" />
+                      <span className="text-sm font-medium text-slate-600 dark:text-slate-400 group-hover/item:text-slate-900 dark:group-hover/item:text-slate-200 transition-colors leading-snug">
+                         {topic}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-4 mt-3 ml-4 border-t border-slate-100 dark:border-slate-800/50 pt-2.5">
+                      <a href={`https://github.com/search?q=${encodeURIComponent(topic)}`} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-slate-900 dark:hover:text-white transition-colors">
+                        GitHub ↗
+                      </a>
+                      <a href={`https://www.youtube.com/results?search_query=${encodeURIComponent(topic + ' course tutorial')}`} target="_blank" rel="noopener noreferrer" className="text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-brand-500 transition-colors">
+                        Video ↗
+                      </a>
+                    </div>
                   </div>
                 ))}
               </div>

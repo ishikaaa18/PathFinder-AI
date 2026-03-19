@@ -19,17 +19,17 @@ const ResumeAnalyzer = () => {
 
   useEffect(() => {
     if (user?._id) {
-      fetchCareers();
+      fetchData();
     }
   }, [user]);
 
-  const fetchCareers = async () => {
+  const fetchData = async () => {
     try {
-      const res = await api.get(`/recommendations/user/${user._id}`);
-      const uniqueCareers = [...new Set(res.data.map(r => r.careerSuggestion))];
+      const recRes = await api.get(`/recommendations/user/${user._id}`).catch(() => ({ data: [] }));
+      const uniqueCareers = [...new Set((recRes.data || []).map(r => r.careerSuggestion))];
       setCareers(uniqueCareers);
     } catch (error) {
-      console.error('Error fetching careers:', error);
+      console.error('Error fetching data:', error);
     }
   };
 
@@ -106,16 +106,27 @@ const ResumeAnalyzer = () => {
                 <select
                   value={targetCareer}
                   onChange={(e) => setTargetCareer(e.target.value)}
-                  className="w-full p-4 bg-slate-50 dark:bg-slate-800/10 border border-slate-200 dark:border-slate-800 rounded-2xl focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition text-sm font-semibold text-slate-900 dark:text-white"
+                  className="w-full p-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl focus:border-brand-500 focus:ring-1 focus:ring-brand-500 outline-none transition text-sm font-semibold text-slate-900 dark:text-white"
                 >
-                  <option value="">Select a career path...</option>
-                  {careers.map((career, idx) => (
-                    <option key={idx} value={career}>{career}</option>
-                  ))}
-                  <option value="Software Engineer">Software Engineer</option>
-                  <option value="Data Scientist">Data Scientist</option>
-                  <option value="Product Manager">Product Manager</option>
+                  <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white" value="">Select a career path...</option>
+                  
+                  <optgroup className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold" label="AI Job Recommendations">
+                    {careers.length > 0 ? careers.map((career, idx) => (
+                      <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium" key={`c-${idx}`} value={career}>{career}</option>
+                    )) : <option className="bg-white dark:bg-slate-900 text-slate-500" disabled>No recommendations yet</option>}
+                  </optgroup>
+
+                  <optgroup className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-bold" label="Common Paths">
+                    <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium" value="Software Engineer">Software Engineer</option>
+                    <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium" value="Data Scientist">Data Scientist</option>
+                    <option className="bg-white dark:bg-slate-900 text-slate-900 dark:text-white font-medium" value="Product Manager">Product Manager</option>
+                  </optgroup>
                 </select>
+                <div className="mt-2 text-right">
+                  <a href="/dashboard" className="text-[10px] font-bold uppercase tracking-widest text-brand-500 hover:text-brand-600 dark:text-brand-400 dark:hover:text-brand-300 transition-colors">
+                    Refer to Job Recommendations →
+                  </a>
+                </div>
 
               </div>
 

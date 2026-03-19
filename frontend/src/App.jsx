@@ -19,6 +19,7 @@ import ResumeHistory from './pages/ResumeHistory';
 import GoalTracker from './pages/GoalTracker';
 import SkillQuiz from './pages/SkillQuiz';
 import MarketInsightsPage from './pages/MarketInsightsPage';
+import JobOpeningsPage from './pages/JobOpeningsPage';
 
 const App = () => {
   return (
@@ -44,6 +45,7 @@ const App = () => {
               <Route path="/goals" element={<GoalTracker />} />
               <Route path="/quiz" element={<SkillQuiz />} />
               <Route path="/market-insights" element={<MarketInsightsPage />} />
+              <Route path="/jobs" element={<JobOpeningsPage />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Route>
           </Routes>
